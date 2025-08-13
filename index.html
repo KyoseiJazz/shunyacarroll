@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', 'Courier New', monospace;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #333;
+        }
+
+        /* Centered Clock */
+        .clock-section {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .current-time {
+            font-size: 2em;
+            color: #333;
+            font-weight: bold;
+            background: #f5f5f5;
+            padding: 20px 30px;
+            border: 2px solid #333;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-feature-settings: 'tnum';
+        }
+
+        .current-date {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Clock connection to timeline */
+        .clock-section::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -30px;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+            border: 3px solid #f5f5f5;
+            z-index: 2;
+        }
+
+        .timeline-post {
+            position: relative;
+            /* Start with no margin - JavaScript will add time-scaled spacing */
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .timeline-post:nth-child(odd) {
+            padding-right: 50%;
+        }
+
+        .timeline-post:nth-child(even) {
+            padding-left: 50%;
+        }
+
+        .timeline-post::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+            border: 3px solid #f5f5f5;
+            z-index: 2;
+        }
+
+        .post-date {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .timeline-post:nth-child(odd) .post-date {
+            text-align: right;
+            margin-right: 30px;
+        }
+
+        .timeline-post:nth-child(even) .post-date {
+            text-align: left;
+            margin-left: 30px;
+        }
+
+        .post-content {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .post-content:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .timeline-post:nth-child(odd) .post-content {
+            margin-right: 30px;
+        }
+
+        .timeline-post:nth-child(even) .post-content {
+            margin-left: 30px;
+        }
+
+        .post-large {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            color: white;
+            transition: transform 0.2s ease;
+        }
+
+        .post-large:hover {
+            transform: scale(1.02);
+        }
+
+        .post-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        .post-avatar {
+            width: 30px;
+            height: 30px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-end;
+            font-size: 1.2em;
+        }
+
+        .post-text {
+            line-height: 1.6;
+            cursor: pointer;
+        }
+
+        .post-text p {
+            color: #555;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #666;
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .full-post h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .full-post .full-date {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .full-post img {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .clock-section::after {
+                left: 20px;
+                transform: translateX(-50%);
+            }
+
+            .timeline-post {
+                padding-left: 50px !important;
+                padding-right: 20px !important;
+            }
+
+            .timeline-post::before {
+                left: 20px;
+                transform: translateX(-50%);
+            }
+
+            .post-content {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+            .post-date {
+                text-align: left !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+            .current-time {
+                font-size: 1.5em;
+                padding: 15px 20px;
+            }
+
+            .timeline-container {
+                padding: 30px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timeline-container">
+        <div class="clock-section">
+            <div class="current-time" id="currentTime">12:00:00 PM</div>
+            <div class="current-date" id="currentDate">08.13.2025</div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-post" data-date="2025-08-12">
+                <div class="post-date">08.12.2025</div>
+                <div class="post-content">
+                    <div class="post-large" onclick="openModal('modal1')"
+                         style="background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800');">
+                        <div class="post-title">FOREST WALK</div>
+                        <div class="post-avatar">🌲</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-post" data-date="2025-08-11">
+                <div class="post-date">08.11.2025</div>
+                <div class="post-content">
+                    <div class="post-text" onclick="openModal('modal2')">
+                        <p>Quick forest sound discovery...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-post" data-date="2025-07-13">
+                <div class="post-date">07.13.2025</div>
+                <div class="post-content">
+                    <div class="post-large" onclick="openModal('modal3')"
+                         style="background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800');">
+                        <div class="post-title">SUMMER SOLSTICE</div>
+                        <div class="post-avatar">☀️</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-post" data-date="2025-06-13">
+                <div class="post-date">06.13.2025</div>
+                <div class="post-content">
+                    <div class="post-text" onclick="openModal('modal4')">
+                        <p>Mid-year creative reflection...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-post" data-date="2025-05-13">
+                <div class="post-date">05.13.2025</div>
+                <div class="post-content">
+                    <div class="post-large" onclick="openModal('modal5')"
+                         style="background-image: url('https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800');">
+                        <div class="post-title">SPRING PROJECT</div>
+                        <div class="post-avatar">🌸</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModal('modal1')">&times;</button>
+            <div class="full-post">
+                <h2>Forest Walk</h2>
+                <div class="full-date">August 12, 2025</div>
+                <p>Ventured deep into the old growth forest today. The sound of wind through ancient branches creates such a unique acoustic space. Recorded about 30 minutes of pure forest ambience - no human sounds, just the natural symphony.</p>
+                <p>There's something magical about how sound travels differently among these massive trees. The way echoes bounce and fade creates this incredible natural reverb that no studio can replicate.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModal('modal2')">&times;</button>
+            <div class="full-post">
+                <h2>Forest Sounds</h2>
+                <div class="full-date">August 11, 2025</div>
+                <p>Quick discovery session in the local woods. Found an interesting fallen log that creates a natural drum when tapped. The resonance changes depending on where you strike it.</p>
+                <p>Sometimes the best sounds come from unexpected places. Nature is the ultimate sound designer.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModal('modal3')">&times;</button>
+            <div class="full-post">
+                <h2>Summer Solstice</h2>
+                <div class="full-date">July 13, 2025</div>
+                <p>Spent the longest day of the year capturing the subtle changes in outdoor acoustics as the sun moved across the sky. It's fascinating how the same location can sound completely different at different times of day.</p>
+                <p>The golden hour recordings are particularly magical - there's a warmth not just in the light, but in the way sound carries during those precious moments.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModal('modal4')">&times;</button>
+            <div class="full-post">
+                <h2>Mid-Year Reflection</h2>
+                <div class="full-date">June 13, 2025</div>
+                <p>Halfway through the year and the sound library has grown beyond what I imagined. Each recording tells a story, captures a moment in time that can never be perfectly replicated.</p>
+                <p>Looking back at the winter recordings now, in the warmth of summer, they feel like audio postcards from another world.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal5" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModal('modal5')">&times;</button>
+            <div class="full-post">
+                <h2>Spring Project</h2>
+                <div class="full-date">May 13, 2025</div>
+                <p>Starting a new ambitious project to document the acoustic signature of the changing seasons. Spring is the perfect beginning - everything is waking up, and the soundscape is transforming daily.</p>
+                <p>From the first bird songs to the rustle of new leaves, each day brings something new to capture.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update current date and time
+        function updateDateTime() {
+            var today = new Date();
+            var month = String(today.getMonth() + 1).padStart(2, '0');
+            var day = String(today.getDate()).padStart(2, '0');
+            var year = today.getFullYear();
+            
+            var timeElement = document.getElementById('currentTime');
+            var dateElement = document.getElementById('currentDate');
+            
+            if (dateElement) {
+                dateElement.textContent = month + '.' + day + '.' + year;
+            }
+            
+            if (timeElement) {
+                var hours = today.getHours();
+                var minutes = String(today.getMinutes()).padStart(2, '0');
+                var seconds = String(today.getSeconds()).padStart(2, '0');
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                timeElement.textContent = String(hours).padStart(2, '0') + ':' + minutes + ':' + seconds + ' ' + ampm;
+            }
+        }
+
+        // Calculate time-scaled spacing for timeline posts
+        function calculateTimelineSpacing() {
+            console.log('=== CALCULATING TIME-SCALED SPACING ===');
+            
+            var posts = document.querySelectorAll('.timeline-post[data-date]');
+            console.log('Found ' + posts.length + ' posts');
+            
+            if (posts.length === 0) {
+                console.log('No posts found');
+                return;
+            }
+            
+            // Convert to array with date information
+            var postsArray = [];
+            for (var i = 0; i < posts.length; i++) {
+                var post = posts[i];
+                var dateStr = post.getAttribute('data-date');
+                var date = new Date(dateStr);
+                
+                postsArray.push({
+                    element: post,
+                    date: date,
+                    dateStr: dateStr
+                });
+                
+                console.log('Post ' + (i+1) + ': ' + dateStr + ' (' + date.toDateString() + ')');
+            }
+            
+            // Sort by date (newest first)
+            postsArray.sort(function(a, b) {
+                return b.date - a.date;
+            });
+            
+            console.log('Posts sorted by date (newest first)');
+            
+            // Apply spacing based on time differences
+            for (var j = 0; j < postsArray.length; j++) {
+                var post = postsArray[j];
+                
+                if (j === 0) {
+                    // First (newest) post gets base spacing
+                    post.element.style.marginTop = '40px';
+                    console.log('Post 1 (newest): 40px base spacing');
+                } else {
+                    // Calculate days between current and previous post
+                    var currentDate = post.date;
+                    var previousDate = postsArray[j - 1].date;
+                    var daysDiff = Math.floor((previousDate - currentDate) / (1000 * 60 * 60 * 24));
+                    
+                    // Scale: 4px per day, minimum 60px
+                    var spacing = Math.max(daysDiff * 4, 60);
+                    post.element.style.marginTop = spacing + 'px';
+                    
+                    console.log('Post ' + (j+1) + ': ' + daysDiff + ' days from previous = ' + spacing + 'px spacing');
+                }
+            }
+            
+            console.log('=== SPACING COMPLETE ===');
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            var modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, initializing timeline...');
+            
+            // Start the clock
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Calculate timeline spacing
+            setTimeout(calculateTimelineSpacing, 100);
+        });
+    </script>
+</body>
+</html>
