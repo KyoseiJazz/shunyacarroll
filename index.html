@@ -148,8 +148,8 @@
         .post-large {
             width: 100%;
             max-width: 400px;
-            height: 250px;
-            background-size: contain;
+            height: auto;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             cursor: pointer;
@@ -158,8 +158,9 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 20px;
-            background-color: #333;
+            background-color: transparent;
             transition: transform 0.2s ease;
+            min-height: 225px;
         }
 
         .post-large:hover {
