@@ -316,6 +316,45 @@
                 padding: 30px 15px;
             }
         }
+        /* Floating Strawberries */
+.floating-strawberry {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+}
+
+.floating-strawberry:hover {
+    opacity: 1;
+}
+
+/* Debug panel (optional - remove if you don't want it) */
+.debug-panel {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 100;
+    font-family: monospace;
+}
+
+/* Hide floating strawberries on small screens (add to your mobile media query) */
+@media (max-width: 768px) {
+    .floating-strawberry {
+        display: none;
+    }
+}
     </style>
 </head>
 <body>
@@ -732,6 +771,194 @@
             // Calculate timeline spacing
             setTimeout(calculateTimelineSpacing, 100);
         });
+// Floating strawberries system
+let strawberries = [];
+let isAnimating = false;
+const STRAWBERRY_COUNT = 10;
+const STRAWBERRY_SIZE = 50;
+const SPEED = 0.8;
+
+// Strawberry image URLs (replace with your custom images later)
+const strawberryImages = [
+    'https://images.unsplash.com/photo-1543528176-61b239494933?w=100&h=100&fit=crop',
+    'https://images.unsplash.com/photo-1464454709131-ffd692591ee5?w=100&h=100&fit=crop',
+    'https://images.unsplash.com/photo-1518635017498-87f514b751ba?w=100&h=100&fit=crop'
+];
+
+function createStrawberry(index) {
+    const strawberry = document.createElement('div');
+    strawberry.className = 'floating-strawberry';
+    strawberry.id = `strawberry-${index}`;
+    
+    // Random strawberry image
+    const imageUrl = strawberryImages[index % strawberryImages.length];
+    strawberry.style.backgroundImage = `url(${imageUrl})`;
+    
+    // Random starting position
+    const x = Math.random() * (window.innerWidth - STRAWBERRY_SIZE);
+    const y = Math.random() * (window.innerHeight - STRAWBERRY_SIZE);
+    
+    // Random movement direction
+    const vx = (Math.random() - 0.5) * SPEED * 2;
+    const vy = (Math.random() - 0.5) * SPEED * 2;
+    
+    strawberry.style.left = x + 'px';
+    strawberry.style.top = y + 'px';
+    
+    document.body.appendChild(strawberry);
+    
+    return {
+        element: strawberry,
+        x: x,
+        y: y,
+        vx: vx,
+        vy: vy,
+        size: STRAWBERRY_SIZE
+    };
+}
+
+function getPostAreas() {
+    const areas = [];
+    const posts = document.querySelectorAll('.post-content');
+    
+    posts.forEach(post => {
+        const rect = post.getBoundingClientRect();
+        areas.push({
+            left: rect.left,
+            right: rect.right,
+            top: rect.top + window.scrollY,
+            bottom: rect.bottom + window.scrollY,
+            element: post
+        });
+    });
+    
+    return areas;
+}
+
+function checkCollisions(strawberry) {
+    const postAreas = getPostAreas();
+    const strawberryRect = {
+        left: strawberry.x,
+        right: strawberry.x + strawberry.size,
+        top: strawberry.y,
+        bottom: strawberry.y + strawberry.size
+    };
+    
+    // Check collision with posts (only visible ones)
+    postAreas.forEach(area => {
+        const viewportTop = window.scrollY;
+        const viewportBottom = window.scrollY + window.innerHeight;
+        
+        // Only check if post is in viewport
+        if (area.bottom > viewportTop && area.top < viewportBottom) {
+            const adjustedTop = area.top - window.scrollY;
+            const adjustedBottom = area.bottom - window.scrollY;
+            
+            if (strawberryRect.right > area.left && 
+                strawberryRect.left < area.right &&
+                strawberryRect.bottom > adjustedTop && 
+                strawberryRect.top < adjustedBottom) {
+                
+                // Simple bounce away from post
+                const overlapX = Math.min(strawberryRect.right - area.left, area.right - strawberryRect.left);
+                const overlapY = Math.min(strawberryRect.bottom - adjustedTop, adjustedBottom - strawberryRect.top);
+                
+                if (overlapX < overlapY) {
+                    strawberry.vx = -strawberry.vx;
+                } else {
+                    strawberry.vy = -strawberry.vy;
+                }
+            }
+        }
+    });
+}
+
+function animateStrawberries() {
+    if (!isAnimating) return;
+    
+    strawberries.forEach(strawberry => {
+        // Update position
+        strawberry.x += strawberry.vx;
+        strawberry.y += strawberry.vy;
+        
+        // Bounce off screen edges
+        if (strawberry.x <= 0 || strawberry.x >= window.innerWidth - strawberry.size) {
+            strawberry.vx = -strawberry.vx;
+            strawberry.x = Math.max(0, Math.min(strawberry.x, window.innerWidth - strawberry.size));
+        }
+        
+        if (strawberry.y <= 0 || strawberry.y >= window.innerHeight - strawberry.size) {
+            strawberry.vy = -strawberry.vy;
+            strawberry.y = Math.max(0, Math.min(strawberry.y, window.innerHeight - strawberry.size));
+        }
+        
+        // Check collisions with posts
+        checkCollisions(strawberry);
+        
+        // Update element position
+        strawberry.element.style.left = strawberry.x + 'px';
+        strawberry.element.style.top = strawberry.y + 'px';
+    });
+    
+    updateDebugInfo();
+    requestAnimationFrame(animateStrawberries);
+}
+
+function startStrawberries() {
+    console.log('Starting strawberries...');
+    
+    // Remove any existing strawberries
+    stopStrawberries();
+    
+    // Create new strawberries
+    for (let i = 0; i < STRAWBERRY_COUNT; i++) {
+        const strawberry = createStrawberry(i);
+        strawberries.push(strawberry);
+    }
+    
+    isAnimating = true;
+    animateStrawberries();
+    updateDebugInfo();
+}
+
+function stopStrawberries() {
+    isAnimating = false;
+    
+    strawberries.forEach(strawberry => {
+        if (strawberry.element && strawberry.element.parentNode) {
+            strawberry.element.parentNode.removeChild(strawberry.element);
+        }
+    });
+    
+    strawberries = [];
+    updateDebugInfo();
+}
+
+function updateDebugInfo() {
+    const debugPanel = document.getElementById('debugPanel');
+    if (debugPanel) {
+        debugPanel.textContent = `Strawberries: ${strawberries.length} | Animation: ${isAnimating ? 'Running' : 'Stopped'}`;
+    }
+}
+
+// Keyboard controls for testing (add to your existing event listeners)
+document.addEventListener('keydown', function(event) {
+    if (event.key === 's' || event.key === 'S') {
+        console.log('S key pressed - toggling strawberries');
+        if (isAnimating) {
+            stopStrawberries();
+        } else {
+            startStrawberries();
+        }
+    }
+});
+
+// Auto-start strawberries (add this to your existing DOMContentLoaded function)
+setTimeout(() => {
+    console.log('Auto-starting strawberries...');
+    startStrawberries();
+}, 1500);
+        
     </script>
 </body>
 </html>
