@@ -148,7 +148,9 @@
         .post-large {
             width: auto;
             max-width: 400px;
-            height: 100%;
+            height: auto;
+            min-height: 225px;
+            max-height: 1080px;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -160,7 +162,7 @@
             padding: 5px;
             background-color: transparent;
             transition: transform 0.2s ease;
-            min-height: 225px;
+            
         }
 
         .post-large:hover {
@@ -379,8 +381,6 @@
                     <div class="post-large" onclick="openModal('spotify-war')"
                          style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/subhead.png?raw=true');">
                         <div class="post-title"></div>
-                        <div class="post-avatar">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/images/Notion%20pfp.png?raw=true" alt="Icon">
                         </div>
                     </div>
                 </div>
