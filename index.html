@@ -316,6 +316,28 @@
                 padding: 30px 15px;
             }
         }
+
+        /* Floating Bubbles */
+            .floating-image {
+                position: fixed;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background-size: cover;
+                background-position: center;
+                z-index: 100;
+                pointer-events: auto;
+                opacity: 0.7;
+                transition: opacity 0.3s ease, transform 0.2s ease;
+                border: 2px solid rgba(255,255,255,0.3);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                cursor: pointer;
+            }
+            
+            .floating-image:hover {
+                opacity: 1;
+                transform: scale(1.1);
+            }
     </style>
 </head>
 <body>
@@ -618,6 +640,220 @@
     -->
 
     <script>
+
+        // Floating Bubbles System
+var floatingBubbles = [];
+var animationId;
+
+// Configuration for floating bubbles
+var bubbleConfig = {
+    images: [
+        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=100',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=100'
+    ],
+    count: 3,
+    speed: 0.5,
+    size: 60,
+    aboutPageUrl: './about.html' // Change this to your about page URL
+};
+
+function createFloatingBubble(imageUrl, index) {
+    var bubble = document.createElement('div');
+    bubble.className = 'floating-image';
+    bubble.style.backgroundImage = 'url(' + imageUrl + ')';
+    bubble.style.width = bubbleConfig.size + 'px';
+    bubble.style.height = bubbleConfig.size + 'px';
+    
+    // Make sure it's visible
+    bubble.style.position = 'fixed';
+    bubble.style.zIndex = '100';
+    bubble.style.backgroundColor = '#ff0000'; // Temporary red background for testing
+    
+    console.log('Creating bubble with styles:', {
+        width: bubble.style.width,
+        height: bubble.style.height,
+        backgroundImage: bubble.style.backgroundImage,
+        position: bubble.style.position,
+        zIndex: bubble.style.zIndex
+    });
+    
+    // Add click handler for about page
+    bubble.addEventListener('click', function() {
+        console.log('Bubble clicked! Going to:', bubbleConfig.aboutPageUrl);
+        window.location.href = bubbleConfig.aboutPageUrl;
+    });
+    
+    // Random starting position
+    var x = Math.random() * (window.innerWidth - bubbleConfig.size);
+    var y = Math.random() * (window.innerHeight - bubbleConfig.size);
+    
+    // Random velocity
+    var vx = (Math.random() - 0.5) * bubbleConfig.speed * 2;
+    var vy = (Math.random() - 0.5) * bubbleConfig.speed * 2;
+    
+    // Set initial position
+    bubble.style.left = x + 'px';
+    bubble.style.top = y + 'px';
+    
+    console.log('Bubble positioned at:', x, y);
+    
+    document.body.appendChild(bubble);
+    console.log('Bubble added to DOM');
+    
+    return {
+        element: bubble,
+        x: x,
+        y: y,
+        vx: vx,
+        vy: vy,
+        radius: bubbleConfig.size / 2
+    };
+}
+
+function getPostBoundaries() {
+    var boundaries = [];
+    var posts = document.querySelectorAll('.post-content');
+    
+    posts.forEach(function(post) {
+        var rect = post.getBoundingClientRect();
+        
+        // Use viewport coordinates (no scroll offset)
+        boundaries.push({
+            left: rect.left,
+            right: rect.right,
+            top: rect.top,
+            bottom: rect.bottom,
+            width: rect.width,
+            height: rect.height
+        });
+    });
+    
+    return boundaries;
+}
+
+function checkCollisionWithPosts(bubble, boundaries) {
+    var bubbleLeft = bubble.x;
+    var bubbleRight = bubble.x + bubbleConfig.size;
+    var bubbleTop = bubble.y;
+    var bubbleBottom = bubble.y + bubbleConfig.size;
+    
+    boundaries.forEach(function(boundary) {
+        // Check if floating bubble overlaps with post
+        if (bubbleRight > boundary.left && bubbleLeft < boundary.right &&
+            bubbleBottom > boundary.top && bubbleTop < boundary.bottom) {
+            
+            // Determine collision side and bounce
+            var overlapLeft = bubbleRight - boundary.left;
+            var overlapRight = boundary.right - bubbleLeft;
+            var overlapTop = bubbleBottom - boundary.top;
+            var overlapBottom = boundary.bottom - bubbleTop;
+            
+            var minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+            
+            if (minOverlap === overlapLeft || minOverlap === overlapRight) {
+                bubble.vx = -bubble.vx; // Bounce horizontally
+            } else {
+                bubble.vy = -bubble.vy; // Bounce vertically
+            }
+        }
+    });
+}
+
+function checkCollisionBetweenBubbles() {
+    for (var i = 0; i < floatingBubbles.length; i++) {
+        for (var j = i + 1; j < floatingBubbles.length; j++) {
+            var bubble1 = floatingBubbles[i];
+            var bubble2 = floatingBubbles[j];
+            
+            var dx = (bubble1.x + bubble1.radius) - (bubble2.x + bubble2.radius);
+            var dy = (bubble1.y + bubble1.radius) - (bubble2.y + bubble2.radius);
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < bubble1.radius + bubble2.radius) {
+                // Collision detected - simple bounce
+                var tempVx = bubble1.vx;
+                var tempVy = bubble1.vy;
+                bubble1.vx = bubble2.vx;
+                bubble1.vy = bubble2.vy;
+                bubble2.vx = tempVx;
+                bubble2.vy = tempVy;
+                
+                // Separate the bubbles
+                var overlap = bubble1.radius + bubble2.radius - distance;
+                var separateX = (dx / distance) * overlap * 0.5;
+                var separateY = (dy / distance) * overlap * 0.5;
+                
+                bubble1.x += separateX;
+                bubble1.y += separateY;
+                bubble2.x -= separateX;
+                bubble2.y -= separateY;
+            }
+        }
+    }
+}
+
+function animateFloatingBubbles() {
+    var boundaries = getPostBoundaries();
+    
+    floatingBubbles.forEach(function(bubble) {
+        // Update position
+        bubble.x += bubble.vx;
+        bubble.y += bubble.vy;
+        
+        // Bounce off screen edges
+        if (bubble.x <= 0 || bubble.x >= window.innerWidth - bubbleConfig.size) {
+            bubble.vx = -bubble.vx;
+            bubble.x = Math.max(0, Math.min(bubble.x, window.innerWidth - bubbleConfig.size));
+        }
+        if (bubble.y <= 0 || bubble.y >= window.innerHeight - bubbleConfig.size) {
+            bubble.vy = -bubble.vy;
+            bubble.y = Math.max(0, Math.min(bubble.y, window.innerHeight - bubbleConfig.size));
+        }
+        
+        // Check collision with posts
+        checkCollisionWithPosts(bubble, boundaries);
+        
+        // Update element position (fixed positioning stays in viewport)
+        bubble.element.style.left = bubble.x + 'px';
+        bubble.element.style.top = bubble.y + 'px';
+    });
+    
+    // Check collisions between floating bubbles
+    checkCollisionBetweenBubbles();
+    
+    // Continue animation
+    animationId = requestAnimationFrame(animateFloatingBubbles);
+}
+
+function initFloatingBubbles() {
+    console.log('Initializing floating bubbles...');
+    
+    // Create floating bubbles
+    for (var i = 0; i < bubbleConfig.count; i++) {
+        var imageUrl = bubbleConfig.images[i % bubbleConfig.images.length];
+        var bubble = createFloatingBubble(imageUrl, i);
+        floatingBubbles.push(bubble);
+        console.log('Created bubble', i + 1, 'with image:', imageUrl);
+    }
+    
+    console.log('Total bubbles created:', floatingBubbles.length);
+    
+    // Start animation
+    animateFloatingBubbles();
+}
+
+function stopFloatingBubbles() {
+    if (animationId) {
+        cancelAnimationFrame(animationId);
+    }
+    floatingBubbles.forEach(function(bubble) {
+        if (bubble.element && bubble.element.parentNode) {
+            bubble.element.parentNode.removeChild(bubble.element);
+        }
+    });
+    floatingBubbles = [];
+}
         // Update current date and time
         function updateDateTime() {
             var today = new Date();
