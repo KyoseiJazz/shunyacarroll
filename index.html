@@ -149,7 +149,8 @@
             width: 100%;
             max-width: 400px;
             height: 250px;
-            background-size: cover;
+            background-size: contain;
+            background-repeat: no-repeat;
             background-position: center;
             cursor: pointer;
             position: relative;
@@ -157,7 +158,7 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 20px;
-            color: white;
+            background-color: #333;
             transition: transform 0.2s ease;
         }
 
@@ -249,6 +250,10 @@
             max-width: 100%;
             margin: 20px 0;
         }
+        .full-post p {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
@@ -315,7 +320,9 @@
                     <div class="post-large" onclick="openModal('spotify-war')"
                          style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/subhead.png?raw=true');">
                         <div class="post-title"></div>
-                        <div class="post-avatar">url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/Notion%20pfp.png?raw=true)</div>
+                        <div class="post-avatar">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/Notion%20pfp.png?raw=true"alt="Icon">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -457,26 +464,26 @@
             <div class="full-post">
                 <h2>Your Post Title</h2>
                 <div class="full-date">August 12, 2025</div>
-                <p> <p>      After news spread that Swedish Spotify CEO, Daniel Ek became chairman and led a €600 million ($694) investment to German Weapons manufacturer, Helsing, artists publicly announced removing their catalog from the platform.<p>
-                <p> <p>	      But why might Daniel Ek invest in war? <p>
-                    <p> <p>       Since the Obama administration, the EU has been pressured to spend more on defense according to professor of Government at the University of Texas, Dr. Rachel Wellhausen.<p>
-<p> <p>      “Europe is buying American weapons to supply Ukraine and for a long time have thought about a bigger domestic defense industry,” Dr. Wellhausen said. “Since Trump has pulled back on financing Ukraine, Europe is putting lots of money into Ukraine.” <p>
-<p> <p>      Investments in defense has been made more attractive for private companies. <p>
-<p> <p>      “It’s like this perfect storm for European companies and rich Europeans who care about Europe to build up (defense),” Dr. Wellhausen said. <p>
-<p> <p>      Daniel Ek has been known to <a href="https://www.musicbusinessworldwide.com/daniel-ek-cashed-out-another-37-3m-in-spotify-shares-as-stock-hit-new-high1/" target="_blank">cash out</a> Spotify shares to invest in other endeavors like health </a href="https://fortune.com/europe/2025/01/23/daniel-ek-body-scanning-startup-valuation-100000-people-lining-up-pay-299-for-health-check/" terget="_blank">body scanners</a>, but stepping into Helsing can be seen as a patriotic act. <p>
-<p> <p>      “As Europe rapidly strengthens its defense capabilities in response to evolving geopolitical challenges, there is an urgent need for investments in advanced technologies that ensure its strategic autonomy and security readiness,” Daniel Ek told Financial Times.<p>
-<p> <p>      Helsing delivered 10,000 AI powered drones to Ukraine as of February and is collaborating with Sweden’s military to defend Ukraine’s frontlines.<p>
-<p> <p>      Last weekend, in spite of slow Russian frontline advancement, Ukraine declined Putin’s ceasefire deal to withdraw forces from regions Russia <a href="https://www.pbs.org/newshour/world/russia-and-ukraine-stick-to-their-demands-ahead-of-planned-putin-trump-summit-in-alaska" target="_blank">failed</a> to capture. <p>
-<p> <p>      Director of European Studies at the University of Texas, Dr. Michael Mosser says Ukraine’s natural gas pipelines and history in the Soviet Union can be traced as justifications for the war.<p>
-<p> <p>      “Russia could impose its will on Ukraine in a way that it had done to other countries that tried to break away.” Dr. Mosser said, referencing Georgia in 2008 and Chechnya in 2004. <p>
-<p> <p>      Zelensky has not been invited to Putin and Trump’s peace negotiations meeting that’ll take place in Alaska this Friday. <p>
-<p> <p>      Missed political deadlines and uncertainty for support might be why the EU is looking at private investors for defense.<p>
-<p> <p>      In 2024, American weapons manufacturers grossed $236 billion in government contracts, more than twice that of European defense. Although the EU primarily purchases weapons from U.S. manufacturers, Dr. Mosser says the EU is beginning to look at domestic producers.<p> 
- <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/data.png" alt="2023 Defense Profits">
-<p> <p>      Boycotting companies have impacted businesses in the past. The Kyiv School of Economics have published a webpage <a href="https://leave-russia.org/staying-companies" target="_blank">tracking</a> companies’ financial relationships with Russia. P&G, Adobe and hundreds of others have suspended or reduced their activity in the country. <p>
-<p> <p>      But the Spotify CEO says he doesn’t really care about the boycotts.<p>
-<p> <p>      “I’m sure people will criticize it and that’s OK. Personally, I’m not concerned about it. I focus more on doing what I think is right and I am 100 per cent convinced that this is the right thing for Europe.” Ek told Financial Times<p>
-<p> <p>      Musicians have dropped from the platform in attempts to decouple from war, but <a href="https://www.latimes.com/entertainment-arts/music/story/2025-07-31/spotifys-ceo-owns-an-ai-weapons-company-some-musicians-say-its-time-to-leave" target="_blank>mainstream reports</a> misrepresent Helsing’s connection to defending Isreal instead of Ukraine.<p>
+                <p>     After news spread that Swedish Spotify CEO, Daniel Ek became chairman and led a €600 million ($694) investment to German Weapons manufacturer, Helsing, artists publicly announced removing their catalog from the platform.<p>
+                <p>     But why might Daniel Ek invest in war? <p>
+                    <p>     Since the Obama administration, the EU has been pressured to spend more on defense according to professor of Government at the University of Texas, Dr. Rachel Wellhausen.<p>
+<p>     “Europe is buying American weapons to supply Ukraine and for a long time have thought about a bigger domestic defense industry,” Dr. Wellhausen said. “Since Trump has pulled back on financing Ukraine, Europe is putting lots of money into Ukraine.” <p>
+<p>     Investments in defense has been made more attractive for private companies. <p>
+<p>     “It’s like this perfect storm for European companies and rich Europeans who care about Europe to build up (defense),” Dr. Wellhausen said. <p>
+<p>     Daniel Ek has been known to <a href="https://www.musicbusinessworldwide.com/daniel-ek-cashed-out-another-37-3m-in-spotify-shares-as-stock-hit-new-high1/" target="_blank">cash out</a> Spotify shares to invest in other endeavors like health </a href="https://fortune.com/europe/2025/01/23/daniel-ek-body-scanning-startup-valuation-100000-people-lining-up-pay-299-for-health-check/" terget="_blank">body scanners</a>, but stepping into Helsing can be seen as a patriotic act. <p>
+<p>     “As Europe rapidly strengthens its defense capabilities in response to evolving geopolitical challenges, there is an urgent need for investments in advanced technologies that ensure its strategic autonomy and security readiness,” Daniel Ek told Financial Times.<p>
+<p>     Helsing delivered 10,000 AI powered drones to Ukraine as of February and is collaborating with Sweden’s military to defend Ukraine’s frontlines.<p>
+<p>     Last weekend, in spite of slow Russian frontline advancement, Ukraine declined Putin’s ceasefire deal to withdraw forces from regions Russia <a href="https://www.pbs.org/newshour/world/russia-and-ukraine-stick-to-their-demands-ahead-of-planned-putin-trump-summit-in-alaska" target="_blank">failed</a> to capture. <p>
+<p>     Director of European Studies at the University of Texas, Dr. Michael Mosser says Ukraine’s natural gas pipelines and history in the Soviet Union can be traced as justifications for the war.<p>
+<p>     “Russia could impose its will on Ukraine in a way that it had done to other countries that tried to break away.” Dr. Mosser said, referencing Georgia in 2008 and Chechnya in 2004. <p>
+<p>     Zelensky has not been invited to Putin and Trump’s peace negotiations meeting that’ll take place in Alaska this Friday. <p>
+<p>     Missed political deadlines and uncertainty for support might be why the EU is looking at private investors for defense.<p>
+<p>     In 2024, American weapons manufacturers grossed $236 billion in government contracts, more than twice that of European defense. Although the EU primarily purchases weapons from U.S. manufacturers, Dr. Mosser says the EU is beginning to look at domestic producers.<p> 
+<p>  <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/data.png?raw=true" alt="2023 Defense Profits"> <p> 
+<p>     Boycotting companies have impacted businesses in the past. The Kyiv School of Economics have published a webpage <a href="https://leave-russia.org/staying-companies" target="_blank">tracking</a> companies’ financial relationships with Russia. P&G, Adobe and hundreds of others have suspended or reduced their activity in the country. <p>
+<p>     But the Spotify CEO says he doesn’t really care about the boycotts.<p>
+<p>     “I’m sure people will criticize it and that’s OK. Personally, I’m not concerned about it. I focus more on doing what I think is right and I am 100 per cent convinced that this is the right thing for Europe.” Ek told Financial Times<p>
+<p>     Musicians have dropped from the platform in attempts to decouple from war, but <a href="https://www.latimes.com/entertainment-arts/music/story/2025-07-31/spotifys-ceo-owns-an-ai-weapons-company-some-musicians-say-its-time-to-leave" target="_blank>mainstream reports</a> misrepresent Helsing’s connection to defending Isreal instead of Ukraine.<p>
 </p>
                
                 <img src="./images/your-photo.jpg" alt="Description">
