@@ -301,10 +301,32 @@
         </div>
 
         <div class="timeline">
+            <!-- ====================================== -->
+            <!-- 📝 ADD NEW POSTS HERE                 -->
+            <!-- Copy a post template below and        -->
+            <!-- customize the date, content, modal ID -->
+            <!-- ====================================== -->
+            
+            <!-- 🆕 ADD YOUR NEWEST POSTS FIRST (they'll be sorted by date automatically) -->
+            
+            
+            <!-- ====================================== -->
+            <!-- 📋 EXISTING POSTS                     -->
+            <!-- ====================================== -->
+
+            <div class="timeline-post" data-date="2025-08-13">
+                <div class="post-date">08.13.2025</div>
+                <div class="post-content">
+                    <div class="post-text" onclick="openModal('modal1')">
+                        <p>Today's sound experiment...</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="timeline-post" data-date="2025-08-12">
                 <div class="post-date">08.12.2025</div>
                 <div class="post-content">
-                    <div class="post-large" onclick="openModal('modal1')"
+                    <div class="post-large" onclick="openModal('modal2')"
                          style="background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800');">
                         <div class="post-title">FOREST WALK</div>
                         <div class="post-avatar">🌲</div>
@@ -315,54 +337,122 @@
             <div class="timeline-post" data-date="2025-08-11">
                 <div class="post-date">08.11.2025</div>
                 <div class="post-content">
-                    <div class="post-text" onclick="openModal('modal2')">
+                    <div class="post-text" onclick="openModal('modal3')">
                         <p>Quick forest sound discovery...</p>
                     </div>
                 </div>
             </div>
 
-            <div class="timeline-post" data-date="2025-07-13">
-                <div class="post-date">07.13.2025</div>
+            <div class="timeline-post" data-date="2025-08-10">
+                <div class="post-date">08.10.2025</div>
                 <div class="post-content">
-                    <div class="post-large" onclick="openModal('modal3')"
-                         style="background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800');">
-                        <div class="post-title">SUMMER SOLSTICE</div>
-                        <div class="post-avatar">☀️</div>
+                    <div class="post-large" onclick="openModal('modal4')"
+                         style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800');">
+                        <div class="post-title">URBAN ECHOES</div>
+                        <div class="post-avatar">🏙️</div>
                     </div>
                 </div>
             </div>
 
-            <div class="timeline-post" data-date="2025-06-13">
-                <div class="post-date">06.13.2025</div>
+            <div class="timeline-post" data-date="2025-08-09">
+                <div class="post-date">08.09.2025</div>
                 <div class="post-content">
-                    <div class="post-text" onclick="openModal('modal4')">
-                        <p>Mid-year creative reflection...</p>
+                    <div class="post-text" onclick="openModal('modal5')">
+                        <p>Late night recording session...</p>
                     </div>
                 </div>
             </div>
 
-            <div class="timeline-post" data-date="2025-05-13">
-                <div class="post-date">05.13.2025</div>
+            <!-- ====================================== -->
+            <!-- 📋 POST TEMPLATES                     -->
+            <!-- Copy one of these templates below     -->
+            <!-- and customize it for your new post    -->
+            <!-- ====================================== -->
+
+            <!--
+            TEXT POST TEMPLATE:
+            <div class="timeline-post" data-date="YYYY-MM-DD">
+                <div class="post-date">MM.DD.YYYY</div>
                 <div class="post-content">
-                    <div class="post-large" onclick="openModal('modal5')"
-                         style="background-image: url('https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800');">
-                        <div class="post-title">SPRING PROJECT</div>
-                        <div class="post-avatar">🌸</div>
+                    <div class="post-text" onclick="openModal('modalX')">
+                        <p>Your preview text here...</p>
                     </div>
                 </div>
             </div>
+            -->
+
+            <!--
+            IMAGE POST TEMPLATE:
+            <div class="timeline-post" data-date="YYYY-MM-DD">
+                <div class="post-date">MM.DD.YYYY</div>
+                <div class="post-content">
+                    <div class="post-large" onclick="openModal('modalX')"
+                         style="background-image: url('./images/your-photo.jpg');">
+                        <div class="post-title">YOUR TITLE</div>
+                        <div class="post-avatar">🎵</div>
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <!--
+            MUSIC POST TEMPLATE:
+            <div class="timeline-post" data-date="YYYY-MM-DD">
+                <div class="post-date">MM.DD.YYYY</div>
+                <div class="post-content">
+                    <div class="post-music" onclick="openModal('modalX')">
+                        <iframe style="border: 0; width: 100%; height: 120px;" 
+                                src="YOUR_BANDCAMP_EMBED_URL" 
+                                seamless>
+                        </iframe>
+                        <p style="margin-top: 10px;">Click to read more about this track...</p>
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <!--
+            VIDEO POST TEMPLATE:
+            <div class="timeline-post" data-date="YYYY-MM-DD">
+                <div class="post-date">MM.DD.YYYY</div>
+                <div class="post-content">
+                    <div class="post-video" onclick="openModal('modalX')">
+                        <iframe width="100%" height="200" 
+                                src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                        <p style="margin-top: 10px;">Click to read more about this video...</p>
+                    </div>
+                </div>
+            </div>
+            -->
+
         </div>
     </div>
 
-    <!-- Modals -->
+    <!-- ========================================== -->
+    <!-- 🎭 MODALS SECTION                         -->
+    <!-- Add a new modal for each new post         -->
+    <!-- Use unique IDs: modal6, modal7, etc.     -->
+    <!-- ========================================== -->
+
+    <!-- 🆕 ADD NEW MODALS HERE (match your post modal IDs) -->
+    
+
+    <!-- ========================================== -->
+    <!-- 📋 EXISTING MODALS                        -->
+    <!-- ========================================== -->
+
     <div id="modal1" class="modal">
         <div class="modal-content">
             <button class="close" onclick="closeModal('modal1')">&times;</button>
             <div class="full-post">
-                <h2>Forest Walk</h2>
-                <div class="full-date">August 12, 2025</div>
-                <p>Ventured deep into the old growth forest today. The sound of wind through ancient branches creates such a unique acoustic space. Recorded about 30 minutes of pure forest ambience - no human sounds, just the natural symphony.</p>
-                <p>There's something magical about how sound travels differently among these massive trees. The way echoes bounce and fade creates this incredible natural reverb that no studio can replicate.</p>
+                <h2>Today's Experiment</h2>
+                <div class="full-date">August 13, 2025</div>
+                <p>Testing a new microphone setup in the studio today. The clarity difference is remarkable - picking up frequencies I never noticed before.</p>
             </div>
         </div>
     </div>
@@ -371,10 +461,9 @@
         <div class="modal-content">
             <button class="close" onclick="closeModal('modal2')">&times;</button>
             <div class="full-post">
-                <h2>Forest Sounds</h2>
-                <div class="full-date">August 11, 2025</div>
-                <p>Quick discovery session in the local woods. Found an interesting fallen log that creates a natural drum when tapped. The resonance changes depending on where you strike it.</p>
-                <p>Sometimes the best sounds come from unexpected places. Nature is the ultimate sound designer.</p>
+                <h2>Forest Walk</h2>
+                <div class="full-date">August 12, 2025</div>
+                <p>Ventured deep into the old growth forest today. The sound of wind through ancient branches creates such a unique acoustic space.</p>
             </div>
         </div>
     </div>
@@ -383,10 +472,9 @@
         <div class="modal-content">
             <button class="close" onclick="closeModal('modal3')">&times;</button>
             <div class="full-post">
-                <h2>Summer Solstice</h2>
-                <div class="full-date">July 13, 2025</div>
-                <p>Spent the longest day of the year capturing the subtle changes in outdoor acoustics as the sun moved across the sky. It's fascinating how the same location can sound completely different at different times of day.</p>
-                <p>The golden hour recordings are particularly magical - there's a warmth not just in the light, but in the way sound carries during those precious moments.</p>
+                <h2>Forest Sounds</h2>
+                <div class="full-date">August 11, 2025</div>
+                <p>Quick discovery session in the local woods. Found an interesting fallen log that creates a natural drum when tapped.</p>
             </div>
         </div>
     </div>
@@ -395,10 +483,9 @@
         <div class="modal-content">
             <button class="close" onclick="closeModal('modal4')">&times;</button>
             <div class="full-post">
-                <h2>Mid-Year Reflection</h2>
-                <div class="full-date">June 13, 2025</div>
-                <p>Halfway through the year and the sound library has grown beyond what I imagined. Each recording tells a story, captures a moment in time that can never be perfectly replicated.</p>
-                <p>Looking back at the winter recordings now, in the warmth of summer, they feel like audio postcards from another world.</p>
+                <h2>Urban Echoes</h2>
+                <div class="full-date">August 10, 2025</div>
+                <p>Exploring the acoustic properties of the city at dawn. The way sound bounces between buildings creates unexpected harmonies.</p>
             </div>
         </div>
     </div>
@@ -407,13 +494,33 @@
         <div class="modal-content">
             <button class="close" onclick="closeModal('modal5')">&times;</button>
             <div class="full-post">
-                <h2>Spring Project</h2>
-                <div class="full-date">May 13, 2025</div>
-                <p>Starting a new ambitious project to document the acoustic signature of the changing seasons. Spring is the perfect beginning - everything is waking up, and the soundscape is transforming daily.</p>
-                <p>From the first bird songs to the rustle of new leaves, each day brings something new to capture.</p>
+                <h2>Late Night Session</h2>
+                <div class="full-date">August 9, 2025</div>
+                <p>2 AM recording session. There's something special about the silence of night - it makes every small sound feel significant.</p>
             </div>
         </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- 📋 MODAL TEMPLATE                         -->
+    <!-- Copy this template below and customize    -->
+    <!-- ========================================== -->
+
+    <!--
+    MODAL TEMPLATE:
+    <div id="modalX" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModal('modalX')">&times;</button>
+            <div class="full-post">
+                <h2>Your Post Title</h2>
+                <div class="full-date">Month Day, Year</div>
+                <p>Your full blog post content goes here.</p>
+                <p>You can add multiple paragraphs.</p>
+                <img src="./images/your-photo.jpg" alt="Description">
+            </div>
+        </div>
+    </div>
+    -->
 
     <script>
         // Update current date and time
@@ -442,7 +549,7 @@
 
         // Calculate time-scaled spacing for timeline posts
         function calculateTimelineSpacing() {
-            console.log('=== CALCULATING TIME-SCALED SPACING ===');
+            console.log('=== CALCULATING TIME-SCALED POSITIONING ===');
             
             var posts = document.querySelectorAll('.timeline-post[data-date]');
             console.log('Found ' + posts.length + ' posts');
@@ -475,29 +582,23 @@
             
             console.log('Posts sorted by date (newest first)');
             
-            // Apply spacing based on time differences
+            // Position each post based on days from the newest post
+            var newestDate = postsArray[0].date;
+            
             for (var j = 0; j < postsArray.length; j++) {
                 var post = postsArray[j];
                 
-                if (j === 0) {
-                    // First (newest) post gets base spacing
-                    post.element.style.marginTop = '40px';
-                    console.log('Post 1 (newest): 40px base spacing');
-                } else {
-                    // Calculate days between current and previous post
-                    var currentDate = post.date;
-                    var previousDate = postsArray[j - 1].date;
-                    var daysDiff = Math.floor((previousDate - currentDate) / (1000 * 60 * 60 * 24));
-                    
-                    // Scale: 4px per day, minimum 60px
-                    var spacing = Math.max(daysDiff * 4, 60);
-                    post.element.style.marginTop = spacing + 'px';
-                    
-                    console.log('Post ' + (j+1) + ': ' + daysDiff + ' days from previous = ' + spacing + 'px spacing');
-                }
+                // Calculate days from the newest post
+                var daysFromNewest = Math.floor((newestDate - post.date) / (1000 * 60 * 60 * 24));
+                
+                // Position directly based on days difference (5px per day)
+                var spacing = daysFromNewest * 5;
+                post.element.style.marginTop = spacing + 'px';
+                
+                console.log('Post ' + (j+1) + ': ' + daysFromNewest + ' days from newest = ' + spacing + 'px from timeline start');
             }
             
-            console.log('=== SPACING COMPLETE ===');
+            console.log('=== POSITIONING COMPLETE ===');
         }
 
         // Modal functions
