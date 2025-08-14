@@ -112,19 +112,21 @@
         .post-date {
             font-size: 0.9em;
             color: #666;
-            margin-bottom: 10px;
-            position: relative;s
-            top: 30px;
+            position: absolute;
+            top: 20px; /* Same as the dot position */
+            transform: translateY(-50%); /* Centers it vertically with the dot */
         }
 
         .timeline-post:nth-child(odd) .post-date {
-            text-align: right;
+            right: 50%;
             margin-right: 30px;
+            text-align: right;
         }
 
         .timeline-post:nth-child(even) .post-date {
-            text-align: left;
+            left: 50%;
             margin-left: 30px;
+            text-align: left;
         }
 
         .post-content {
