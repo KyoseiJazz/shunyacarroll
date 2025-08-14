@@ -24,6 +24,29 @@ In your `index.html` file, find the `<div class="timeline">` section and add a n
             <div class="post-title">YOUR TITLE</div>
             <div class="post-avatar">🎵</div>
         </div>
+        
+        <!-- Option C: Music/Bandcamp post -->
+        <div class="post-music" onclick="openModal('modalX')">
+            <!-- Paste Bandcamp embed code here -->
+            <iframe style="border: 0; width: 100%; height: 120px;" 
+                    src="https://bandcamp.com/EmbeddedPlayer/album=XXXXX/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/" 
+                    seamless>
+            </iframe>
+            <p style="margin-top: 10px;">Click to read more about this track...</p>
+        </div>
+        
+        <!-- Option D: YouTube video post -->
+        <div class="post-video" onclick="openModal('modalX')">
+            <!-- YouTube embed code here -->
+            <iframe width="100%" height="200" 
+                    src="https://www.youtube.com/embed/VIDEO_ID" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p style="margin-top: 10px;">Click to read more about this video...</p>
+        </div>
     </div>
 </div>
 ```
@@ -49,13 +72,50 @@ In the modals section (after `<!-- Modals -->`), add:
 
 Let's add a post for August 14, 2025:
 
-**In the timeline section:**
+**YouTube video post example:**
 ```html
 <div class="timeline-post" data-date="2025-08-14">
     <div class="post-date">08.14.2025</div>
     <div class="post-content">
-        <div class="post-text" onclick="openModal('modal6')">
-            <p>Experimenting with new recording techniques...</p>
+        <div class="post-video" onclick="openModal('modal7')">
+            <iframe width="100%" height="200" 
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p style="margin-top: 10px;">Behind the scenes of my latest recording session...</p>
+        </div>
+    </div>
+</div>
+```
+
+**Music post example:**
+```html
+<div class="timeline-post" data-date="2025-08-14">
+    <div class="post-date">08.14.2025</div>
+    <div class="post-content">
+        <div class="post-music" onclick="openModal('modal6')">
+            <iframe style="border: 0; width: 100%; height: 120px;" 
+                    src="https://bandcamp.com/EmbeddedPlayer/album=1234567890/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/" 
+                    seamless>
+            </iframe>
+            <p style="margin-top: 10px;">New ambient piece I've been working on...</p>
+        </div>
+    </div>
+</div>
+```
+
+**In the modals section:**
+```html
+<div class="timeline-post" data-date="2025-08-14">
+    <div class="post-date">08.14.2025</div>
+    <div class="post-content">
+        <div class="post-large" onclick="openModal('modal6')"
+             style="background-image: url('./images/my-studio-photo.jpg');">
+            <div class="post-title">STUDIO SESSION</div>
+            <div class="post-avatar">🎤</div>
         </div>
     </div>
 </div>
@@ -67,10 +127,11 @@ Let's add a post for August 14, 2025:
     <div class="modal-content">
         <button class="close" onclick="closeModal('modal6')">&times;</button>
         <div class="full-post">
-            <h2>New Recording Techniques</h2>
+            <h2>Studio Session</h2>
             <div class="full-date">August 14, 2025</div>
-            <p>Today I tried a completely different approach to capturing ambient sounds. The results were surprisingly different from my usual methods.</p>
-            <p>There's something about changing your technique that opens up new creative possibilities.</p>
+            <p>Set up my home studio for the first time today. The acoustics are surprisingly good!</p>
+            <img src="./images/my-studio-photo.jpg" alt="My studio setup">
+            <p>There's something about having your own creative space that changes everything.</p>
         </div>
     </div>
 </div>
@@ -79,6 +140,30 @@ Let's add a post for August 14, 2025:
 ## 🎨 Customization Options
 
 ### Image URLs
+You have several options for using your own images:
+
+#### Option 1: GitHub Repository (Recommended)
+Upload images directly to your GitHub repo:
+1. In your GitHub repository, click "Add file" → "Upload files"
+2. Drag and drop your image files (JPG, PNG, etc.)
+3. Commit the files
+4. Use this URL format: `url('./your-image-name.jpg')`
+
+#### Option 2: Images Folder (Best Organization)
+Create an organized folder structure:
+1. In your repo, click "Create new file"
+2. Type: `images/placeholder.txt` (this creates the folder)
+3. Commit this file
+4. Upload your images to the `images/` folder
+5. Use this URL format: `url('./images/your-photo.jpg')`
+
+#### Option 3: External Hosting
+Use free image hosting services:
+- **Imgur.com** - Upload image, get direct link
+- **Google Photos** - Share image, get link
+- **GitHub Issues trick** - Create new issue, drag image into text box, copy generated URL
+
+#### Option 4: Unsplash (Free Stock Images)
 Use free images from Unsplash:
 - `https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800`
 - `https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800`
@@ -105,6 +190,111 @@ Use free images from Unsplash:
 2. **Date Format:** Must use `data-date="YYYY-MM-DD"` for time-scaling to work correctly
 3. **Post Order:** Doesn't matter where you add posts - JavaScript sorts by date automatically
 4. **Time Spacing:** Posts are spaced 5px per day apart on the timeline
+
+## 🎵 Adding Music Posts (Bandcamp)
+
+### Getting Bandcamp Embed Code
+1. Go to the album/song page on Bandcamp
+2. Click "Share/Embed" (usually under the player)
+3. Copy the embed code (iframe tag)
+4. Choose your preferred player size
+
+### Music Post Template
+```html
+<div class="timeline-post" data-date="YYYY-MM-DD">
+    <div class="post-date">MM.DD.YYYY</div>
+    <div class="post-content">
+        <div class="post-music" onclick="openModal('modalX')">
+            <!-- Paste your Bandcamp embed code here -->
+            <iframe style="border: 0; width: 100%; height: 120px;" 
+                    src="YOUR_BANDCAMP_EMBED_URL" 
+                    seamless>
+            </iframe>
+            <p style="margin-top: 10px;">Click to read more about this track...</p>
+        </div>
+    </div>
+</div>
+```
+
+### Required CSS Addition
+Add this CSS to your `index.html` in the `<style>` section:
+```css
+.post-music {
+    line-height: 1.6;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.post-music iframe {
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.post-music:hover {
+    background-color: rgba(0,0,0,0.02);
+}
+
+.post-video {
+    line-height: 1.6;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.post-video iframe {
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.post-video:hover {
+    background-color: rgba(0,0,0,0.02);
+}
+```
+
+### Music Post Examples
+- **Your own releases:** Share your latest tracks or albums
+- **Favorite discoveries:** Highlight music that inspires you
+- **Collaborations:** Feature work with other artists
+- **Work in progress:** Share demos or rough mixes
+
+### YouTube Video Examples
+- **Behind the scenes:** Recording sessions, studio tours
+- **Performances:** Live shows, acoustic sessions
+- **Tutorials:** How you create certain sounds or techniques
+- **Inspiration:** Videos that influence your work
+- **Collaborations:** Video projects with other artists
+
+## 📷 Working with Images
+
+### Image Requirements
+- **Formats:** JPG, PNG, GIF, WebP
+- **Size:** Recommend 800px wide or larger for best quality
+- **File size:** Keep under 5MB for fast loading
+- **Aspect ratio:** Horizontal/landscape images work best for large posts
+
+### Adding Images to Modal Content
+You can also add images inside the modal content:
+```html
+<div class="full-post">
+    <h2>Your Post Title</h2>
+    <div class="full-date">Month Day, Year</div>
+    <p>Your text content here...</p>
+    <img src="./images/your-photo.jpg" alt="Description of image">
+    <p>More text after the image...</p>
+</div>
+```
+
+### Organizing Your Images
+**Recommended folder structure:**
+```
+yourusername.github.io/
+├── index.html
+├── EDITING_INSTRUCTIONS.md
+├── images/
+│   ├── studio-photo.jpg
+│   ├── forest-walk.jpg
+│   └── equipment-setup.png
+└── README.md
+```
 
 ## 🔧 Time Spacing
 
