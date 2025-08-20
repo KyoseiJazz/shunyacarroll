@@ -716,12 +716,27 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Calculate timeline spacing
         setTimeout(calculateTimelineSpacing, 100);
+
+        // Reload Bandcamp iframes to display album covers
+        reloadBandcampIframes();
         
         // Start strawberries
         setTimeout(() => {
             console.log('Auto-starting strawberries...');
             startStrawberries();
         }, 1000);
+
+        // Add this new function to reload Bandcamp iframes
+            function reloadBandcampIframes() {
+                const bandcampIframes = document.querySelectorAll('iframe[src*="bandcamp.com"]');
+                bandcampIframes.forEach(iframe => {
+                    const src = iframe.src;
+                    iframe.src = '';
+                    setTimeout(() => {
+                        iframe.src = src;
+                    }, 100);
+    });
+}
     }
 
     // Your existing functions go here...
