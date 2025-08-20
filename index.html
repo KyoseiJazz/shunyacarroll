@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
+    /captcha/
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- ADD THIS LINE -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timeline Blog</title>
@@ -306,9 +319,13 @@
             }
 
             .post-date {
+                position: relative !important;
+                top: auto !important;
+                transform: none !important;
                 text-align: left !important;
                 margin-left: 0 !important;
                 margin-right: 0 !important;
+                margin-bottom: 10px !important;
             }
 
             .current-time {
@@ -352,16 +369,50 @@
     z-index: 100;
     font-family: monospace;
 }
-
-/* Hide floating strawberries on small screens (add to your mobile media query) */
-@media (max-width: 768px) {
+        
+/* Smaller floating on mobile */
+        @media (max-width: 768px) {
     .floating-strawberry {
-        display: none;
+        width: 35px !important;
+        height: 35px !important;
     }
-}
     </style>
 </head>
 <body>
+
+    <body>
+    <!-- reCAPTCHA Verification Modal -->
+    <div id="recaptchaModal" class="modal" style="display: block;">
+        <div class="modal-content" style="text-align: center; max-width: 450px;">
+            <h3>🛡️ Security Verification</h3>
+            <p>Please verify you're human to access the timeline:</p>
+            
+            <!-- reCAPTCHA widget - REPLACE WITH YOUR SITE KEY -->
+            <div class="g-recaptcha" 
+                 data-sitekey="6LfWxawrAAAAACBotpnxJB03AexGgBRfpgvqWmyc"
+                 data-callback="onCaptchaSuccess"
+                 data-expired-callback="onCaptchaExpired"
+                 style="margin: 20px auto; display: inline-block;">
+            </div>
+            
+            <div id="captchaError" style="color: red; margin-top: 15px; font-size: 14px;"></div>
+            <div id="captchaSuccess" style="color: green; margin-top: 15px; font-size: 14px;"></div>
+        </div>
+    </div>
+
+    <!-- Your existing content (will be hidden initially) -->
+    <div class="timeline-container" id="mainContent" style="display: none;">
+        <!-- ... rest of your timeline content ... -->
+    
+    <!-- Debug Panel -->
+    <div class="debug-panel" id="debugPanel">
+        Strawberries: 0 | Animation: Stopped
+    </div>
+    
+    <div class="timeline-container">
+    <!-- rest of your content -->
+
+        
     <div class="timeline-container">
         <div class="clock-section">
             <div class="current-time" id="currentTime">12:00:00 PM</div>
@@ -377,7 +428,7 @@
             
             <!-- 🆕 ADD YOUR NEWEST POSTS FIRST (they'll be sorted by date automatically) -->
 
-            <div class="timeline-post" data-date="YYYY-MM-DD">
+            <div class="timeline-post" data-date="2025-08-14">
                 <div class="post-date">08.14.2025</div>
                 <div class="post-content">
                 <div class="post-music">
@@ -610,6 +661,73 @@
     -->
 
     <script>
+
+    // reCAPTCHA verification system
+    let captchaVerified = false;
+
+    // Old DOMContentLoaded
+   // document.addEventListener('DOMContentLoaded', function() {
+     //   document.getElementById('mainContent').style.display = 'none';
+        // Don't start strawberries until verified
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, initializing timeline...');
+    // ... old code
+});
+
+    // Called when captcha is successfully completed
+    function onCaptchaSuccess(token) {
+        console.log('Captcha completed!');
+        
+        if (token && token.length > 10) {
+            captchaVerified = true;
+            
+            // Show success message
+            document.getElementById('captchaSuccess').textContent = '✅ Verification successful! Loading timeline...';
+            document.getElementById('captchaError').textContent = '';
+            
+            // Hide captcha modal after a short delay
+            setTimeout(() => {
+                document.getElementById('recaptchaModal').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                
+                // Now start your other features
+                initializeTimeline();
+            }, 1500);
+        } else {
+            document.getElementById('captchaError').textContent = 'Verification failed. Please try again.';
+        }
+    }
+
+    // Called when captcha expires
+    function onCaptchaExpired() {
+        captchaVerified = false;
+        document.getElementById('captchaError').textContent = 'Verification expired. Please complete the captcha again.';
+        document.getElementById('captchaSuccess').textContent = '';
+    }
+
+    // Initialize timeline features after captcha success
+    function initializeTimeline() {
+        console.log('Timeline initialized after captcha verification');
+        
+        // Start the clock
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Calculate timeline spacing
+        setTimeout(calculateTimelineSpacing, 100);
+        
+        // Start strawberries
+        setTimeout(() => {
+            console.log('Auto-starting strawberries...');
+            startStrawberries();
+        }, 1000);
+    }
+
+    // Your existing functions go here...
+    // (updateDateTime, calculateTimelineSpacing, etc.)
+
+        
         // Update current date and time
         function updateDateTime() {
             var today = new Date();
