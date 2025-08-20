@@ -291,6 +291,30 @@
             padding: 10px;
             line-height: 1.5;
         }
+        
+        /* Modal Gallery Styles */
+        .modal-gallery {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .modal-gallery .carousel-container {
+            height: 80vh;
+        }
+        
+        .modal-gallery .slide img {
+            height: calc(80vh - 50px);
+            width: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+        
+        .modal-gallery .slide-caption {
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
@@ -337,123 +361,6 @@
                 padding: 30px 15px;
             }
         }
-/* Image Carousel Styles */
-.post-carousel {
-    max-width: 600px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.carousel-container {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-}
-
-.carousel-slides {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    touch-action: pan-y; /* Allow vertical scrolling but handle horizontal swipes */
-}
-
-.slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    display: flex;
-    flex-direction: column;
-}
-
-.slide.active {
-    opacity: 1;
-}
-
-.slide img {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-}
-
-.slide-caption {
-    padding: 15px;
-    background: white;
-    font-size: 14px;
-    color: #666;
-    text-align: center;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Navigation Arrows */
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    color: white;
-    border: none;
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 10;
-    transition: background 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.carousel-nav:hover {
-    background: rgba(0,0,0,0.8);
-}
-
-.carousel-nav.prev {
-    left: 10px;
-}
-
-.carousel-nav.next {
-    right: 10px;
-}
-
-/* Dot Indicators */
-.carousel-dots {
-    position: absolute;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.5);
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.dot.active {
-    background: white;
-}
-
-.dot:hover {
-    background: rgba(255,255,255,0.8);
-}
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
@@ -566,11 +473,6 @@
     <div class="timeline-container" id="mainContent" style="display: none;">
         <!-- ... rest of your timeline content ... -->
     
-    <!-- Debug Panel -->
-    <div class="debug-panel" id="debugPanel">
-        Strawberries: 0 | Animation: Stopped
-    </div>
-    
     <div class="timeline-container">
     <!-- rest of your content -->
 
@@ -585,80 +487,19 @@
             <!-- ====================================== -->
             <!-- 📝 ADD NEW POSTS HERE                 -->
             <!-- Copy a post template below and        -->
-            <!-- customize the date, content, modal ID -->
+            <!-- customize the date, content, modal ID then add a modal version too -->
             <!-- ====================================== -->
             
             <!-- 🆕 ADD YOUR NEWEST POSTS FIRST (they'll be sorted by date automatically) -->
 
-<div class="timeline-post" data-date="2025-08-15">
-                <div class="post-date">08.15.2025</div>
+IMAGE POST TEMPLATE:
+            <div class="timeline-post" data-date="2025-08-15">
+                <div class="post-date">15.08.2025</div>
                 <div class="post-content">
-                    <div class="post-carousel">
-                        <div class="carousel-container">
-                            <button class="carousel-nav prev" onclick="changeSlide('soft-power', -1)">‹</button>
-                            <button class="carousel-nav next" onclick="changeSlide('soft-power', 1)">›</button>
-                            
-                            <div class="carousel-slides" id="CAROUSEL_ID">
-                                <div class="slide active">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true" alt="Description 1">
-                                    <div class="slide-caption">Caption for image 1</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-2.jpg?raw=true" alt="Description 2">
-                                    <div class="slide-caption">Caption for image 2</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-3.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-4.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-5.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-6.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-7.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-8.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-9.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-10.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                            </div>
-                            
-                            <div class="carousel-dots">
-                                <span class="dot active" onclick="currentSlide('soft-power', 1)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 2)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 3)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 4)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 5)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 6)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 7)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 8)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 9)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 10)"></span>
-                                <span class="dot" onclick="currentSlide('soft-power', 11)"></span>
-                            </div>
-                        </div>
+                    <div class="post-large" onclick="openModal('soft-power')"
+                         style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true);">
+                        <div class="post-title">Thinking About Soft Power</div>
+                        <div class="post-avatar">🎵</div>
                     </div>
                 </div>
             </div>
@@ -744,64 +585,6 @@
                 </div>
             </div>
             -->
-      
-            <!-- CAROUSEL POST TEMPLATE:
-            <div class="timeline-post" data-date="YYYY-MM-DD">
-                <div class="post-date">MM.DD.YYYY</div>
-                <div class="post-content">
-                    <div class="post-carousel">
-                        <div class="carousel-container">
-                            <button class="carousel-nav prev" onclick="changeSlide('CAROUSEL_ID', -1)">‹</button>
-                            <button class="carousel-nav next" onclick="changeSlide('CAROUSEL_ID', 1)">›</button>
-                            
-                            <div class="carousel-slides" id="CAROUSEL_ID">
-                                <div class="slide active">
-                                    <img src="IMAGE_URL_1" alt="Description 1">
-                                    <div class="slide-caption">Caption for image 1</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="IMAGE_URL_2" alt="Description 2">
-                                    <div class="slide-caption">Caption for image 2</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="IMAGE_URL_3" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                            </div>
-                            
-                            <div class="carousel-dots">
-                                <span class="dot active" onclick="currentSlide('CAROUSEL_ID', 1)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 2)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 3)"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            -->
-            
-            <!-- 📝 INSTRUCTIONS: 
-            1. Copy the template above (remove the comment tags)
-            2. Replace YYYY-MM-DD with your date
-            3. Replace CAROUSEL_ID with unique ID (carousel1, carousel2, etc.)
-            4. Replace IMAGE_URL_1, IMAGE_URL_2, etc. with your image URLs
-            5. Replace captions with your text
-            6. Add/remove slides and dots as needed
-            -->
-<!-- ====================================== -->
-<!-- 📝 CUSTOMIZATION INSTRUCTIONS:        -->
-<!-- 1. Replace YYYY-MM-DD with real date  -->
-<!-- 2. Replace MM.DD.YYYY with display    -->
-<!-- 3. Replace CAROUSEL_ID with unique ID -->
-<!--    (carousel1, carousel2, studio1,    -->
-<!--     concert1, etc.)                   -->
-<!-- 4. Replace IMAGE_URL_1, IMAGE_URL_2   -->
-<!--    with your actual image URLs        -->
-<!-- 5. Replace captions with your text    -->
-<!-- 6. Add/remove slides and dots as      -->
-<!--    needed for your image count        -->
-<!-- ====================================== -->
-
         </div>
     </div>
 
@@ -812,6 +595,83 @@
     <!-- ========================================== -->
 
     <!-- 🆕 ADD NEW MODALS HERE (match your post modal IDs) -->
+
+         <!-- Gallery Modal Template -->
+            <div id="soft-power" class="modal">
+                <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
+                    <button class="close" onclick="closeModal('GALLERY_MODAL_ID')">&times;</button>
+              
+                    <!-- Gallery inside modal -->
+                    <div class="modal-gallery">
+                        <div class="carousel-container" style="height: 80vh;">
+                            <button class="carousel-nav prev" onclick="changeSlide('soft-power', -1)">‹</button>
+                            <button class="carousel-nav next" onclick="changeSlide('soft-power', 1)">›</button>
+                            
+                            <div class="carousel-slides" id="soft-power">
+                                <div class="slide active">
+                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true" alt="Description 1">
+                                    <div class="slide-caption">Caption for image 1</div>
+                                </div>
+                                <div class="slide">
+                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-2.jpg?raw=true" alt="Description 2">
+                                    <div class="slide-caption">Caption for image 2</div>
+                                </div>
+                                <div class="slide">
+                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-3.jpg?raw=true" alt="Description 3">
+                                    <div class="slide-caption">Caption for image 3</div>
+                                 </div>
+                                <div class="slide">
+                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-4.jpg?raw=true" alt="Description 4">
+                                    <div class="slide-caption">Caption for image 3</div>
+                                </div>
+                            <div class="slide">
+                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-5.jpg?raw=true" alt="Description 3">
+                                <div class="slide-caption">Caption for image 3</div>
+                             </div>
+                                 <div class="slide">
+                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-6.jpg?raw=true" alt="Description 3">
+                                <div class="slide-caption">Caption for image 3</div>
+                             </div>
+                                 <div class="slide">
+                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-7.jpg?raw=true" alt="Description 3">
+                                <div class="slide-caption">Caption for image 3</div>
+                             </div>
+                                 <div class="slide">
+                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-8.jpg?raw=true" alt="Description 3">
+                                <div class="slide-caption">Caption for image 3</div>
+                             </div>
+                                 <div class="slide">
+                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-9.jpg?raw=true" alt="Description 3">
+                                <div class="slide-caption">Caption for image 3</div>
+                             </div>
+                                 <div class="slide">
+                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-10.jpg?raw=true" alt="Description 3">
+                                <div class="slide-caption">Caption for image 3</div>
+                             </div>
+                                 <div class="slide">
+                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-11.jpg?raw=true" alt="Description 3">
+                                <div class="slide-caption">Caption for image 3</div>
+                             </div>
+                            
+                           Dot indicators (add/remove dots to match number of images) 
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="currentSlide('CAROUSEL_ID', 1)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 2)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 3)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 4)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 5)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 6)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 7)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 8)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 9)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 10)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 11)"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
 
     <div id="spotify-war" class="modal">
     <div class="modal-content">
@@ -872,64 +732,6 @@
     </div>
 </div>
 
-    <!-- ========================================== -->
-    <!-- 📋 EXISTING MODALS                        -->
-    <!-- ========================================== -->
-
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal('modal1')">&times;</button>
-            <div class="full-post">
-                <h2>Today's Experiment</h2>
-                <div class="full-date">August 13, 2025</div>
-                <p>Testing a new microphone setup in the studio today. The clarity difference is remarkable - picking up frequencies I never noticed before.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal2" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal('modal2')">&times;</button>
-            <div class="full-post">
-                <h2>Forest Walk</h2>
-                <div class="full-date">August 12, 2025</div>
-                <p>Ventured deep into the old growth forest today. The sound of wind through ancient branches creates such a unique acoustic space.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal3" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal('modal3')">&times;</button>
-            <div class="full-post">
-                <h2>Forest Sounds</h2>
-                <div class="full-date">August 11, 2025</div>
-                <p>Quick discovery session in the local woods. Found an interesting fallen log that creates a natural drum when tapped.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal4" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal('modal4')">&times;</button>
-            <div class="full-post">
-                <h2>Urban Echoes</h2>
-                <div class="full-date">August 10, 2025</div>
-                <p>Exploring the acoustic properties of the city at dawn. The way sound bounces between buildings creates unexpected harmonies.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal5" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal('modal5')">&times;</button>
-            <div class="full-post">
-                <h2>Late Night Session</h2>
-                <div class="full-date">August 9, 2025</div>
-                <p>2 AM recording session. There's something special about the silence of night - it makes every small sound feel significant.</p>
-            </div>
-        </div>
-    </div>
 
     <!-- ========================================== -->
     <!-- 📋 MODAL TEMPLATE                         -->
@@ -937,7 +739,7 @@
     <!-- ========================================== -->
 
     <!--
-    MODAL TEMPLATE:
+    TEXT MODAL TEMPLATE:
     <div id="modalX" class="modal">
         <div class="modal-content">
             <button class="close" onclick="closeModal('modalX')">&times;</button>
@@ -952,6 +754,57 @@
     </div>
     -->
 
+    <!-- Gallery Modal Template 
+            <div id="GALLERY_MODAL_ID" class="modal">
+                <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
+                    <button class="close" onclick="closeModal('GALLERY_MODAL_ID')">&times;</button>
+                    -->
+                    <!-- Gallery inside modal
+                    <div class="modal-gallery">
+                        <div class="carousel-container" style="height: 80vh;">
+                            <button class="carousel-nav prev" onclick="changeSlide('CAROUSEL_ID', -1)">‹</button>
+                            <button class="carousel-nav next" onclick="changeSlide('CAROUSEL_ID', 1)">›</button>
+                            
+                            <div class="carousel-slides" id="CAROUSEL_ID">
+                                <div class="slide active">
+                                    <img src="IMAGE_URL_1" alt="Description 1">
+                                    <div class="slide-caption">Caption for image 1</div>
+                                </div>
+                                <div class="slide">
+                                    <img src="IMAGE_URL_2" alt="Description 2">
+                                    <div class="slide-caption">Caption for image 2</div>
+                                </div>
+                                <div class="slide">
+                                    <img src="IMAGE_URL_3" alt="Description 3">
+                                    <div class="slide-caption">Caption for image 3</div>
+                                </div>
+                                <!-- ADD MORE SLIDES HERE IF NEEDED -->
+                                <!--
+                                <div class="slide">
+                                    <img src="IMAGE_URL_4" alt="Description 4">
+                                    <div class="slide-caption">Caption for image 4</div>
+                                </div>
+                                <div class="slide">
+                                    <img src="IMAGE_URL_5" alt="Description 5">
+                                    <div class="slide-caption">Caption for image 5</div>
+                                </div>
+                               
+                            </div>
+                            
+                           Dot indicators (add/remove dots to match number of images) 
+                            <div class="carousel-dots">
+                                <span class="dot active" onclick="currentSlide('CAROUSEL_ID', 1)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 2)"></span>
+                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 3)"></span>
+                                <!-- ADD MORE DOTS IF YOU HAVE MORE IMAGES
+                                <!-- <span class="dot" onclick="currentSlide('CAROUSEL_ID', 4)"></span> 
+                                <!-- <span class="dot" onclick="currentSlide('CAROUSEL_ID', 5)"></span> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    -->
     <script>
 
     // reCAPTCHA verification system
