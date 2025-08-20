@@ -381,9 +381,6 @@
         padding: 10px;
     }
 }
-
-
-        
         /* Floating Strawberries */
 .floating-strawberry {
     position: fixed;
@@ -432,42 +429,6 @@
             <div id="captchaSuccess" style="color: green; margin-top: 15px; font-size: 14px;"></div>
         </div>
     </div>
-
-<div class="timeline-post" data-date="2025-08-15">
-    <div class="post-date">08.15.2025</div>
-    <div class="post-content">
-        <div class="post-carousel">
-            <div class="carousel-container">
-                <!-- Navigation arrows -->
-                <button class="carousel-nav prev" onclick="changeSlide('carousel1', -1)">‹</button>
-                <button class="carousel-nav next" onclick="changeSlide('carousel1', 1)">›</button>
-                
-                <!-- Image slides -->
-                <div class="carousel-slides" id="carousel1">
-                    <div class="slide active">
-                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop" alt="Image 1">
-                        <div class="slide-caption">Studio session - Setting up the new synth</div>
-                    </div>
-                    <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=400&fit=crop" alt="Image 2">
-                        <div class="slide-caption">Forest walk inspiration</div>
-                    </div>
-                    <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop" alt="Image 3">
-                        <div class="slide-caption">City sounds at dawn</div>
-                    </div>
-                </div>
-                
-                <!-- Dot indicators -->
-                <div class="carousel-dots">
-                    <span class="dot active" onclick="currentSlide('carousel1', 1)"></span>
-                    <span class="dot" onclick="currentSlide('carousel1', 2)"></span>
-                    <span class="dot" onclick="currentSlide('carousel1', 3)"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
         
     <!-- Your existing content (will be hidden initially) -->
     <div class="timeline-container" id="mainContent" style="display: none;">
@@ -613,7 +574,7 @@ IMAGE POST TEMPLATE:
                                     <div class="slide-caption">Caption for image 1</div>
                                 </div>
                                 <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-2.jpg?raw=true" alt="Description 2">
+                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-2.jpg?raw=true" alt="Description 2">
                                     <div class="slide-caption">Caption for image 2</div>
                                 </div>
                                 <div class="slide">
@@ -1306,5 +1267,1016 @@ setTimeout(() => {
 }, 1500);
         
     </script>
+
+<!-- ========================================== -->
+<!-- 🔐 PASSWORD-PROTECTED CMS MODAL           -->
+<!-- Add this to your main timeline HTML file  -->
+<!-- ========================================== -->
+
+<!-- New Post Button (add this somewhere visible on your page) -->
+<button id="newPostBtn" onclick="openCMSModal()" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+    transition: transform 0.2s ease;
+">
+    ✨ New Post
+</button>
+
+<style>
+#newPostBtn:hover {
+    transform: translateY(-2px);
+}
+
+/* CMS Modal Styles */
+.cms-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+.cms-modal-content {
+    max-width: 1400px;
+    margin: 20px auto;
+    background: #f5f7fa;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    min-height: calc(100vh - 40px);
+}
+
+.cms-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    color: #666;
+    cursor: pointer;
+    z-index: 10;
+    background: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.cms-close:hover {
+    background: #f0f0f0;
+}
+
+/* Password Screen */
+.password-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.password-form {
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    max-width: 400px;
+    width: 100%;
+}
+
+.password-form h2 {
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.password-form input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    margin: 15px 0;
+    background: rgba(255,255,255,0.9);
+}
+
+.password-form button {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid white;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.password-form button:hover {
+    background: white;
+    color: #667eea;
+}
+
+.error-message {
+    color: #ff6b6b;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* CMS Content Styles */
+.cms-container {
+    padding: 20px;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cms-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.cms-header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.cms-header p {
+    opacity: 0.9;
+    font-size: 1.1em;
+}
+
+.cms-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.cms-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.cms-output {
+    background: #1e1e1e;
+    color: #f8f8f2;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.cms-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.cms-form input, .cms-form select, .cms-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.cms-form input:focus, .cms-form select:focus, .cms-form textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.cms-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.post-type-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.post-type-btn {
+    padding: 15px;
+    border: 2px solid #e1e5e9;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-size: 12px;
+}
+
+.post-type-btn:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+}
+
+.post-type-btn.active {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+}
+
+.post-type-btn .icon {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.dynamic-fields {
+    margin-top: 20px;
+}
+
+.carousel-images {
+    margin-top: 10px;
+}
+
+.carousel-image-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.carousel-image-input input {
+    flex: 1;
+}
+
+.remove-image {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-image-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.generate-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.2s ease;
+}
+
+.generate-btn:hover {
+    transform: translateY(-2px);
+}
+
+.output-section {
+    margin-bottom: 25px;
+}
+
+.output-section h3 {
+    color: #61dafb;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.code-output {
+    background: #2d2d2d;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 15px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    margin-bottom: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.copy-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.copy-btn:hover {
+    background: #218838;
+}
+
+.instructions {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 0 6px 6px 0;
+}
+
+.instructions h4 {
+    color: #1976d2;
+    margin-bottom: 10px;
+}
+
+.instructions ol {
+    margin-left: 20px;
+}
+
+.instructions li {
+    margin-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+    .cms-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .post-type-selector {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .carousel-image-input {
+        flex-direction: column;
+    }
+    
+    .cms-modal-content {
+        margin: 10px;
+        min-height: calc(100vh - 20px);
+    }
+}
+</style>
+
+<!-- CMS Modal -->
+<div id="cmsModal" class="cms-modal">
+    <div class="cms-modal-content">
+        <span class="cms-close" onclick="closeCMSModal()">&times;</span>
+        
+        <!-- Password Screen -->
+        <div id="passwordScreen" class="password-screen">
+            <div class="password-form">
+                <h2>🔐 Admin Access</h2>
+                <p>Enter password to access CMS</p>
+                <input type="password" id="cmsPassword" placeholder="Enter password" onkeypress="checkPasswordKey(event)">
+                <button onclick="checkPassword()">Access CMS</button>
+                <div id="passwordError" class="error-message"></div>
+            </div>
+        </div>
+
+        <!-- CMS Content (hidden until password is correct) -->
+        <div id="cmsContent" style="display: none;">
+            <div class="cms-container">
+                <div class="cms-header">
+                    <h1>🎵 Timeline Blog CMS</h1>
+                    <p>Create new posts for your timeline without editing code</p>
+                </div>
+
+                <div class="cms-grid">
+                    <!-- Form Section -->
+                    <div class="cms-form">
+                        <h2>📝 Create New Post</h2>
+                        
+                        <!-- Post Type Selection -->
+                        <div class="form-group">
+                            <label>Post Type</label>
+                            <div class="post-type-selector">
+                                <div class="post-type-btn active" onclick="selectPostType('text')">
+                                    <span class="icon">📝</span>
+                                    Text
+                                </div>
+                                <div class="post-type-btn" onclick="selectPostType('music')">
+                                    <span class="icon">🎵</span>
+                                    Music
+                                </div>
+                                <div class="post-type-btn" onclick="selectPostType('image')">
+                                    <span class="icon">🖼️</span>
+                                    Image
+                                </div>
+                                <div class="post-type-btn" onclick="selectPostType('video')">
+                                    <span class="icon">🎬</span>
+                                    Video
+                                </div>
+                                <div class="post-type-btn" onclick="selectPostType('carousel')">
+                                    <span class="icon">🎠</span>
+                                    Gallery
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Basic Fields -->
+                        <div class="form-group">
+                            <label for="cmsPostDate">Post Date</label>
+                            <input type="date" id="cmsPostDate" required>
+                        </div>
+
+                        <!-- Dynamic Fields Based on Post Type -->
+                        <div class="dynamic-fields" id="cmsDynamicFields">
+                            <!-- Text Post Fields (Default) -->
+                            <div class="form-group">
+                                <label for="cmsTextContent">Text Content</label>
+                                <textarea id="cmsTextContent" placeholder="Enter your text content here..."></textarea>
+                            </div>
+                        </div>
+
+                        <button class="generate-btn" onclick="generateCMSPost()">
+                            ✨ Generate Post Code
+                        </button>
+
+                        <div class="instructions">
+                            <h4>📋 How to Use:</h4>
+                            <ol>
+                                <li>Select your post type above</li>
+                                <li>Fill in the required fields</li>
+                                <li>Click "Generate Post Code"</li>
+                                <li>Copy the generated HTML code</li>
+                                <li>Paste it into your timeline HTML file</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Output Section -->
+                    <div class="cms-output">
+                        <h2>🔧 Generated Code</h2>
+                        
+                        <div class="output-section">
+                            <h3>Timeline Post HTML</h3>
+                            <div class="code-output" id="cmsPostOutput">
+Select a post type and fill in the fields to generate code...
+                            </div>
+                            <button class="copy-btn" onclick="copyToClipboard('cmsPostOutput')">📋 Copy Post Code</button>
+                        </div>
+
+                        <div class="output-section" id="cmsModalSection" style="display: none;">
+                            <h3>Modal HTML (if needed)</h3>
+                            <div class="code-output" id="cmsModalOutput"></div>
+                            <button class="copy-btn" onclick="copyToClipboard('cmsModalOutput')">📋 Copy Modal Code</button>
+                        </div>
+
+                        <div class="instructions">
+                            <h4>🎯 Where to Paste:</h4>
+                            <ol>
+                                <li><strong>Timeline Post:</strong> Paste in your timeline section where other posts are</li>
+                                <li><strong>Modal (if shown):</strong> Paste in your modals section at the bottom</li>
+                                <li>Save your HTML file and refresh your site!</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// CMS Variables
+let cmsCurrentPostType = 'text';
+let cmsCarouselImageCount = 3;
+const CMS_PASSWORD = 'MyWebsite'; // CHANGE THIS PASSWORD!
+
+// CMS Modal Functions
+function openCMSModal() {
+    document.getElementById('cmsModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    // Reset to password screen
+    document.getElementById('passwordScreen').style.display = 'flex';
+    document.getElementById('cmsContent').style.display = 'none';
+    document.getElementById('cmsPassword').value = '';
+    document.getElementById('passwordError').textContent = '';
+    
+    // Set current date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('cmsPostDate').value = today;
+}
+
+function closeCMSModal() {
+    document.getElementById('cmsModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function checkPasswordKey(event) {
+    if (event.key === 'Enter') {
+        checkPassword();
+    }
+}
+
+function checkPassword() {
+    const enteredPassword = document.getElementById('cmsPassword').value;
+    const errorElement = document.getElementById('passwordError');
+    
+    if (enteredPassword === CMS_PASSWORD) {
+        document.getElementById('passwordScreen').style.display = 'none';
+        document.getElementById('cmsContent').style.display = 'block';
+        errorElement.textContent = '';
+    } else {
+        errorElement.textContent = 'Incorrect password. Please try again.';
+        document.getElementById('cmsPassword').value = '';
+    }
+}
+
+function selectPostType(type) {
+    cmsCurrentPostType = type;
+    
+    // Update active button
+    document.querySelectorAll('.post-type-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.post-type-btn').classList.add('active');
+    
+    // Update dynamic fields
+    updateCMSDynamicFields(type);
+}
+
+function updateCMSDynamicFields(type) {
+    const dynamicFields = document.getElementById('cmsDynamicFields');
+    
+    switch(type) {
+        case 'text':
+            dynamicFields.innerHTML = `
+                <div class="form-group">
+                    <label for="cmsTextContent">Text Content</label>
+                    <textarea id="cmsTextContent" placeholder="Enter your text content here..."></textarea>
+                </div>
+            `;
+            break;
+            
+        case 'music':
+            dynamicFields.innerHTML = `
+                <div class="form-group">
+                    <label for="cmsEmbedCode">Bandcamp/Spotify Embed Code</label>
+                    <textarea id="cmsEmbedCode" placeholder="Paste your embed code here (iframe or embed HTML)..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="cmsMusicDescription">Description (optional)</label>
+                    <textarea id="cmsMusicDescription" placeholder="Brief description of the track/album..."></textarea>
+                </div>
+            `;
+            break;
+            
+        case 'image':
+            dynamicFields.innerHTML = `
+                <div class="form-group">
+                    <label for="cmsImageUrl">Image URL</label>
+                    <input type="url" id="cmsImageUrl" placeholder="https://your-image-url.com/image.jpg" required>
+                </div>
+                <div class="form-group">
+                    <label for="cmsImageTitle">Image Title</label>
+                    <input type="text" id="cmsImageTitle" placeholder="Title to display on image">
+                </div>
+                <div class="form-group">
+                    <label for="cmsImageEmoji">Icon/Emoji (optional)</label>
+                    <input type="text" id="cmsImageEmoji" placeholder="📸" maxlength="2">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="cmsImageModal"> Create modal for full view
+                    </label>
+                </div>
+                <div class="form-group" id="cmsModalContent" style="display: none;">
+                    <label for="cmsModalText">Modal Content</label>
+                    <textarea id="cmsModalText" placeholder="Content to show in modal when image is clicked..."></textarea>
+                </div>
+            `;
+            break;
+            
+        case 'video':
+            dynamicFields.innerHTML = `
+                <div class="form-group">
+                    <label for="cmsVideoType">Video Platform</label>
+                    <select id="cmsVideoType">
+                        <option value="youtube">YouTube</option>
+                        <option value="vimeo">Vimeo</option>
+                        <option value="other">Other/Custom</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cmsVideoId">Video ID or URL</label>
+                    <input type="text" id="cmsVideoId" placeholder="Video ID or full URL" required>
+                </div>
+                <div class="form-group">
+                    <label for="cmsVideoTitle">Video Title</label>
+                    <input type="text" id="cmsVideoTitle" placeholder="Title of the video">
+                </div>
+                <div class="form-group">
+                    <label for="cmsVideoDescription">Description (optional)</label>
+                    <textarea id="cmsVideoDescription" placeholder="Description of the video..."></textarea>
+                </div>
+            `;
+            break;
+            
+        case 'carousel':
+            dynamicFields.innerHTML = `
+                <div class="form-group">
+                    <label for="cmsGalleryTitle">Gallery Title</label>
+                    <input type="text" id="cmsGalleryTitle" placeholder="Gallery Title" required>
+                </div>
+                <div class="form-group">
+                    <label for="cmsGalleryId">Gallery ID (unique)</label>
+                    <input type="text" id="cmsGalleryId" placeholder="gallery1, studio-session, etc." required>
+                </div>
+                <div class="form-group">
+                    <label>Gallery Images</label>
+                    <div class="carousel-images" id="cmsCarouselImages">
+                        <!-- Images will be added here -->
+                    </div>
+                    <button type="button" class="add-image-btn" onclick="addCMSCarouselImage()">+ Add Image</button>
+                </div>
+            `;
+            // Initialize with 3 image inputs
+            for(let i = 0; i < 3; i++) {
+                addCMSCarouselImage();
+            }
+            break;
+    }
+    
+    // Add event listeners for image modal checkbox
+    if(type === 'image') {
+        setTimeout(() => {
+            const checkbox = document.getElementById('cmsImageModal');
+            if (checkbox) {
+                checkbox.addEventListener('change', function() {
+                    document.getElementById('cmsModalContent').style.display = this.checked ? 'block' : 'none';
+                });
+            }
+        }, 100);
+    }
+}
+
+function addCMSCarouselImage() {
+    const container = document.getElementById('cmsCarouselImages');
+    const imageDiv = document.createElement('div');
+    imageDiv.className = 'carousel-image-input';
+    imageDiv.innerHTML = `
+        <input type="url" placeholder="Image URL" class="carousel-url">
+        <input type="text" placeholder="Caption" class="carousel-caption">
+        <button type="button" class="remove-image" onclick="removeCMSCarouselImage(this)">×</button>
+    `;
+    container.appendChild(imageDiv);
+}
+
+function removeCMSCarouselImage(button) {
+    button.parentElement.remove();
+}
+
+function generateCMSPost() {
+    const date = document.getElementById('cmsPostDate').value;
+    if (!date) {
+        alert('Please select a date for your post');
+        return;
+    }
+    
+    const displayDate = formatDisplayDate(date);
+    let postHtml = '';
+    let modalHtml = '';
+    
+    switch(cmsCurrentPostType) {
+        case 'text':
+            postHtml = generateCMSTextPost(date, displayDate);
+            break;
+        case 'music':
+            postHtml = generateCMSMusicPost(date, displayDate);
+            break;
+        case 'image':
+            const result = generateCMSImagePost(date, displayDate);
+            postHtml = result.post;
+            modalHtml = result.modal;
+            break;
+        case 'video':
+            const videoResult = generateCMSVideoPost(date, displayDate);
+            postHtml = videoResult.post;
+            modalHtml = videoResult.modal;
+            break;
+        case 'carousel':
+            const carouselResult = generateCMSCarouselPost(date, displayDate);
+            postHtml = carouselResult.post;
+            modalHtml = carouselResult.modal;
+            break;
+    }
+    
+    document.getElementById('cmsPostOutput').textContent = postHtml;
+    
+    if (modalHtml) {
+        document.getElementById('cmsModalOutput').textContent = modalHtml;
+        document.getElementById('cmsModalSection').style.display = 'block';
+    } else {
+        document.getElementById('cmsModalSection').style.display = 'none';
+    }
+}
+
+function formatDisplayDate(date) {
+    const d = new Date(date);
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${month}.${day}.${year}`;
+}
+
+function generateCMSTextPost(date, displayDate) {
+    const content = document.getElementById('cmsTextContent').value || 'Your text content here...';
+    
+    return `<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${displayDate}</div>
+    <div class="post-content">
+        <div class="post-text">
+            <p>${content}</p>
+        </div>
+    </div>
+</div>`;
+}
+
+function generateCMSMusicPost(date, displayDate) {
+    const embedCode = document.getElementById('cmsEmbedCode').value || '';
+    const description = document.getElementById('cmsMusicDescription').value;
+    
+    let content = embedCode;
+    if (description) {
+        content += `\n            <p style="margin-top: 10px;">${description}</p>`;
+    }
+    
+    return `<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${displayDate}</div>
+    <div class="post-content">
+        <div class="post-music">
+            ${content}
+        </div>
+    </div>
+</div>`;
+}
+
+function generateCMSImagePost(date, displayDate) {
+    const imageUrl = document.getElementById('cmsImageUrl').value || 'https://your-image-url.com/image.jpg';
+    const title = document.getElementById('cmsImageTitle').value || 'IMAGE TITLE';
+    const emoji = document.getElementById('cmsImageEmoji').value || '📸';
+    const hasModal = document.getElementById('cmsImageModal').checked;
+    const modalText = document.getElementById('cmsModalText').value || 'Image description here...';
+    
+    const modalId = hasModal ? `image-${Date.now()}` : '';
+    const clickHandler = hasModal ? ` onclick="openModal('${modalId}')"` : '';
+    
+    const post = `<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${displayDate}</div>
+    <div class="post-content">
+        <div class="post-large"${clickHandler}
+             style="background-image: url('${imageUrl}');">
+            <div class="post-title">${title}</div>
+            <div class="post-avatar">${emoji}</div>
+        </div>
+    </div>
+</div>`;
+
+    let modal = '';
+    if (hasModal) {
+        modal = `<div id="${modalId}" class="modal">
+    <div class="modal-content">
+        <button class="close" onclick="closeModal('${modalId}')">&times;</button>
+        <div class="full-post">
+            <h2>${title}</h2>
+            <div class="full-date">${new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+            <img src="${imageUrl}" alt="${title}">
+            <p>${modalText}</p>
+        </div>
+    </div>
+</div>`;
+    }
+    
+    return { post, modal };
+}
+
+function generateCMSVideoPost(date, displayDate) {
+    const videoType = document.getElementById('cmsVideoType').value;
+    const videoId = document.getElementById('cmsVideoId').value || '';
+    const title = document.getElementById('cmsVideoTitle').value || 'Video Title';
+    const description = document.getElementById('cmsVideoDescription').value;
+    
+    let embedUrl = '';
+    if (videoType === 'youtube') {
+        const youtubeId = videoId.includes('watch?v=') ? videoId.split('watch?v=')[1].split('&')[0] : 
+                         videoId.includes('youtu.be/') ? videoId.split('youtu.be/')[1] : videoId;
+        embedUrl = `https://www.youtube.com/embed/${youtubeId}`;
+    } else if (videoType === 'vimeo') {
+        const vimeoId = videoId.includes('vimeo.com/') ? videoId.split('vimeo.com/')[1] : videoId;
+        embedUrl = `https://player.vimeo.com/video/${vimeoId}`;
+    } else {
+        embedUrl = videoId;
+    }
+    
+    const modalId = `video-${Date.now()}`;
+    
+    const post = `<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${displayDate}</div>
+    <div class="post-content">
+        <div class="post-video" onclick="openModal('${modalId}')">
+            <iframe width="100%" height="200" 
+                    src="${embedUrl}" 
+                    title="${title}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p style="margin-top: 10px;">Click to read more about this video...</p>
+        </div>
+    </div>
+</div>`;
+
+    const modal = `<div id="${modalId}" class="modal">
+    <div class="modal-content">
+        <button class="close" onclick="closeModal('${modalId}')">&times;</button>
+        <div class="full-post">
+            <h2>${title}</h2>
+            <div class="full-date">${new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+            <iframe width="100%" height="400" 
+                    src="${embedUrl}" 
+                    title="${title}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            ${description ? `<p>${description}</p>` : ''}
+        </div>
+    </div>
+</div>`;
+    
+    return { post, modal };
+}
+
+function generateCMSCarouselPost(date, displayDate) {
+    const galleryTitle = document.getElementById('cmsGalleryTitle').value || 'Gallery Title';
+    const galleryId = document.getElementById('cmsGalleryId').value || 'gallery1';
+    
+    const imageInputs = document.querySelectorAll('#cmsCarouselImages .carousel-image-input');
+    const images = [];
+    
+    imageInputs.forEach(input => {
+        const url = input.querySelector('.carousel-url').value;
+        const caption = input.querySelector('.carousel-caption').value;
+        if (url) {
+            images.push({ url, caption: caption || 'Image caption' });
+        }
+    });
+    
+    if (images.length === 0) {
+        alert('Please add at least one image to your gallery');
+        return { post: '', modal: '' };
+    }
+    
+    const modalId = `${galleryId}-gallery`;
+    const carouselId = `modal-carousel-${galleryId}`;
+    
+    // Generate slides
+    let slides = '';
+    let dots = '';
+    
+    images.forEach((img, index) => {
+        const activeClass = index === 0 ? ' active' : '';
+        slides += `                    <div class="slide${activeClass}">
+                        <img src="${img.url}" alt="${galleryTitle} ${index + 1}">
+                        <div class="slide-caption">${img.caption}</div>
+                    </div>
+`;
+        dots += `                    <span class="dot${activeClass}" onclick="currentSlide('${carouselId}', ${index + 1})"></span>
+`;
+    });
+    
+    const post = `<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${displayDate}</div>
+    <div class="post-content">
+        <div class="post-large" onclick="openModal('${modalId}')"
+             style="background-image: url('${images[0].url}');">
+            <div class="post-title">${galleryTitle.toUpperCase()}</div>
+            <div class="post-avatar">📸</div>
+        </div>
+    </div>
+</div>`;
+
+    const modal = `<div id="${modalId}" class="modal">
+    <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
+        <button class="close" onclick="closeModal('${modalId}')">&times;</button>
+        
+        <div class="modal-gallery">
+            <div class="carousel-container" style="height: 80vh;">
+                <button class="carousel-nav prev" onclick="changeSlide('${carouselId}', -1)">‹</button>
+                <button class="carousel-nav next" onclick="changeSlide('${carouselId}', 1)">›</button>
+                
+                <div class="carousel-slides" id="${carouselId}">
+${slides}                </div>
+                
+                <div class="carousel-dots">
+${dots}                </div>
+            </div>
+        </div>
+    </div>
+</div>`;
+    
+    return { post, modal };
+}
+
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    const text = element.textContent;
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '✅ Copied!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            fallbackCopyTextToClipboard(text);
+        });
+    } else {
+        fallbackCopyTextToClipboard(text);
+    }
+}
+
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.top = "-9999px";
+    textArea.style.left = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '✅ Copied!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        } else {
+            alert('Failed to copy. Please select the text manually.');
+        }
+    } catch (err) {
+        console.error('Fallback: Unable to copy', err);
+        alert('Failed to copy. Please select the text manually.');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// Close CMS modal when clicking outside
+document.addEventListener('click', function(event) {
+    if (event.target.id === 'cmsModal') {
+        closeCMSModal();
+    }
+});
+
+// Initialize CMS
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default post type
+    updateCMSDynamicFields('text');
+});
+</script>
+                
 </body>
 </html>
