@@ -453,6 +453,17 @@
             
             <!-- 🆕 ADD YOUR NEWEST POSTS FIRST (they'll be sorted by date automatically) -->
 
+<div class="timeline-post" data-date="2025-08-21">
+    <div class="post-date">08.20.2025</div>
+    <div class="post-content">
+        <div class="post-large" onclick="openModal('gallery1-gallery')"
+             style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true');">
+            <div class="post-title">GALLERY TITLE</div>
+            <div class="post-avatar">📸</div>
+        </div>
+    </div>
+</div>
+            
 IMAGE POST TEMPLATE:
             <div class="timeline-post" data-date="2025-08-15">
                 <div class="post-date">15.08.2025</div>
@@ -557,6 +568,40 @@ IMAGE POST TEMPLATE:
 
     <!-- 🆕 ADD NEW MODALS HERE (match your post modal IDs) -->
 
+<div id="gallery1-gallery" class="modal">
+    <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
+        <button class="close" onclick="closeModal('gallery1-gallery')">&times;</button>
+        
+        <div class="modal-gallery">
+            <div class="carousel-container" style="height: 80vh;">
+                <button class="carousel-nav prev" onclick="changeSlide('modal-carousel-gallery1', -1)">‹</button>
+                <button class="carousel-nav next" onclick="changeSlide('modal-carousel-gallery1', 1)">›</button>
+                
+                <div class="carousel-slides" id="modal-carousel-gallery1">
+                    <div class="slide active">
+                        <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true" alt="Gallery Title 1">
+                        <div class="slide-caption">test 1</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-2.jpg?raw=true" alt="Gallery Title 2">
+                        <div class="slide-caption">test 2</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-3.jpg?raw=true" alt="Gallery Title 3">
+                        <div class="slide-caption">test 3</div>
+                    </div>
+                </div>
+                
+                <div class="carousel-dots">
+                    <span class="dot active" onclick="currentSlide('modal-carousel-gallery1', 1)"></span>
+                    <span class="dot" onclick="currentSlide('modal-carousel-gallery1', 2)"></span>
+                    <span class="dot" onclick="currentSlide('modal-carousel-gallery1', 3)"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
          <!-- Gallery Modal Template -->
             <div id="soft-power" class="modal">
                 <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
