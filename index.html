@@ -447,8 +447,8 @@
         <div class="timeline">
             <!-- ====================================== -->
             <!-- 📝 ADD NEW POSTS HERE                 -->
-            <!-- Copy a post template below and        -->
-            <!-- customize the date, content, modal ID then add a modal version too -->
+            <!--  customize the date, content, modal ID -->
+            <!--  then add a modal version too         -->
             <!-- ====================================== -->
             
             <!-- 🆕 ADD YOUR NEWEST POSTS FIRST (they'll be sorted by date automatically) -->
@@ -456,7 +456,7 @@
 <div class="timeline-post" data-date="2025-08-21">
     <div class="post-date">08.20.2025</div>
     <div class="post-content">
-        <div class="post-large" onclick="openModal('gallery1-gallery')"
+        <div class="post-large" onclick="openModal('itsoftpower')"
              style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true');">
             <div class="post-title">GALLERY TITLE</div>
             <div class="post-avatar">📸</div>
@@ -494,69 +494,6 @@ IMAGE POST TEMPLATE:
                     </div>
                 </div>
             </div>
-            
-            <!-- ====================================== -->
-            <!-- 📋 POST TEMPLATES                     -->
-            <!-- Copy one of these templates below     -->
-            <!-- and customize it for your new post    -->
-            <!-- ====================================== -->
-
-            <!--
-            TEXT POST TEMPLATE:
-            <div class="timeline-post" data-date="YYYY-MM-DD">
-                <div class="post-date">MM.DD.YYYY</div>
-                <div class="post-content">
-                    <div class="post-text" onclick="openModal('modalX')">
-                        <p>Your preview text here...</p>
-                    </div>
-                </div>
-            </div>
-            -->
-
-            <!--
-            IMAGE POST TEMPLATE:
-            <div class="timeline-post" data-date="YYYY-MM-DD">
-                <div class="post-date">MM.DD.YYYY</div>
-                <div class="post-content">
-                    <div class="post-large" onclick="openModal('modalX')"
-                         style="background-image: url('./images/your-photo.jpg');">
-                        <div class="post-title">YOUR TITLE</div>
-                        <div class="post-avatar">🎵</div>
-                    </div>
-                </div>
-            </div>
-            -->
-
-            <!--
-            Bandcamp POST TEMPLATE:
-            <div class="timeline-post" data-date="YYYY-MM-DD">
-                <div class="post-date">MM.DD.YYYY</div>
-                <div class="post-content">
-                <div class="post-music">
-                    PASTE BANDCAMP EMBED CODE HERE
-                    </div>
-                </div>
-            </div>
-            -->
-
-            <!--
-            VIDEO POST TEMPLATE:
-            <div class="timeline-post" data-date="YYYY-MM-DD">
-                <div class="post-date">MM.DD.YYYY</div>
-                <div class="post-content">
-                    <div class="post-video" onclick="openModal('modalX')">
-                        <iframe width="100%" height="200" 
-                                src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
-                                title="YouTube video player" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen>
-                        </iframe>
-                        <p style="margin-top: 10px;">Click to read more about this video...</p>
-                    </div>
-                </div>
-            </div>
-            -->
         </div>
     </div>
 
@@ -570,7 +507,7 @@ IMAGE POST TEMPLATE:
 
 <div id="gallery1-gallery" class="modal">
     <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
-        <button class="close" onclick="closeModal('gallery1-gallery')">&times;</button>
+        <button class="close" onclick="closeModal('itsoftpower')">&times;</button>
         
         <div class="modal-gallery">
             <div class="carousel-container" style="height: 80vh;">
@@ -739,78 +676,6 @@ IMAGE POST TEMPLATE:
 </div>
 
 
-    <!-- ========================================== -->
-    <!-- 📋 MODAL TEMPLATE                         -->
-    <!-- Copy this template below and customize    -->
-    <!-- ========================================== -->
-
-    <!--
-    TEXT MODAL TEMPLATE:
-    <div id="modalX" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal('modalX')">&times;</button>
-            <div class="full-post">
-                <h2>Your Post Title</h2>
-                <div class="full-date">Month Day, Year</div>
-                <p>Your full blog post content goes here.</p>
-                <p>You can add multiple paragraphs.</p>
-                <img src="./images/your-photo.jpg" alt="Description">
-            </div>
-        </div>
-    </div>
-    -->
-
-    <!-- Gallery Modal Template 
-            <div id="GALLERY_MODAL_ID" class="modal">
-                <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
-                    <button class="close" onclick="closeModal('GALLERY_MODAL_ID')">&times;</button>
-                    -->
-                    <!-- Gallery inside modal
-                    <div class="modal-gallery">
-                        <div class="carousel-container" style="height: 80vh;">
-                            <button class="carousel-nav prev" onclick="changeSlide('CAROUSEL_ID', -1)">‹</button>
-                            <button class="carousel-nav next" onclick="changeSlide('CAROUSEL_ID', 1)">›</button>
-                            
-                            <div class="carousel-slides" id="CAROUSEL_ID">
-                                <div class="slide active">
-                                    <img src="IMAGE_URL_1" alt="Description 1">
-                                    <div class="slide-caption">Caption for image 1</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="IMAGE_URL_2" alt="Description 2">
-                                    <div class="slide-caption">Caption for image 2</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="IMAGE_URL_3" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                                <!-- ADD MORE SLIDES HERE IF NEEDED -->
-                                <!--
-                                <div class="slide">
-                                    <img src="IMAGE_URL_4" alt="Description 4">
-                                    <div class="slide-caption">Caption for image 4</div>
-                                </div>
-                                <div class="slide">
-                                    <img src="IMAGE_URL_5" alt="Description 5">
-                                    <div class="slide-caption">Caption for image 5</div>
-                                </div>
-                               
-                            </div>
-                            
-                           Dot indicators (add/remove dots to match number of images) 
-                            <div class="carousel-dots">
-                                <span class="dot active" onclick="currentSlide('CAROUSEL_ID', 1)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 2)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 3)"></span>
-                                <!-- ADD MORE DOTS IF YOU HAVE MORE IMAGES
-                                <!-- <span class="dot" onclick="currentSlide('CAROUSEL_ID', 4)"></span> 
-                                <!-- <span class="dot" onclick="currentSlide('CAROUSEL_ID', 5)"></span> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    -->
     <script>
 
     // reCAPTCHA verification system
