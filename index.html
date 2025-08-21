@@ -1,4 +1,3 @@
-<-- comment -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,12 +18,133 @@
             background: #f5f5f5;
             color: #333;
             line-height: 1.4;
+            overflow-x: hidden;
+            perspective: 1500px;
+        }
+
+        /* Timeline Carousel Container */
+        .timeline-carousel-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            padding-top: 40px;
+            perspective: 2000px;
+        }
+
+        .timeline-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        /* Individual Timeline Panels */
+        .timeline-panel {
+            position: absolute;
+            width: 100%;
+            min-height: 100vh;
+            background: #f5f5f5;
+            backface-visibility: visible;
+            transform-style: preserve-3d;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 15px;
+            transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform-origin: center center;
+        }
+
+        /* Features Timeline (Front) */
+        .timeline-panel.features {
+            transform: translateZ(0px);
+            z-index: 2;
+            opacity: 1;
+        }
+
+        .timeline-panel.features.active {
+            transform: translateZ(0px);
+            z-index: 2;
+            opacity: 1;
+        }
+
+        /* Opinion Timeline (Back - visible in distance) */
+        .timeline-panel.opinion {
+            transform: translateX(150px) translateZ(-400px) scale(0.8);
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        /* When Opinion is active */
+        .timeline-carousel.show-opinion .timeline-panel.features {
+            transform: translateX(-150px) translateZ(-400px) scale(0.8);
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        .timeline-carousel.show-opinion .timeline-panel.opinion {
+            transform: translateZ(0px);
+            opacity: 1;
+            z-index: 2;
+        }
+
+        /* Timeline Title - Now clickable */
+        .timeline-title {
+            font-size: 3em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* Clickable title for inactive timelines */
+        .timeline-panel:not(.active) .timeline-title {
+            cursor: pointer;
+        }
+
+        .timeline-panel:not(.active) .timeline-title:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        /* Active timeline title */
+        .timeline-panel.active .timeline-title {
+            cursor: default;
+        }
+
+        /* Visual hint for clickable titles */
+        .timeline-panel:not(.active) .timeline-title::after {
+            content: '→';
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7em;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-panel:not(.active) .timeline-title:hover::after {
+            opacity: 1;
+            right: -50px;
         }
 
         .timeline-container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 50px 20px;
+            padding: 30px 20px;
         }
 
         .timeline {
@@ -42,29 +162,29 @@
             background: #333;
         }
 
-        /* Centered Clock */
+        /* Updated Clock Section */
         .clock-section {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             position: relative;
         }
 
         .current-time {
-            font-size: 2em;
+            font-size: 1.2em;
             color: #333;
             font-weight: bold;
             background: #f5f5f5;
-            padding: 20px 30px;
+            padding: 10px 20px;
             border: 2px solid #333;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             font-feature-settings: 'tnum';
         }
 
         .current-date {
-            font-size: 1.2em;
+            font-size: 1em;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         /* Clock connection to timeline */
@@ -72,7 +192,7 @@
             content: '';
             position: absolute;
             left: 50%;
-            bottom: -30px;
+            bottom: -20px;
             transform: translateX(-50%);
             width: 12px;
             height: 12px;
@@ -110,24 +230,22 @@
             z-index: 2;
         }
 
-        /* FIXED: Post dates positioning */
         .post-date {
             font-size: 0.9em;
             color: #666;
             position: absolute;
-            top: 20px; /* Same as the dot position */
-            transform: translateY(-50%); /* Centers it vertically with the dot */
+            top: 20px;
+            transform: translateY(-50%);
         }
 
-        /* FIXED: Dates on opposite side of posts */
         .timeline-post:nth-child(odd) .post-date {
-            left: 50%; /* Put date on left side when post is on right */
+            left: 50%;
             margin-left: 30px;
             text-align: left;
         }
 
         .timeline-post:nth-child(even) .post-date {
-            right: 50%; /* Put date on right side when post is on left */
+            right: 50%;
             margin-right: 30px;
             text-align: right;
         }
@@ -191,6 +309,7 @@
             align-self: flex-end;
             font-size: 1.2em;
         }
+
         .post-avatar img {
             width: 80px;
             height: 80px;
@@ -206,7 +325,6 @@
             color: #555;
         }
 
-        /* ADDED: Post Music Styles */
         .post-music {
             text-align: center;
             padding: 10px;
@@ -215,6 +333,260 @@
         .post-music iframe {
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Discussion post styles */
+        .post-discussion {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .post-discussion:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .discussion-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .discussion-preview {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .discussion-meta {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        /* Floating Speech Bubble */
+        .floating-speech-bubble {
+            position: fixed;
+            width: auto;
+            min-width: 200px;
+            max-width: 250px;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 20px;
+            padding: 12px 18px;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .floating-speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #333;
+        }
+
+        .floating-speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 31px;
+            width: 0;
+            height: 0;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-top: 9px solid white;
+            z-index: 1;
+        }
+
+        .floating-speech-bubble.pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Sticky Note Styles */
+        .sticky-note {
+            position: absolute;
+            width: 250px;
+            min-height: 250px;
+            background: linear-gradient(135deg, #fef5d4 0%, #fef3c0 100%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 20px;
+            font-family: 'Roboto Mono', monospace;
+            transform: rotate(-2deg);
+            transition: all 0.3s ease;
+            cursor: move;
+            z-index: 100;
+        }
+
+        .sticky-note::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+            background: rgba(255,255,255,0.5);
+            border: 1px solid #ddd;
+            border-bottom: none;
+            opacity: 0.8;
+        }
+
+        .sticky-note:hover {
+            transform: rotate(0deg) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            z-index: 101;
+        }
+
+        .sticky-note.placing {
+            opacity: 0.7;
+            pointer-events: none;
+            position: fixed;
+        }
+
+        .sticky-note textarea {
+            width: 100%;
+            height: 180px;
+            background: transparent;
+            border: none;
+            resize: none;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            line-height: 1.6;
+        }
+
+        .sticky-note-actions {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .sticky-note-btn {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 1px solid #333;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            opacity: 0.6;
+        }
+
+        .sticky-note-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .sticky-note-btn.delete {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .sticky-note-btn.done {
+            background: #51cf66;
+            color: white;
+        }
+
+        /* Placement mode overlay */
+        .placement-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.1);
+            z-index: 99;
+            cursor: crosshair;
+        }
+
+        .placement-overlay.active {
+            display: block;
+        }
+
+        .placement-instructions {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            font-size: 16px;
+            font-weight: 500;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .sticky-note {
+                width: 200px;
+                min-height: 200px;
+                padding: 15px;
+            }
+
+            .sticky-note textarea {
+                height: 140px;
+                font-size: 12px;
+            }
+
+            .placement-instructions {
+                font-size: 14px;
+                padding: 15px 20px;
+            }
+        }
+
+        /* Different sticky note colors */
+        .sticky-note.color-yellow {
+            background: linear-gradient(135deg, #fef5d4 0%, #fef3c0 100%);
+        }
+
+        .sticky-note.color-pink {
+            background: linear-gradient(135deg, #ffe0ec 0%, #ffc9dd 100%);
+        }
+
+        .sticky-note.color-blue {
+            background: linear-gradient(135deg, #d4e8ff 0%, #b8d7ff 100%);
+        }
+
+        .sticky-note.color-green {
+            background: linear-gradient(135deg, #d4ffd4 0%, #b8ffb8 100%);
         }
 
         /* Modal Styles */
@@ -259,184 +631,29 @@
             color: #333;
         }
 
-        .full-post h2 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .full-post .full-date {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-        }
-
-        .full-post img {
-            max-width: 100%;
-            margin: 20px 0;
-        }
-        .full-post p {
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-
-        .full-post figure {
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        .full-post figcaption {
-            font-size: 0.4em;
-            color: #666;
-            font-style: italic;
-            margin-top: 2px;
-            padding: 10px;
-            line-height: 1.5;
-        }
-        
-        /* Modal Gallery Styles */
-        .modal-gallery {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .modal-gallery .carousel-container {
-            height: 80vh;
-        }
-        
-        .modal-gallery .slide img {
-            height: calc(80vh - 50px);
-            width: 100%;
-            object-fit: contain;
-            background: #000;
-        }
-        
-        .modal-gallery .slide-caption {
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-
-        /* Image Carousel Styles */
-        .post-carousel {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .carousel-container {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            overflow: hidden;
-        }
-
-        .carousel-slides {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            touch-action: pan-y;
-        }
-
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .slide.active {
-            opacity: 1;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-        }
-
-        .slide-caption {
-            padding: 15px;
-            background: white;
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Navigation Arrows */
-        .carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            font-size: 24px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 10;
-            transition: background 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .carousel-nav:hover {
-            background: rgba(0,0,0,0.8);
-        }
-
-        .carousel-nav.prev {
-            left: 10px;
-        }
-
-        .carousel-nav.next {
-            right: 10px;
-        }
-
-        /* Dot Indicators */
-        .carousel-dots {
-            position: absolute;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-            z-index: 10;
-        }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .dot.active {
-            background: white;
-        }
-
-        .dot:hover {
-            background: rgba(255,255,255,0.8);
-        }
-
         /* Mobile Responsive */
         @media (max-width: 768px) {
+            .timeline-carousel-wrapper {
+                perspective: 1500px;
+                padding-top: 20px;
+            }
+
+            .timeline-panel.opinion {
+                transform: translateX(80px) translateZ(-300px) scale(0.85);
+            }
+
+            .timeline-carousel.show-opinion .timeline-panel.features {
+                transform: translateX(-80px) translateZ(-300px) scale(0.85);
+            }
+
+            .timeline-title {
+                font-size: 2em;
+            }
+
+            .timeline-panel:not(.active) .timeline-title::after {
+                display: none;
+            }
+
             .timeline::before {
                 left: 20px;
             }
@@ -472,916 +689,264 @@
             }
 
             .current-time {
-                font-size: 1.5em;
-                padding: 15px 20px;
+                font-size: 1em;
+                padding: 8px 15px;
             }
 
             .timeline-container {
-                padding: 30px 15px;
-            }
-
-            .carousel-container {
-                height: 350px;
-            }
-            
-            .slide img {
-                height: 300px;
-            }
-            
-            .carousel-nav {
-                display: none;
-            }
-            
-            .slide-caption {
-                font-size: 12px;
-                padding: 10px;
-            }
-        }
-
-        /* Floating Strawberries */
-        .floating-strawberry {
-            position: fixed;
-            width: 50px;
-            height: 50px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            z-index: 10;
-            pointer-events: none;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
-        }
-
-        .floating-strawberry:hover {
-            opacity: 1;
-        }
-        
-        /* Smaller floating on mobile */
-        @media (max-width: 768px) {
-            .floating-strawberry {
-                width: 35px !important;
-                height: 35px !important;
-            }
-        }
-
-        /* CMS Styles */
-        #newPostBtn:hover {
-            transform: translateY(-2px);
-        }
-
-        .cms-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            overflow-y: auto;
-        }
-
-        .cms-modal-content {
-            max-width: 1400px;
-            margin: 20px auto;
-            background: #f5f7fa;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            position: relative;
-            min-height: calc(100vh - 40px);
-        }
-
-        .cms-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 30px;
-            color: #666;
-            cursor: pointer;
-            z-index: 10;
-            background: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .cms-close:hover {
-            background: #f0f0f0;
-        }
-
-        .password-screen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .password-form {
-            background: rgba(255,255,255,0.1);
-            padding: 40px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .password-form h2 {
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        .password-form input {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            margin: 15px 0;
-            background: rgba(255,255,255,0.9);
-        }
-
-        .password-form button {
-            width: 100%;
-            padding: 15px;
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            color: white;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .password-form button:hover {
-            background: white;
-            color: #667eea;
-        }
-
-        .error-message {
-            color: #ff6b6b;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        .cms-container {
-            padding: 20px;
-            color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .cms-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .cms-header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .cms-header p {
-            opacity: 0.9;
-            font-size: 1.1em;
-        }
-
-        .cms-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .cms-form {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .cms-output {
-            background: #1e1e1e;
-            color: #f8f8f2;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .cms-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .cms-form input, .cms-form select, .cms-form textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        .cms-form input:focus, .cms-form select:focus, .cms-form textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .cms-form textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .post-type-selector {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .post-type-btn {
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s ease;
-            font-size: 12px;
-        }
-
-        .post-type-btn:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-
-        .post-type-btn.active {
-            border-color: #667eea;
-            background: #667eea;
-            color: white;
-        }
-
-        .post-type-btn .icon {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .dynamic-fields {
-            margin-top: 20px;
-        }
-
-        .carousel-images {
-            margin-top: 10px;
-        }
-
-        .carousel-image-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .carousel-image-input input {
-            flex: 1;
-        }
-
-        .remove-image {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .add-image-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .generate-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s ease;
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .output-section {
-            margin-bottom: 25px;
-        }
-
-        .output-section h3 {
-            color: #61dafb;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .code-output {
-            background: #2d2d2d;
-            border: 1px solid #444;
-            border-radius: 6px;
-            padding: 15px;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 13px;
-            line-height: 1.4;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            margin-bottom: 10px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .copy-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .copy-btn:hover {
-            background: #218838;
-        }
-
-        .instructions {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 0 6px 6px 0;
-        }
-
-        .instructions h4 {
-            color: #1976d2;
-            margin-bottom: 10px;
-        }
-
-        .instructions ol {
-            margin-left: 20px;
-        }
-
-        .instructions li {
-            margin-bottom: 5px;
-        }
-
-        @media (max-width: 768px) {
-            .cms-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .post-type-selector {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .carousel-image-input {
-                flex-direction: column;
-            }
-            
-            .cms-modal-content {
-                margin: 10px;
-                min-height: calc(100vh - 20px);
+                padding: 20px 15px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- reCAPTCHA Verification Modal -->
-    <div id="recaptchaModal" class="modal" style="display: none;">
-        <div class="modal-content" style="text-align: center; max-width: 450px;">
-            <h3>Verify your Humanity</h3>
-            <p>This site is protected from Bot and AI scrapping</p>
+    <!-- Main Timeline Carousel -->
+    <div class="timeline-carousel-wrapper">
+        <div class="timeline-carousel" id="timelineCarousel">
             
-            <div class="g-recaptcha" 
-                 data-sitekey="6Lcd-6wrAAAAAJ1ghGuKQybREJcv45yP_VDZw6xC"
-                 data-callback="onCaptchaSuccess"
-                 data-expired-callback="onCaptchaExpired"
-                 style="margin: 20px auto; display: inline-block;">
+            <!-- FEATURES TIMELINE -->
+            <div class="timeline-panel features active">
+                <div class="timeline-container">
+                    <!-- Timeline Title -->
+                    <h1 class="timeline-title" onclick="handleTitleClick('features')">Features</h1>
+                    
+                    <!-- Clock Section -->
+                    <div class="clock-section">
+                        <div class="current-time" id="currentTime-features">12:00:00 PM</div>
+                        <div class="current-date" id="currentDate-features">08.13.2025</div>
+                    </div>
+
+                    <div class="timeline">
+                        <!-- Your existing posts here -->
+                        <div class="timeline-post" data-date="2025-08-15">
+                            <div class="post-date">08.15.2025</div>
+                            <div class="post-content">
+                                <div class="post-large" onclick="openModal('soft-power')"
+                                     style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true');">
+                                    <div class="post-title">Thinking About Soft Power</div>
+                                    <div class="post-avatar">🎵</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-post" data-date="2025-08-14">
+                            <div class="post-date">08.14.2025</div>
+                            <div class="post-content">
+                                <div class="post-music">
+                                    <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless><a href="https://patrickholland.bandcamp.com/album/infra">Infra by Patrick Holland</a></iframe>      
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-post" data-date="2025-08-12">
+                            <div class="post-date">08.12.2025</div>
+                            <div class="post-content">
+                                <div class="post-large" onclick="openModal('spotify-war')"
+                                     style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/subhead.png?raw=true');">
+                                    <div class="post-title"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-                <div style="
-                margin: 20px auto;
-                padding: 15px;
-                max-width: 350px;
-                color: #555;
-                font-size: 14px;
-                line-height: 1.6;
-            ">
-                <p style="margin-bottom: 10px;">
-                    This site does not have cookies, collect data or monitor your history
-                </p>
+
+            <!-- OPINION & DISCUSSION TIMELINE -->
+            <div class="timeline-panel opinion">
+                <div class="timeline-container">
+                    <!-- Timeline Title -->
+                    <h1 class="timeline-title" onclick="handleTitleClick('opinion')">Opinion & Discussion</h1>
+                    
+                    <!-- Clock Section -->
+                    <div class="clock-section">
+                        <div class="current-time" id="currentTime-opinion">12:00:00 PM</div>
+                        <div class="current-date" id="currentDate-opinion">08.13.2025</div>
+                    </div>
+
+                    <div class="timeline">
+                        <!-- Sample discussion posts -->
+                        <div class="timeline-post" data-date="2025-08-20">
+                            <div class="post-date">08.20.2025</div>
+                            <div class="post-content">
+                                <div class="post-discussion" onclick="openModal('discussion-1')">
+                                    <div class="discussion-title">The Future of Digital Art in the Age of AI</div>
+                                    <div class="discussion-preview">
+                                        As AI tools become more sophisticated, what does this mean for traditional digital artists? 
+                                        Let's explore the evolving relationship between human creativity and machine learning...
+                                    </div>
+                                    <div class="discussion-meta">
+                                        <span>5 min read</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-post" data-date="2025-08-18">
+                            <div class="post-date">08.18.2025</div>
+                            <div class="post-content">
+                                <div class="post-discussion" onclick="openModal('discussion-2')">
+                                    <div class="discussion-title">Music Streaming Economics: A Broken System?</div>
+                                    <div class="discussion-preview">
+                                        With artists earning fractions of cents per stream, is the current model sustainable? 
+                                        An examination of alternative models and their viability...
+                                    </div>
+                                    <div class="discussion-meta">
+                                        <span>8 min read</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-post" data-date="2025-08-16">
+                            <div class="post-date">08.16.2025</div>
+                            <div class="post-content">
+                                <div class="post-discussion" onclick="openModal('discussion-3')">
+                                    <div class="discussion-title">The Renaissance of RSS Feeds</div>
+                                    <div class="discussion-preview">
+                                        In an era of algorithmic feeds and walled gardens, RSS is making a comeback. 
+                                        Why the old-school tech might be exactly what we need...
+                                    </div>
+                                    <div class="discussion-meta">
+                                        <span>6 min read</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="captchaError" style="color: red; margin-top: 15px; font-size: 14px;"></div>
-            <div id="captchaSuccess" style="color: green; margin-top: 15px; font-size: 14px;"></div>
+
+            <!-- FUTURE TIMELINE TEMPLATE (hidden for now) -->
+            <!-- 
+            <div class="timeline-panel future-1" onclick="handlePanelClick('future-1')">
+                <div class="timeline-container">
+                    <h1 class="timeline-title">Future Timeline</h1>
+                    <div class="clock-section">
+                        <div class="current-time" id="currentTime-future-1">12:00:00 PM</div>
+                        <div class="current-date" id="currentDate-future-1">08.13.2025</div>
+                    </div>
+                    <div class="timeline">
+                        <!-- Future posts here -->
+                    </div>
+                </div>
+            </div>
+            -->
+
         </div>
     </div>
-        
-    <div class="timeline-container">
-        <div class="clock-section">
-            <div class="current-time" id="currentTime">12:00:00 PM</div>
-            <div class="current-date" id="currentDate">08.13.2025</div>
-        </div>
 
-        <div class="timeline">
-            <!-- FIXED: Removed broken gallery post -->
-            <div class="timeline-post" data-date="2025-08-15">
-                <div class="post-date">08.15.2025</div>
-                <div class="post-content">
-                    <div class="post-large" onclick="openModal('soft-power')"
-                         style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true');">
-                        <div class="post-title">Thinking About Soft Power</div>
-                        <div class="post-avatar">🎵</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="timeline-post" data-date="2025-08-14">
-                <div class="post-date">08.14.2025</div>
-                <div class="post-content">
-                    <div class="post-music">
-                        <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless><a href="https://patrickholland.bandcamp.com/album/infra">Infra by Patrick Holland</a></iframe>      
-                    </div>
-                </div>
-            </div>
-            
-            <div class="timeline-post" data-date="2025-08-12">
-                <div class="post-date">08.12.2025</div>
-                <div class="post-content">
-                    <div class="post-large" onclick="openModal('spotify-war')"
-                         style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/subhead.png?raw=true');">
-                        <div class="post-title"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODALS SECTION -->
+    <!-- Existing Modals -->
     <div id="soft-power" class="modal">
-        <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
-            <button class="close" onclick="closeModal('soft-power')">&times;</button>
-            
-            <div class="modal-gallery">
-                <div class="carousel-container" style="height: 80vh;">
-                    <button class="carousel-nav prev" onclick="changeSlide('soft-power-carousel', -1)">‹</button>
-                    <button class="carousel-nav next" onclick="changeSlide('soft-power-carousel', 1)">›</button>
-                    
-                    <div class="carousel-slides" id="soft-power-carousel">
-                        <div class="slide active">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true" alt="Soft Power 1">
-                            <div class="slide-caption">Caption for image 1</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-2.jpg?raw=true" alt="Soft Power 2">
-                            <div class="slide-caption">Caption for image 2</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-3.jpg?raw=true" alt="Soft Power 3">
-                            <div class="slide-caption">Caption for image 3</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-4.jpg?raw=true" alt="Soft Power 4">
-                            <div class="slide-caption">Caption for image 4</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-5.jpg?raw=true" alt="Soft Power 5">
-                            <div class="slide-caption">Caption for image 5</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-6.jpg?raw=true" alt="Soft Power 6">
-                            <div class="slide-caption">Caption for image 6</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-7.jpg?raw=true" alt="Soft Power 7">
-                            <div class="slide-caption">Caption for image 7</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-8.jpg?raw=true" alt="Soft Power 8">
-                            <div class="slide-caption">Caption for image 8</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-9.jpg?raw=true" alt="Soft Power 9">
-                            <div class="slide-caption">Caption for image 9</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-10.jpg?raw=true" alt="Soft Power 10">
-                            <div class="slide-caption">Caption for image 10</div>
-                        </div>
-                        <div class="slide">
-                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true" alt="Soft Power 11">
-                            <div class="slide-caption">Caption for image 11</div>
-                        </div>
-                    </div>
-                    
-                    <div class="carousel-dots">
-                        <span class="dot active" onclick="currentSlide('soft-power-carousel', 1)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 2)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 3)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 4)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 5)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 6)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 7)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 8)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 9)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 10)"></span>
-                        <span class="dot" onclick="currentSlide('soft-power-carousel', 11)"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Your existing soft-power modal content -->
     </div>
 
     <div id="spotify-war" class="modal">
+        <!-- Your existing spotify-war modal content -->
+    </div>
+
+    <!-- New Discussion Modals -->
+    <div id="discussion-1" class="modal">
         <div class="modal-content">
-            <button class="close" onclick="closeModal('spotify-war')">&times;</button>
+            <button class="close" onclick="closeModal('discussion-1')">&times;</button>
             <div class="full-post">
-                <h2>SPOTIFY'S CONNECTION TO WAR</h2>
-                <div class="full-date">August 12, 2025</div>
-
-                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Title%202%20crop.png?raw=true" alt="crop">
-
-                <p>After news spread that Swedish Spotify CEO, Daniel Ek became chairman and led a €600 million ($694) investment to German Weapons manufacturer, Helsing, artists publicly announced removing their catalog from the platform.</p>
-                
-                <p>But why might Daniel Ek invest in war?</p>
-                
-                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Daniel%20Quote.png?raw=true" alt="quote">
-                
-                <p>Since the Obama administration, the EU has been pressured to spend more on defense according to professor of Government at the University of Texas, Dr. Rachel Wellhausen.</p>
-                
-                <p>"Europe is buying American weapons to supply Ukraine and for a long time have thought about a bigger domestic defense industry," Dr. Wellhausen said. "Since Trump has pulled back on financing Ukraine, Europe is putting lots of money into Ukraine."</p>
-                
-                <p>Investments in defense has been made more attractive for private companies.</p>
-                
-                <p>"It's like this perfect storm for European companies and rich Europeans who care about Europe to build up (defense)," Dr. Wellhausen said.</p>
-                
-                <p>Daniel Ek has been known to <a href="https://www.musicbusinessworldwide.com/daniel-ek-cashed-out-another-37-3m-in-spotify-shares-as-stock-hit-new-high1/" target="_blank">cash out</a> Spotify shares to invest in other endeavors like health <a href="https://fortune.com/europe/2025/01/23/daniel-ek-body-scanning-startup-valuation-100000-people-lining-up-pay-299-for-health-check/" target="_blank">body scanners</a>, but stepping into Helsing can be seen as a patriotic act.</p>
-                
-                <p>"As Europe rapidly strengthens its defense capabilities in response to evolving geopolitical challenges, there is an urgent need for investments in advanced technologies that ensure its strategic autonomy and security readiness," Daniel Ek told Financial Times.</p>
-                
-                <figure>
-                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Helsing_HX-2-Helsing-1024x624.jpg?raw=true" alt="spotify war">
-                    <figcaption> Helsing's HX-2 drone software-based, mass-producible, and swarm-capable with on-board AI systems piloted by a single controler <a href="https://helsing.ai/newsroom/helsing-unveils-intelligent-strike-drone-for-mass-and-precision" target="blank">Source</a> </figcaption>
-                </figure>
-                
-                <p>Helsing delivered 10,000 AI powered drones to Ukraine as of February and is collaborating with Sweden's military to defend Ukraine's frontlines.</p>
-                
-                <p>Last weekend, in spite of slow Russian frontline advancement, Ukraine declined Putin's ceasefire deal to withdraw forces from regions Russia <a href="https://www.pbs.org/newshour/world/russia-and-ukraine-stick-to-their-demands-ahead-of-planned-putin-trump-summit-in-alaska" target="_blank">failed</a> to capture.</p>
-                
-                <p>Director of European Studies at the University of Texas, Dr. Michael Mosser says Ukraine's natural gas pipelines and history in the Soviet Union can be traced as justifications for the war.</p>
-                
-                <p>"Russia could impose its will on Ukraine in a way that it had done to other countries that tried to break away." Dr. Mosser said, referencing Georgia in 2008 and Chechnya in 2004.</p>
-                
-                <p>Zelensky has not been invited to Putin and Trump's peace negotiations meeting that'll take place in Alaska this Friday.</p>
-                
-                <p>Missed political deadlines and uncertainty for support might be why the EU is looking at private investors for defense.</p>
-                
-                <p>In 2024, American weapons manufacturers grossed $236 billion in government contracts, more than twice that of European defense. Although the EU primarily purchases weapons from U.S. manufacturers, Dr. Mosser says the EU is beginning to look at domestic producers.</p>
-                
-                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/data.png?raw=true" alt="2023 Defense Profits">
-                
-                <p>Boycotting companies have impacted businesses in the past. The Kyiv School of Economics have published a webpage <a href="https://leave-russia.org/staying-companies" target="_blank">tracking</a> companies' financial relationships with Russia. P&G, Adobe and hundreds of others have suspended or reduced their activity in the country.</p>
-                
-                <p>But the Spotify CEO says he doesn't really care about the boycotts.</p>
-                
-                <p>"I'm sure people will criticize it and that's OK. Personally, I'm not concerned about it. I focus more on doing what I think is right and I am 100 per cent convinced that this is the right thing for Europe." Ek told Financial Times</p>
-                
-                <p>Musicians have dropped from the platform in attempts to decouple from war, but <a href="https://www.latimes.com/entertainment-arts/music/story/2025-07-31/spotifys-ceo-owns-an-ai-weapons-company-some-musicians-say-its-time-to-leave" target="_blank">mainstream reports</a> misrepresent Helsing's connection to defending Israel instead of Ukraine.</p>
+                <h2>The Future of Digital Art in the Age of AI</h2>
+                <div class="full-date">August 20, 2025</div>
+                <p>Discussion content here...</p>
             </div>
         </div>
     </div>
 
-    <!-- New Post Button -->
-    <button id="newPostBtn" onclick="openCMSModal()" style="
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 15px 25px;
-        border-radius: 50px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        z-index: 100;
-        transition: transform 0.2s ease;
-    ">
-        ✨ New Post
-    </button>
+    <!-- Floating Speech Bubble -->
+    <div class="floating-speech-bubble pulse" id="speechBubble">
+        💭 type anywhere to leave a note
+    </div>
 
-    <!-- CMS Modal -->
-    <div id="cmsModal" class="cms-modal">
-        <div class="cms-modal-content">
-            <span class="cms-close" onclick="closeCMSModal()">&times;</span>
-            
-            <!-- Password Screen -->
-            <div id="passwordScreen" class="password-screen">
-                <div class="password-form">
-                    <h2>🔐 Admin Access</h2>
-                    <p>Enter password to access CMS</p>
-                    <input type="password" id="cmsPassword" placeholder="Enter password" onkeypress="checkPasswordKey(event)">
-                    <button onclick="checkPassword()">Access CMS</button>
-                    <div id="passwordError" class="error-message"></div>
-                </div>
-            </div>
-
-            <!-- CMS Content (hidden until password is correct) -->
-            <div id="cmsContent" style="display: none;">
-                <div class="cms-container">
-                    <div class="cms-header">
-                        <h1>🎵 Timeline Blog CMS</h1>
-                        <p>Create new posts for your timeline without editing code</p>
-                    </div>
-
-                    <div class="cms-grid">
-                        <!-- Form Section -->
-                        <div class="cms-form">
-                            <h2>📝 Create New Post</h2>
-                            
-                            <!-- Post Type Selection -->
-                            <div class="form-group">
-                                <label>Post Type</label>
-                                <div class="post-type-selector">
-                                    <div class="post-type-btn active" onclick="selectPostType('text')">
-                                        <span class="icon">📝</span>
-                                        Text
-                                    </div>
-                                    <div class="post-type-btn" onclick="selectPostType('music')">
-                                        <span class="icon">🎵</span>
-                                        Music
-                                    </div>
-                                    <div class="post-type-btn" onclick="selectPostType('image')">
-                                        <span class="icon">🖼️</span>
-                                        Image
-                                    </div>
-                                    <div class="post-type-btn" onclick="selectPostType('video')">
-                                        <span class="icon">🎬</span>
-                                        Video
-                                    </div>
-                                    <div class="post-type-btn" onclick="selectPostType('carousel')">
-                                        <span class="icon">🎠</span>
-                                        Gallery
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Basic Fields -->
-                            <div class="form-group">
-                                <label for="cmsPostDate">Post Date</label>
-                                <input type="date" id="cmsPostDate" required>
-                            </div>
-
-                            <!-- Dynamic Fields Based on Post Type -->
-                            <div class="dynamic-fields" id="cmsDynamicFields">
-                                <!-- Text Post Fields (Default) -->
-                                <div class="form-group">
-                                    <label for="cmsTextContent">Text Content</label>
-                                    <textarea id="cmsTextContent" placeholder="Enter your text content here..."></textarea>
-                                </div>
-                            </div>
-
-                            <button class="generate-btn" onclick="generateCMSPost()">
-                                ✨ Generate Post Code
-                            </button>
-
-                            <div class="instructions">
-                                <h4>📋 How to Use:</h4>
-                                <ol>
-                                    <li>Select your post type above</li>
-                                    <li>Fill in the required fields</li>
-                                    <li>Click "Generate Post Code"</li>
-                                    <li>Copy the generated HTML code</li>
-                                    <li>Paste it into your timeline HTML file</li>
-                                </ol>
-                            </div>
-                        </div>
-
-                        <!-- Output Section -->
-                        <div class="cms-output">
-                            <h2>🔧 Generated Code</h2>
-                            
-                            <div class="output-section">
-                                <h3>Timeline Post HTML</h3>
-                                <div class="code-output" id="cmsPostOutput">
-Select a post type and fill in the fields to generate code...
-                                </div>
-                                <button class="copy-btn" onclick="copyToClipboard('cmsPostOutput')">📋 Copy Post Code</button>
-                            </div>
-
-                            <div class="output-section" id="cmsModalSection" style="display: none;">
-                                <h3>Modal HTML (if needed)</h3>
-                                <div class="code-output" id="cmsModalOutput"></div>
-                                <button class="copy-btn" onclick="copyToClipboard('cmsModalOutput')">📋 Copy Modal Code</button>
-                            </div>
-
-                            <div class="instructions">
-                                <h4>🎯 Where to Paste:</h4>
-                                <ol>
-                                    <li><strong>Timeline Post:</strong> Paste in your timeline section where other posts are</li>
-                                    <li><strong>Modal (if shown):</strong> Paste in your modals section at the bottom</li>
-                                    <li>Save your HTML file and refresh your site!</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Placement Overlay -->
+    <div class="placement-overlay" id="placementOverlay">
+        <div class="placement-instructions">
+            📍 Click anywhere to place your sticky note
         </div>
     </div>
+
+    <!-- Container for sticky notes -->
+    <div id="stickyNotesContainer"></div>
 
     <script>
-        // reCAPTCHA verification system
-        let captchaVerified = false;
+        // Timeline switching functionality
+        let currentTimeline = 'features';
 
-        // Called when captcha is successfully completed
-        function onCaptchaSuccess(token) {
-            console.log('Captcha completed!');
+        function switchTimeline(timeline) {
+            const carousel = document.getElementById('timelineCarousel');
+            const panels = document.querySelectorAll('.timeline-panel');
             
-            if (token && token.length > 10) {
-                captchaVerified = true;
-                
-                // Show success message
-                document.getElementById('captchaSuccess').textContent = '✅ Verification successful! Loading timeline...';
-                document.getElementById('captchaError').textContent = '';
-                
-                // Hide captcha modal after a short delay
-                setTimeout(() => {
-                    document.getElementById('recaptchaModal').style.display = 'none';
-                    
-                    // Now start your other features
-                    initializeTimeline();
-                }, 1500);
-            } else {
-                document.getElementById('captchaError').textContent = 'Verification failed. Please try again.';
+            // Update panel states
+            panels.forEach(panel => {
+                panel.classList.remove('active');
+                if (panel.classList.contains(timeline)) {
+                    panel.classList.add('active');
+                }
+            });
+            
+            // Update carousel rotation
+            carousel.className = 'timeline-carousel';
+            if (timeline === 'opinion') {
+                carousel.classList.add('show-opinion');
+            } else if (timeline === 'future-1') {
+                carousel.classList.add('show-future-1');
+            }
+            
+            currentTimeline = timeline;
+        }
+
+        // Handle clicking on timeline titles
+        function handleTitleClick(timeline) {
+            // Only switch if clicking on a non-active timeline
+            const panel = event.target.closest('.timeline-panel');
+            if (!panel.classList.contains('active')) {
+                event.stopPropagation();
+                switchTimeline(timeline);
             }
         }
 
-        // Called when captcha expires
-        function onCaptchaExpired() {
-            captchaVerified = false;
-            document.getElementById('captchaError').textContent = 'Verification expired. Please complete the captcha again.';
-            document.getElementById('captchaSuccess').textContent = '';
-        }
-
-        // Initialize timeline features after captcha success
-        function initializeTimeline() {
-            console.log('Timeline initialized after captcha verification');
-            
-            // Start the clock
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            
-            // Calculate timeline spacing
-            setTimeout(calculateTimelineSpacing, 100);
-
-            // Initialize carousels
-            initializeCarousels();
-
-            // Reload Bandcamp iframes to display album covers
-            reloadBandcampIframes();
-            
-            // Start strawberries
-            setTimeout(() => {
-                console.log('Auto-starting strawberries...');
-                startStrawberries();
-            }, 1000);
-        }
-
-        // Add this new function to reload Bandcamp iframes
-        function reloadBandcampIframes() {
-            const bandcampIframes = document.querySelectorAll('iframe[src*="bandcamp.com"]');
-            bandcampIframes.forEach(iframe => {
-                const src = iframe.src;
-                iframe.src = '';
-                setTimeout(() => {
-                    iframe.src = src;
-                }, 100);
-            });
-        }
-        
-        // Update current date and time
+        // Update date and time for all timelines
         function updateDateTime() {
-            var today = new Date();
-            var month = String(today.getMonth() + 1).padStart(2, '0');
-            var day = String(today.getDate()).padStart(2, '0');
-            var year = today.getFullYear();
+            const timelines = ['features', 'opinion']; // Add more as needed
+            const today = new Date();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const year = today.getFullYear();
             
-            var timeElement = document.getElementById('currentTime');
-            var dateElement = document.getElementById('currentDate');
-            
-            if (dateElement) {
-                dateElement.textContent = month + '.' + day + '.' + year;
-            }
-            
-            if (timeElement) {
-                var hours = today.getHours();
-                var minutes = String(today.getMinutes()).padStart(2, '0');
-                var seconds = String(today.getSeconds()).padStart(2, '0');
-                var ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12 || 12;
-                timeElement.textContent = String(hours).padStart(2, '0') + ':' + minutes + ':' + seconds + ' ' + ampm;
-            }
-        }
-
-        // Calculate time-scaled spacing for timeline posts
-        function calculateTimelineSpacing() {
-            console.log('=== CALCULATING TIME-SCALED POSITIONING ===');
-            
-            var posts = document.querySelectorAll('.timeline-post[data-date]');
-            console.log('Found ' + posts.length + ' posts');
-            
-            if (posts.length === 0) {
-                console.log('No posts found');
-                return;
-            }
-            
-            // Convert to array with date information
-            var postsArray = [];
-            for (var i = 0; i < posts.length; i++) {
-                var post = posts[i];
-                var dateStr = post.getAttribute('data-date');
-                var date = new Date(dateStr);
+            timelines.forEach(timeline => {
+                const timeElement = document.getElementById(`currentTime-${timeline}`);
+                const dateElement = document.getElementById(`currentDate-${timeline}`);
                 
-                postsArray.push({
-                    element: post,
-                    date: date,
-                    dateStr: dateStr
-                });
+                if (dateElement) {
+                    dateElement.textContent = `${month}.${day}.${year}`;
+                }
                 
-                console.log('Post ' + (i+1) + ': ' + dateStr + ' (' + date.toDateString() + ')');
-            }
-            
-            // Sort by date (newest first)
-            postsArray.sort(function(a, b) {
-                return b.date - a.date;
+                if (timeElement) {
+                    const hours = today.getHours();
+                    const minutes = String(today.getMinutes()).padStart(2, '0');
+                    const seconds = String(today.getSeconds()).padStart(2, '0');
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    const displayHours = hours % 12 || 12;
+                    timeElement.textContent = `${String(displayHours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+                }
             });
-            
-            console.log('Posts sorted by date (newest first)');
-            
-            // Position each post based on days from the newest post
-            var newestDate = postsArray[0].date;
-            
-            for (var j = 0; j < postsArray.length; j++) {
-                var post = postsArray[j];
-                
-                // Calculate days from the newest post
-                var daysFromNewest = Math.floor((newestDate - post.date) / (1000 * 60 * 60 * 24));
-                
-                // Position directly based on days difference (5px per day)
-                var spacing = daysFromNewest * 5;
-                post.element.style.marginTop = spacing + 'px';
-                
-                console.log('Post ' + (j+1) + ': ' + daysFromNewest + ' days from newest = ' + spacing + 'px from timeline start');
-            }
-            
-            console.log('=== POSITIONING COMPLETE ===');
         }
 
         // Modal functions
         function openModal(modalId) {
-            var modal = document.getElementById(modalId);
+            const modal = document.getElementById(modalId);
             if (modal) {
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
+                event.stopPropagation(); // Prevent panel click
             }
         }
 
         function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
+            const modal = document.getElementById(modalId);
             if (modal) {
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
@@ -1396,262 +961,282 @@ Select a post type and fill in the fields to generate code...
             }
         });
 
-        // Image Carousel Functions
-        let slideIndex = {};
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            initSpeechBubble();
+            initStickyNoteSystem();
+        });
 
-        function changeSlide(carouselId, direction) {
-            const carousel = document.getElementById(carouselId);
-            const slides = carousel.querySelectorAll('.slide');
-            const dots = carousel.parentNode.querySelectorAll('.dot');
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            // Don't switch timelines if user is typing in a sticky note
+            if (event.target.tagName === 'TEXTAREA') return;
             
-            if (!slideIndex[carouselId]) slideIndex[carouselId] = 1;
-            
-            slideIndex[carouselId] += direction;
-            
-            if (slideIndex[carouselId] > slides.length) {
-                slideIndex[carouselId] = 1;
+            if (event.key === 'ArrowLeft' && currentTimeline === 'opinion') {
+                switchTimeline('features');
+            } else if (event.key === 'ArrowRight' && currentTimeline === 'features') {
+                switchTimeline('opinion');
             }
-            if (slideIndex[carouselId] < 1) {
-                slideIndex[carouselId] = slides.length;
+        });
+
+        // Speech Bubble Animation and Movement
+        function initSpeechBubble() {
+            const bubble = document.getElementById('speechBubble');
+            let x = Math.random() * (window.innerWidth - 250);
+            let y = Math.random() * (window.innerHeight - 100);
+            let vx = (Math.random() - 0.5) * 1.5;
+            let vy = (Math.random() - 0.5) * 1.5;
+
+            bubble.style.left = x + 'px';
+            bubble.style.top = y + 'px';
+
+            function animateBubble() {
+                x += vx;
+                y += vy;
+
+                // Bounce off edges
+                if (x <= 0 || x >= window.innerWidth - 250) {
+                    vx = -vx;
+                    x = Math.max(0, Math.min(x, window.innerWidth - 250));
+                }
+                if (y <= 0 || y >= window.innerHeight - 60) {
+                    vy = -vy;
+                    y = Math.max(0, Math.min(y, window.innerHeight - 60));
+                }
+
+                bubble.style.left = x + 'px';
+                bubble.style.top = y + 'px';
+
+                requestAnimationFrame(animateBubble);
             }
-            
-            showSlide(carouselId, slideIndex[carouselId]);
+
+            animateBubble();
         }
 
-        function currentSlide(carouselId, n) {
-            slideIndex[carouselId] = n;
-            showSlide(carouselId, n);
+        // Sticky Note System
+        let isPlacingNote = false;
+        let typedText = '';
+        let stickyNotes = [];
+        let noteIdCounter = 0;
+
+        function initStickyNoteSystem() {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // Mobile: Click/tap to trigger note placement
+                document.addEventListener('click', function(event) {
+                    // Ignore if clicking on UI elements
+                    if (event.target.closest('.sticky-note') || 
+                        event.target.closest('.timeline-switcher') ||
+                        event.target.closest('.modal') ||
+                        event.target.tagName === 'BUTTON' ||
+                        event.target.tagName === 'TEXTAREA' ||
+                        event.target.tagName === 'INPUT') {
+                        return;
+                    }
+
+                    if (!isPlacingNote) {
+                        startNotePlacement();
+                    }
+                });
+            } else {
+                // Desktop: Type anywhere to trigger
+                document.addEventListener('keypress', function(event) {
+                    // Ignore if user is in an input field or textarea
+                    if (event.target.tagName === 'INPUT' || 
+                        event.target.tagName === 'TEXTAREA' || 
+                        event.target.contentEditable === 'true') {
+                        return;
+                    }
+
+                    // Ignore special keys
+                    if (event.ctrlKey || event.metaKey || event.altKey) {
+                        return;
+                    }
+
+                    // Start note placement
+                    if (!isPlacingNote) {
+                        typedText = event.key;
+                        startNotePlacement();
+                    }
+                });
+            }
+
+            // Handle placement overlay clicks
+            document.getElementById('placementOverlay').addEventListener('click', function(event) {
+                if (isPlacingNote) {
+                    placeNoteAt(event.clientX, event.clientY);
+                }
+            });
+
+            // Handle ESC key to cancel placement
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && isPlacingNote) {
+                    cancelNotePlacement();
+                }
+            });
         }
 
-        function showSlide(carouselId, n) {
-            const carousel = document.getElementById(carouselId);
-            const slides = carousel.querySelectorAll('.slide');
-            const dots = carousel.parentNode.querySelectorAll('.dot');
+        function startNotePlacement() {
+            isPlacingNote = true;
+            const overlay = document.getElementById('placementOverlay');
+            const bubble = document.getElementById('speechBubble');
             
-            // Hide all slides
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            // Show current slide
-            if (slides[n-1]) {
-                slides[n-1].classList.add('active');
-            }
-            if (dots[n-1]) {
-                dots[n-1].classList.add('active');
-            }
+            overlay.classList.add('active');
+            bubble.style.opacity = '0';
         }
 
-        // Touch/Swipe Support for Mobile
-        function addSwipeSupport() {
-            const carousels = document.querySelectorAll('.carousel-slides');
+        function placeNoteAt(x, y) {
+            const noteId = 'note-' + noteIdCounter++;
+            const colors = ['color-yellow', 'color-pink', 'color-blue', 'color-green'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const randomRotation = Math.random() * 6 - 3; // -3 to 3 degrees
             
-            carousels.forEach(carousel => {
-                let startX = 0;
-                let startY = 0;
-                let endX = 0;
-                let endY = 0;
+            // Create sticky note element
+            const noteHtml = `
+                <div class="sticky-note ${randomColor}" id="${noteId}" style="left: ${x - 125}px; top: ${y + window.scrollY - 125}px; transform: rotate(${randomRotation}deg);">
+                    <textarea placeholder="Write your note here..." autofocus>${typedText}</textarea>
+                    <div class="sticky-note-actions">
+                        <button class="sticky-note-btn done" onclick="finishNote('${noteId}')" title="Done">✓</button>
+                        <button class="sticky-note-btn delete" onclick="deleteNote('${noteId}')" title="Delete">×</button>
+                    </div>
+                </div>
+            `;
+            
+            // Add to container
+            document.getElementById('stickyNotesContainer').insertAdjacentHTML('beforeend', noteHtml);
+            
+            // Make the note draggable
+            makeNoteDraggable(noteId);
+            
+            // Focus on textarea
+            const note = document.getElementById(noteId);
+            const textarea = note.querySelector('textarea');
+            setTimeout(() => {
+                textarea.focus();
+                textarea.setSelectionRange(typedText.length, typedText.length);
+            }, 100);
+            
+            // Store note
+            stickyNotes.push({
+                id: noteId,
+                x: x - 125,
+                y: y + window.scrollY - 125,
+                text: typedText,
+                color: randomColor
+            });
+            
+            // Reset placement mode
+            cancelNotePlacement();
+            typedText = '';
+        }
+
+        function cancelNotePlacement() {
+            isPlacingNote = false;
+            const overlay = document.getElementById('placementOverlay');
+            const bubble = document.getElementById('speechBubble');
+            
+            overlay.classList.remove('active');
+            bubble.style.opacity = '0.9';
+        }
+
+        function makeNoteDraggable(noteId) {
+            const note = document.getElementById(noteId);
+            let isDragging = false;
+            let startX, startY, initialX, initialY;
+            
+            // Mouse events
+            note.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+            
+            // Touch events for mobile
+            note.addEventListener('touchstart', startDrag, {passive: false});
+            document.addEventListener('touchmove', drag, {passive: false});
+            document.addEventListener('touchend', stopDrag);
+            
+            function startDrag(e) {
+                // Don't drag if clicking on textarea or buttons
+                if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON') return;
                 
-                carousel.addEventListener('touchstart', function(e) {
+                isDragging = true;
+                note.style.zIndex = 1000;
+                
+                if (e.type === 'touchstart') {
                     startX = e.touches[0].clientX;
                     startY = e.touches[0].clientY;
-                });
-                
-                carousel.addEventListener('touchend', function(e) {
-                    endX = e.changedTouches[0].clientX;
-                    endY = e.changedTouches[0].clientY;
-                    handleSwipe(carousel.id);
-                });
-                
-                function handleSwipe(carouselId) {
-                    const deltaX = endX - startX;
-                    const deltaY = endY - startY;
-                    const minSwipeDistance = 50;
-                    
-                    // Check if horizontal swipe is greater than vertical (to avoid interfering with scroll)
-                    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
-                        if (deltaX > 0) {
-                            // Swiped right - go to previous
-                            changeSlide(carouselId, -1);
-                        } else {
-                            // Swiped left - go to next
-                            changeSlide(carouselId, 1);
-                        }
-                    }
-                }
-            });
-        }
-
-        // Initialize carousels when page loads
-        function initializeCarousels() {
-            // Set initial slide for all carousels
-            const carousels = document.querySelectorAll('.carousel-slides');
-            carousels.forEach(carousel => {
-                slideIndex[carousel.id] = 1;
-                showSlide(carousel.id, 1);
-            });
-            
-            // Add swipe support
-            addSwipeSupport();
-        }
-                
-        // Floating strawberries system
-        let strawberries = [];
-        let isAnimating = false;
-        const STRAWBERRY_COUNT = 10;
-        const STRAWBERRY_SIZE = 50;
-        const SPEED = 1.8;
-
-        // Strawberry image URLs
-        const strawberryImages = [
-            'https://github.com/KyoseiJazz/shunyacarroll/blob/main/images/Notion%20pfp.png?raw=true'
-        ];
-
-        function createStrawberry(index) {
-            const strawberry = document.createElement('div');
-            strawberry.className = 'floating-strawberry';
-            strawberry.id = `strawberry-${index}`;
-            
-            // Random strawberry image
-            const imageUrl = strawberryImages[index % strawberryImages.length];
-            strawberry.style.backgroundImage = `url(${imageUrl})`;
-            
-            // Random starting position
-            const x = Math.random() * (window.innerWidth - STRAWBERRY_SIZE);
-            const y = Math.random() * (window.innerHeight - STRAWBERRY_SIZE);
-            
-            // Random movement direction
-            const vx = (Math.random() - 0.5) * SPEED * 2;
-            const vy = (Math.random() - 0.5) * SPEED * 2;
-            
-            strawberry.style.left = x + 'px';
-            strawberry.style.top = y + 'px';
-            
-            document.body.appendChild(strawberry);
-            
-            return {
-                element: strawberry,
-                x: x,
-                y: y,
-                vx: vx,
-                vy: vy,
-                size: STRAWBERRY_SIZE
-            };
-        }
-
-        function getPostAreas() {
-            const areas = [];
-            const posts = document.querySelectorAll('.post-content');
-            
-            posts.forEach(post => {
-                const rect = post.getBoundingClientRect();
-                areas.push({
-                    left: rect.left,
-                    right: rect.right,
-                    top: rect.top + window.scrollY,
-                    bottom: rect.bottom + window.scrollY,
-                    element: post
-                });
-            });
-            
-            return areas;
-        }
-
-        function checkCollisions(strawberry) {
-            const postAreas = getPostAreas();
-            const strawberryRect = {
-                left: strawberry.x,
-                right: strawberry.x + strawberry.size,
-                top: strawberry.y,
-                bottom: strawberry.y + strawberry.size
-            };
-            
-            // Check collision with posts (only visible ones)
-            postAreas.forEach(area => {
-                const viewportTop = window.scrollY;
-                const viewportBottom = window.scrollY + window.innerHeight;
-                
-                // Only check if post is in viewport
-                if (area.bottom > viewportTop && area.top < viewportBottom) {
-                    const adjustedTop = area.top - window.scrollY;
-                    const adjustedBottom = area.bottom - window.scrollY;
-                    
-                    if (strawberryRect.right > area.left && 
-                        strawberryRect.left < area.right &&
-                        strawberryRect.bottom > adjustedTop && 
-                        strawberryRect.top < adjustedBottom) {
-                        
-                        // Simple bounce away from post
-                        const overlapX = Math.min(strawberryRect.right - area.left, area.right - strawberryRect.left);
-                        const overlapY = Math.min(strawberryRect.bottom - adjustedTop, adjustedBottom - strawberryRect.top);
-                        
-                        if (overlapX < overlapY) {
-                            strawberry.vx = -strawberry.vx;
-                        } else {
-                            strawberry.vy = -strawberry.vy;
-                        }
-                    }
-                }
-            });
-        }
-
-        function animateStrawberries() {
-            if (!isAnimating) return;
-            
-            strawberries.forEach(strawberry => {
-                // Update position
-                strawberry.x += strawberry.vx;
-                strawberry.y += strawberry.vy;
-                
-                // Bounce off screen edges
-                if (strawberry.x <= 0 || strawberry.x >= window.innerWidth - strawberry.size) {
-                    strawberry.vx = -strawberry.vx;
-                    strawberry.x = Math.max(0, Math.min(strawberry.x, window.innerWidth - strawberry.size));
+                } else {
+                    startX = e.clientX;
+                    startY = e.clientY;
                 }
                 
-                if (strawberry.y <= 0 || strawberry.y >= window.innerHeight - strawberry.size) {
-                    strawberry.vy = -strawberry.vy;
-                    strawberry.y = Math.max(0, Math.min(strawberry.y, window.innerHeight - strawberry.size));
-                }
+                initialX = note.offsetLeft;
+                initialY = note.offsetTop;
                 
-                // Check collisions with posts
-                checkCollisions(strawberry);
-                
-                // Update element position
-                strawberry.element.style.left = strawberry.x + 'px';
-                strawberry.element.style.top = strawberry.y + 'px';
-            });
-            
-            requestAnimationFrame(animateStrawberries);
-        }
-
-        function startStrawberries() {
-            console.log('Starting strawberries...');
-            
-            // Remove any existing strawberries
-            stopStrawberries();
-            
-            // Create new strawberries
-            for (let i = 0; i < STRAWBERRY_COUNT; i++) {
-                const strawberry = createStrawberry(i);
-                strawberries.push(strawberry);
+                e.preventDefault();
             }
             
-            isAnimating = true;
-            animateStrawberries();
-        }
-
-        function stopStrawberries() {
-            isAnimating = false;
-            
-            strawberries.forEach(strawberry => {
-                if (strawberry.element && strawberry.element.parentNode) {
-                    strawberry.element.parentNode.removeChild(strawberry.element);
+            function drag(e) {
+                if (!isDragging) return;
+                
+                let currentX, currentY;
+                
+                if (e.type === 'touchmove') {
+                    currentX = e.touches[0].clientX;
+                    currentY = e.touches[0].clientY;
+                } else {
+                    currentX = e.clientX;
+                    currentY = e.clientY;
                 }
-            });
+                
+                const deltaX = currentX - startX;
+                const deltaY = currentY - startY;
+                
+                note.style.left = (initialX + deltaX) + 'px';
+                note.style.top = (initialY + deltaY) + 'px';
+                
+                e.preventDefault();
+            }
             
-            strawberries = [];
+            function stopDrag() {
+                isDragging = false;
+                note.style.zIndex = 100;
+            }
         }
 
-        // Keyboard controls for testing
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 's' || event.key ===
+        function finishNote(noteId) {
+            const note = document.getElementById(noteId);
+            const textarea = note.querySelector('textarea');
+            textarea.blur();
+            
+            // Update stored note
+            const storedNote = stickyNotes.find(n => n.id === noteId);
+            if (storedNote) {
+                storedNote.text = textarea.value;
+            }
+            
+            // Visual feedback
+            note.style.transform = 'rotate(0deg) scale(0.95)';
+            setTimeout(() => {
+                note.style.transform = `rotate(${Math.random() * 6 - 3}deg)`;
+            }, 200);
+        }
+
+        function deleteNote(noteId) {
+            const note = document.getElementById(noteId);
+            
+            // Animate out
+            note.style.transform = 'scale(0) rotate(20deg)';
+            note.style.opacity = '0';
+            
+            setTimeout(() => {
+                note.remove();
+                // Remove from stored notes
+                stickyNotes = stickyNotes.filter(n => n.id !== noteId);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
