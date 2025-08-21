@@ -1,21 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    /captcha/
-    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timeline Blog</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
-    
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-</head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timeline Blog</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -119,6 +109,7 @@
             z-index: 2;
         }
 
+        /* FIXED: Post dates positioning */
         .post-date {
             font-size: 0.9em;
             color: #666;
@@ -127,16 +118,17 @@
             transform: translateY(-50%); /* Centers it vertically with the dot */
         }
 
+        /* FIXED: Dates on opposite side of posts */
         .timeline-post:nth-child(odd) .post-date {
-            right: 50%;
-            margin-right: 30px;
-            text-align: right;
+            left: 50%; /* Put date on left side when post is on right */
+            margin-left: 30px;
+            text-align: left;
         }
 
         .timeline-post:nth-child(even) .post-date {
-            left: 50%;
-            margin-left: 30px;
-            text-align: left;
+            right: 50%; /* Put date on right side when post is on left */
+            margin-right: 30px;
+            text-align: right;
         }
 
         .post-content {
@@ -211,6 +203,17 @@
 
         .post-text p {
             color: #555;
+        }
+
+        /* ADDED: Post Music Styles */
+        .post-music {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .post-music iframe {
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         /* Modal Styles */
@@ -313,6 +316,124 @@
             text-align: center;
         }
 
+        /* Image Carousel Styles */
+        .post-carousel {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .carousel-slides {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            touch-action: pan-y;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .slide-caption {
+            padding: 15px;
+            background: white;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Navigation Arrows */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-nav:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+        .carousel-nav.prev {
+            left: 10px;
+        }
+
+        .carousel-nav.next {
+            right: 10px;
+        }
+
+        /* Dot Indicators */
+        .carousel-dots {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+        }
+
+        .dot:hover {
+            background: rgba(255,255,255,0.8);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .timeline::before {
@@ -357,64 +478,413 @@
             .timeline-container {
                 padding: 30px 15px;
             }
+
+            .carousel-container {
+                height: 350px;
+            }
+            
+            .slide img {
+                height: 300px;
+            }
+            
+            .carousel-nav {
+                display: none;
+            }
+            
+            .slide-caption {
+                font-size: 12px;
+                padding: 10px;
+            }
         }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .carousel-container {
-        height: 350px;
-    }
-    
-    .slide img {
-        height: 300px;
-    }
-    
-    .carousel-nav {
-        display: none; /* Hide arrows on mobile, use swipe */
-    }
-    
-    .slide-caption {
-        font-size: 12px;
-        padding: 10px;
-    }
-}
         /* Floating Strawberries */
-.floating-strawberry {
-    position: fixed;
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 10;
-    pointer-events: none;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
-}
+        .floating-strawberry {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
 
-.floating-strawberry:hover {
-    opacity: 1;
-}
+        .floating-strawberry:hover {
+            opacity: 1;
+        }
         
-/* Smaller floating on mobile */
+        /* Smaller floating on mobile */
         @media (max-width: 768px) {
-    .floating-strawberry {
-        width: 35px !important;
-        height: 35px !important;
-    }
+            .floating-strawberry {
+                width: 35px !important;
+                height: 35px !important;
+            }
+        }
+
+        /* CMS Styles */
+        #newPostBtn:hover {
+            transform: translateY(-2px);
+        }
+
+        .cms-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .cms-modal-content {
+            max-width: 1400px;
+            margin: 20px auto;
+            background: #f5f7fa;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            min-height: calc(100vh - 40px);
+        }
+
+        .cms-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            color: #666;
+            cursor: pointer;
+            z-index: 10;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .cms-close:hover {
+            background: #f0f0f0;
+        }
+
+        .password-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .password-form {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .password-form h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .password-form input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .password-form button {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .password-form button:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .cms-container {
+            padding: 20px;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .cms-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .cms-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .cms-header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .cms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .cms-form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .cms-output {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .cms-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .cms-form input, .cms-form select, .cms-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .cms-form input:focus, .cms-form select:focus, .cms-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .cms-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .post-type-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .post-type-btn {
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .post-type-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .post-type-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .post-type-btn .icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .dynamic-fields {
+            margin-top: 20px;
+        }
+
+        .carousel-images {
+            margin-top: 10px;
+        }
+
+        .carousel-image-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .carousel-image-input input {
+            flex: 1;
+        }
+
+        .remove-image {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .add-image-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .output-section {
+            margin-bottom: 25px;
+        }
+
+        .output-section h3 {
+            color: #61dafb;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .code-output {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .instructions h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .cms-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .post-type-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .carousel-image-input {
+                flex-direction: column;
+            }
+            
+            .cms-modal-content {
+                margin: 10px;
+                min-height: calc(100vh - 20px);
+            }
+        }
     </style>
 </head>
 <body>
-
-    <body>
     <!-- reCAPTCHA Verification Modal -->
     <div id="recaptchaModal" class="modal" style="display: none;">
         <div class="modal-content" style="text-align: center; max-width: 450px;">
             <h3>Verify your Humanity</h3>
             <p>This site is protected from Bot and AI scrapping</p>
             
-            <!-- reCAPTCHA widget - REPLACE WITH YOUR SITE KEY -->
             <div class="g-recaptcha" 
                  data-sitekey="6Lcd-6wrAAAAAJ1ghGuKQybREJcv45yP_VDZw6xC"
                  data-callback="onCaptchaSuccess"
@@ -427,14 +897,6 @@
         </div>
     </div>
         
-    <!-- Your existing content (will be hidden initially) -->
-    <div class="timeline-container" id="mainContent" style="display: none;">
-        <!-- ... rest of your timeline content ... -->
-    
-    <div class="timeline-container">
-    <!-- rest of your content -->
-
-        
     <div class="timeline-container">
         <div class="clock-section">
             <div class="current-time" id="currentTime">12:00:00 PM</div>
@@ -442,31 +904,12 @@
         </div>
 
         <div class="timeline">
-            <!-- ====================================== -->
-            <!-- 📝 ADD NEW POSTS HERE                 -->
-            <!--  customize the date, content, modal ID -->
-            <!--  then add a modal version too         -->
-            <!-- ====================================== -->
-            
-            <!-- 🆕 ADD YOUR NEWEST POSTS FIRST (they'll be sorted by date automatically) -->
-
-<div class="timeline-post" data-date="2025-08-21">
-    <div class="post-date">08.20.2025</div>
-    <div class="post-content">
-        <div class="post-large" onclick="openModal('itsoftpower')"
-             style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true');">
-            <div class="post-title">GALLERY TITLE</div>
-            <div class="post-avatar">📸</div>
-        </div>
-    </div>
-</div>
-            
-IMAGE POST TEMPLATE:
+            <!-- FIXED: Removed broken gallery post -->
             <div class="timeline-post" data-date="2025-08-15">
-                <div class="post-date">15.08.2025</div>
+                <div class="post-date">08.15.2025</div>
                 <div class="post-content">
                     <div class="post-large" onclick="openModal('soft-power')"
-                         style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true);">
+                         style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true');">
                         <div class="post-title">Thinking About Soft Power</div>
                         <div class="post-avatar">🎵</div>
                     </div>
@@ -476,9 +919,9 @@ IMAGE POST TEMPLATE:
             <div class="timeline-post" data-date="2025-08-14">
                 <div class="post-date">08.14.2025</div>
                 <div class="post-content">
-                <div class="post-music">
-                <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless><a href="https://patrickholland.bandcamp.com/album/infra">Infra by Patrick Holland</a></iframe>      
-                </div>
+                    <div class="post-music">
+                        <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless><a href="https://patrickholland.bandcamp.com/album/infra">Infra by Patrick Holland</a></iframe>      
+                    </div>
                 </div>
             </div>
             
@@ -494,267 +937,349 @@ IMAGE POST TEMPLATE:
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 🎭 MODALS SECTION                         -->
-    <!-- Add a new modal for each new post         -->
-    <!-- Use unique IDs: modal6, modal7, etc.     -->
-    <!-- ========================================== -->
-
-    <!-- 🆕 ADD NEW MODALS HERE (match your post modal IDs) -->
-
-<div id="gallery1-gallery" class="modal">
-    <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
-        <button class="close" onclick="closeModal('itsoftpower')">&times;</button>
-        
-        <div class="modal-gallery">
-            <div class="carousel-container" style="height: 80vh;">
-                <button class="carousel-nav prev" onclick="changeSlide('modal-carousel-gallery1', -1)">‹</button>
-                <button class="carousel-nav next" onclick="changeSlide('modal-carousel-gallery1', 1)">›</button>
-                
-                <div class="carousel-slides" id="modal-carousel-gallery1">
-                    <div class="slide active">
-                        <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true" alt="Gallery Title 1">
-                        <div class="slide-caption">test 1</div>
+    <!-- MODALS SECTION -->
+    <div id="soft-power" class="modal">
+        <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
+            <button class="close" onclick="closeModal('soft-power')">&times;</button>
+            
+            <div class="modal-gallery">
+                <div class="carousel-container" style="height: 80vh;">
+                    <button class="carousel-nav prev" onclick="changeSlide('soft-power-carousel', -1)">‹</button>
+                    <button class="carousel-nav next" onclick="changeSlide('soft-power-carousel', 1)">›</button>
+                    
+                    <div class="carousel-slides" id="soft-power-carousel">
+                        <div class="slide active">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true" alt="Soft Power 1">
+                            <div class="slide-caption">Caption for image 1</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-2.jpg?raw=true" alt="Soft Power 2">
+                            <div class="slide-caption">Caption for image 2</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-3.jpg?raw=true" alt="Soft Power 3">
+                            <div class="slide-caption">Caption for image 3</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-4.jpg?raw=true" alt="Soft Power 4">
+                            <div class="slide-caption">Caption for image 4</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-5.jpg?raw=true" alt="Soft Power 5">
+                            <div class="slide-caption">Caption for image 5</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-6.jpg?raw=true" alt="Soft Power 6">
+                            <div class="slide-caption">Caption for image 6</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-7.jpg?raw=true" alt="Soft Power 7">
+                            <div class="slide-caption">Caption for image 7</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-8.jpg?raw=true" alt="Soft Power 8">
+                            <div class="slide-caption">Caption for image 8</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-9.jpg?raw=true" alt="Soft Power 9">
+                            <div class="slide-caption">Caption for image 9</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-10.jpg?raw=true" alt="Soft Power 10">
+                            <div class="slide-caption">Caption for image 10</div>
+                        </div>
+                        <div class="slide">
+                            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true" alt="Soft Power 11">
+                            <div class="slide-caption">Caption for image 11</div>
+                        </div>
                     </div>
-                    <div class="slide">
-                        <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-2.jpg?raw=true" alt="Gallery Title 2">
-                        <div class="slide-caption">test 2</div>
+                    
+                    <div class="carousel-dots">
+                        <span class="dot active" onclick="currentSlide('soft-power-carousel', 1)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 2)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 3)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 4)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 5)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 6)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 7)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 8)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 9)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 10)"></span>
+                        <span class="dot" onclick="currentSlide('soft-power-carousel', 11)"></span>
                     </div>
-                    <div class="slide">
-                        <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-3.jpg?raw=true" alt="Gallery Title 3">
-                        <div class="slide-caption">test 3</div>
-                    </div>
-                </div>
-                
-                <div class="carousel-dots">
-                    <span class="dot active" onclick="currentSlide('modal-carousel-gallery1', 1)"></span>
-                    <span class="dot" onclick="currentSlide('modal-carousel-gallery1', 2)"></span>
-                    <span class="dot" onclick="currentSlide('modal-carousel-gallery1', 3)"></span>
                 </div>
             </div>
         </div>
     </div>
-</div>
-        
-         <!-- Gallery Modal Template -->
-            <div id="soft-power" class="modal">
-                <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
-                    <button class="close" onclick="closeModal('GALLERY_MODAL_ID')">&times;</button>
-              
-                    <!-- Gallery inside modal -->
-                    <div class="modal-gallery">
-                        <div class="carousel-container" style="height: 80vh;">
-                            <button class="carousel-nav prev" onclick="changeSlide('soft-power', -1)">‹</button>
-                            <button class="carousel-nav next" onclick="changeSlide('soft-power', 1)">›</button>
+
+    <div id="spotify-war" class="modal">
+        <div class="modal-content">
+            <button class="close" onclick="closeModal('spotify-war')">&times;</button>
+            <div class="full-post">
+                <h2>SPOTIFY'S CONNECTION TO WAR</h2>
+                <div class="full-date">August 12, 2025</div>
+
+                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Title%202%20crop.png?raw=true" alt="crop">
+
+                <p>After news spread that Swedish Spotify CEO, Daniel Ek became chairman and led a €600 million ($694) investment to German Weapons manufacturer, Helsing, artists publicly announced removing their catalog from the platform.</p>
+                
+                <p>But why might Daniel Ek invest in war?</p>
+                
+                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Daniel%20Quote.png?raw=true" alt="quote">
+                
+                <p>Since the Obama administration, the EU has been pressured to spend more on defense according to professor of Government at the University of Texas, Dr. Rachel Wellhausen.</p>
+                
+                <p>"Europe is buying American weapons to supply Ukraine and for a long time have thought about a bigger domestic defense industry," Dr. Wellhausen said. "Since Trump has pulled back on financing Ukraine, Europe is putting lots of money into Ukraine."</p>
+                
+                <p>Investments in defense has been made more attractive for private companies.</p>
+                
+                <p>"It's like this perfect storm for European companies and rich Europeans who care about Europe to build up (defense)," Dr. Wellhausen said.</p>
+                
+                <p>Daniel Ek has been known to <a href="https://www.musicbusinessworldwide.com/daniel-ek-cashed-out-another-37-3m-in-spotify-shares-as-stock-hit-new-high1/" target="_blank">cash out</a> Spotify shares to invest in other endeavors like health <a href="https://fortune.com/europe/2025/01/23/daniel-ek-body-scanning-startup-valuation-100000-people-lining-up-pay-299-for-health-check/" target="_blank">body scanners</a>, but stepping into Helsing can be seen as a patriotic act.</p>
+                
+                <p>"As Europe rapidly strengthens its defense capabilities in response to evolving geopolitical challenges, there is an urgent need for investments in advanced technologies that ensure its strategic autonomy and security readiness," Daniel Ek told Financial Times.</p>
+                
+                <figure>
+                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Helsing_HX-2-Helsing-1024x624.jpg?raw=true" alt="spotify war">
+                    <figcaption> Helsing's HX-2 drone software-based, mass-producible, and swarm-capable with on-board AI systems piloted by a single controler <a href="https://helsing.ai/newsroom/helsing-unveils-intelligent-strike-drone-for-mass-and-precision" target="blank">Source</a> </figcaption>
+                </figure>
+                
+                <p>Helsing delivered 10,000 AI powered drones to Ukraine as of February and is collaborating with Sweden's military to defend Ukraine's frontlines.</p>
+                
+                <p>Last weekend, in spite of slow Russian frontline advancement, Ukraine declined Putin's ceasefire deal to withdraw forces from regions Russia <a href="https://www.pbs.org/newshour/world/russia-and-ukraine-stick-to-their-demands-ahead-of-planned-putin-trump-summit-in-alaska" target="_blank">failed</a> to capture.</p>
+                
+                <p>Director of European Studies at the University of Texas, Dr. Michael Mosser says Ukraine's natural gas pipelines and history in the Soviet Union can be traced as justifications for the war.</p>
+                
+                <p>"Russia could impose its will on Ukraine in a way that it had done to other countries that tried to break away." Dr. Mosser said, referencing Georgia in 2008 and Chechnya in 2004.</p>
+                
+                <p>Zelensky has not been invited to Putin and Trump's peace negotiations meeting that'll take place in Alaska this Friday.</p>
+                
+                <p>Missed political deadlines and uncertainty for support might be why the EU is looking at private investors for defense.</p>
+                
+                <p>In 2024, American weapons manufacturers grossed $236 billion in government contracts, more than twice that of European defense. Although the EU primarily purchases weapons from U.S. manufacturers, Dr. Mosser says the EU is beginning to look at domestic producers.</p>
+                
+                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/data.png?raw=true" alt="2023 Defense Profits">
+                
+                <p>Boycotting companies have impacted businesses in the past. The Kyiv School of Economics have published a webpage <a href="https://leave-russia.org/staying-companies" target="_blank">tracking</a> companies' financial relationships with Russia. P&G, Adobe and hundreds of others have suspended or reduced their activity in the country.</p>
+                
+                <p>But the Spotify CEO says he doesn't really care about the boycotts.</p>
+                
+                <p>"I'm sure people will criticize it and that's OK. Personally, I'm not concerned about it. I focus more on doing what I think is right and I am 100 per cent convinced that this is the right thing for Europe." Ek told Financial Times</p>
+                
+                <p>Musicians have dropped from the platform in attempts to decouple from war, but <a href="https://www.latimes.com/entertainment-arts/music/story/2025-07-31/spotifys-ceo-owns-an-ai-weapons-company-some-musicians-say-its-time-to-leave" target="_blank">mainstream reports</a> misrepresent Helsing's connection to defending Israel instead of Ukraine.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Post Button -->
+    <button id="newPostBtn" onclick="openCMSModal()" style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 100;
+        transition: transform 0.2s ease;
+    ">
+        ✨ New Post
+    </button>
+
+    <!-- CMS Modal -->
+    <div id="cmsModal" class="cms-modal">
+        <div class="cms-modal-content">
+            <span class="cms-close" onclick="closeCMSModal()">&times;</span>
+            
+            <!-- Password Screen -->
+            <div id="passwordScreen" class="password-screen">
+                <div class="password-form">
+                    <h2>🔐 Admin Access</h2>
+                    <p>Enter password to access CMS</p>
+                    <input type="password" id="cmsPassword" placeholder="Enter password" onkeypress="checkPasswordKey(event)">
+                    <button onclick="checkPassword()">Access CMS</button>
+                    <div id="passwordError" class="error-message"></div>
+                </div>
+            </div>
+
+            <!-- CMS Content (hidden until password is correct) -->
+            <div id="cmsContent" style="display: none;">
+                <div class="cms-container">
+                    <div class="cms-header">
+                        <h1>🎵 Timeline Blog CMS</h1>
+                        <p>Create new posts for your timeline without editing code</p>
+                    </div>
+
+                    <div class="cms-grid">
+                        <!-- Form Section -->
+                        <div class="cms-form">
+                            <h2>📝 Create New Post</h2>
                             
-                            <div class="carousel-slides" id="soft-power">
-                                <div class="slide active">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-1.jpg?raw=true" alt="Description 1">
-                                    <div class="slide-caption">Caption for image 1</div>
+                            <!-- Post Type Selection -->
+                            <div class="form-group">
+                                <label>Post Type</label>
+                                <div class="post-type-selector">
+                                    <div class="post-type-btn active" onclick="selectPostType('text')">
+                                        <span class="icon">📝</span>
+                                        Text
+                                    </div>
+                                    <div class="post-type-btn" onclick="selectPostType('music')">
+                                        <span class="icon">🎵</span>
+                                        Music
+                                    </div>
+                                    <div class="post-type-btn" onclick="selectPostType('image')">
+                                        <span class="icon">🖼️</span>
+                                        Image
+                                    </div>
+                                    <div class="post-type-btn" onclick="selectPostType('video')">
+                                        <span class="icon">🎬</span>
+                                        Video
+                                    </div>
+                                    <div class="post-type-btn" onclick="selectPostType('carousel')">
+                                        <span class="icon">🎠</span>
+                                        Gallery
+                                    </div>
                                 </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-2.jpg?raw=true" alt="Description 2">
-                                    <div class="slide-caption">Caption for image 2</div>
+                            </div>
+
+                            <!-- Basic Fields -->
+                            <div class="form-group">
+                                <label for="cmsPostDate">Post Date</label>
+                                <input type="date" id="cmsPostDate" required>
+                            </div>
+
+                            <!-- Dynamic Fields Based on Post Type -->
+                            <div class="dynamic-fields" id="cmsDynamicFields">
+                                <!-- Text Post Fields (Default) -->
+                                <div class="form-group">
+                                    <label for="cmsTextContent">Text Content</label>
+                                    <textarea id="cmsTextContent" placeholder="Enter your text content here..."></textarea>
                                 </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-3.jpg?raw=true" alt="Description 3">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                 </div>
-                                <div class="slide">
-                                    <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-4.jpg?raw=true" alt="Description 4">
-                                    <div class="slide-caption">Caption for image 3</div>
-                                </div>
-                            <div class="slide">
-                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-5.jpg?raw=true" alt="Description 3">
-                                <div class="slide-caption">Caption for image 3</div>
-                             </div>
-                                 <div class="slide">
-                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-6.jpg?raw=true" alt="Description 3">
-                                <div class="slide-caption">Caption for image 3</div>
-                             </div>
-                                 <div class="slide">
-                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-7.jpg?raw=true" alt="Description 3">
-                                <div class="slide-caption">Caption for image 3</div>
-                             </div>
-                                 <div class="slide">
-                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-8.jpg?raw=true" alt="Description 3">
-                                <div class="slide-caption">Caption for image 3</div>
-                             </div>
-                                 <div class="slide">
-                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-9.jpg?raw=true" alt="Description 3">
-                                <div class="slide-caption">Caption for image 3</div>
-                             </div>
-                                 <div class="slide">
-                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-10.jpg?raw=true" alt="Description 3">
-                                <div class="slide-caption">Caption for image 3</div>
-                             </div>
-                                 <div class="slide">
-                                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/Soft-power-11.jpg?raw=true" alt="Description 3">
-                                <div class="slide-caption">Caption for image 3</div>
-                             </div>
+                            </div>
+
+                            <button class="generate-btn" onclick="generateCMSPost()">
+                                ✨ Generate Post Code
+                            </button>
+
+                            <div class="instructions">
+                                <h4>📋 How to Use:</h4>
+                                <ol>
+                                    <li>Select your post type above</li>
+                                    <li>Fill in the required fields</li>
+                                    <li>Click "Generate Post Code"</li>
+                                    <li>Copy the generated HTML code</li>
+                                    <li>Paste it into your timeline HTML file</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <!-- Output Section -->
+                        <div class="cms-output">
+                            <h2>🔧 Generated Code</h2>
                             
-                           Dot indicators (add/remove dots to match number of images) 
-                            <div class="carousel-dots">
-                                <span class="dot active" onclick="currentSlide('CAROUSEL_ID', 1)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 2)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 3)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 4)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 5)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 6)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 7)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 8)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 9)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 10)"></span>
-                                <span class="dot" onclick="currentSlide('CAROUSEL_ID', 11)"></span>
+                            <div class="output-section">
+                                <h3>Timeline Post HTML</h3>
+                                <div class="code-output" id="cmsPostOutput">
+Select a post type and fill in the fields to generate code...
+                                </div>
+                                <button class="copy-btn" onclick="copyToClipboard('cmsPostOutput')">📋 Copy Post Code</button>
+                            </div>
+
+                            <div class="output-section" id="cmsModalSection" style="display: none;">
+                                <h3>Modal HTML (if needed)</h3>
+                                <div class="code-output" id="cmsModalOutput"></div>
+                                <button class="copy-btn" onclick="copyToClipboard('cmsModalOutput')">📋 Copy Modal Code</button>
+                            </div>
+
+                            <div class="instructions">
+                                <h4>🎯 Where to Paste:</h4>
+                                <ol>
+                                    <li><strong>Timeline Post:</strong> Paste in your timeline section where other posts are</li>
+                                    <li><strong>Modal (if shown):</strong> Paste in your modals section at the bottom</li>
+                                    <li>Save your HTML file and refresh your site!</li>
+                                </ol>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    
-
-    <div id="spotify-war" class="modal">
-    <div class="modal-content">
-        <button class="close" onclick="closeModal('spotify-war')">&times;</button>
-        <div class="full-post">
-            <h2>SPOTIFY'S CONNECTION TO WAR</h2>
-            <div class="full-date">August 12, 2025</div>
-
-            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Title%202%20crop.png?raw=true" alt="crop">
-
-            <p>After news spread that Swedish Spotify CEO, Daniel Ek became chairman and led a €600 million ($694) investment to German Weapons manufacturer, Helsing, artists publicly announced removing their catalog from the platform.</p>
-            
-            <p>But why might Daniel Ek invest in war?</p>
-            
-            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Daniel%20Quote.png?raw=true" alt="quote">
-            
-            <p>Since the Obama administration, the EU has been pressured to spend more on defense according to professor of Government at the University of Texas, Dr. Rachel Wellhausen.</p>
-            
-            <p>"Europe is buying American weapons to supply Ukraine and for a long time have thought about a bigger domestic defense industry," Dr. Wellhausen said. "Since Trump has pulled back on financing Ukraine, Europe is putting lots of money into Ukraine."</p>
-            
-            <p>Investments in defense has been made more attractive for private companies.</p>
-            
-            <p>"It's like this perfect storm for European companies and rich Europeans who care about Europe to build up (defense)," Dr. Wellhausen said.</p>
-            
-            <p>Daniel Ek has been known to <a href="https://www.musicbusinessworldwide.com/daniel-ek-cashed-out-another-37-3m-in-spotify-shares-as-stock-hit-new-high1/" target="_blank">cash out</a> Spotify shares to invest in other endeavors like health <a href="https://fortune.com/europe/2025/01/23/daniel-ek-body-scanning-startup-valuation-100000-people-lining-up-pay-299-for-health-check/" target="_blank">body scanners</a>, but stepping into Helsing can be seen as a patriotic act.</p>
-            
-            <p>"As Europe rapidly strengthens its defense capabilities in response to evolving geopolitical challenges, there is an urgent need for investments in advanced technologies that ensure its strategic autonomy and security readiness," Daniel Ek told Financial Times.</p>
-            
-            <figure>
-                <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/Helsing_HX-2-Helsing-1024x624.jpg?raw=true" alt="spotify war">
-                <figcaption> Helsing's HX-2 drone software-based, mass-producible, and swarm-capable with on-board AI systems piloted by a single controler <a href="https://helsing.ai/newsroom/helsing-unveils-intelligent-strike-drone-for-mass-and-precision" target="blank">Source</a> </figcaption>
-            </figure>
-            
-            <p>Helsing delivered 10,000 AI powered drones to Ukraine as of February and is collaborating with Sweden's military to defend Ukraine's frontlines.</p>
-            
-            <p>Last weekend, in spite of slow Russian frontline advancement, Ukraine declined Putin's ceasefire deal to withdraw forces from regions Russia <a href="https://www.pbs.org/newshour/world/russia-and-ukraine-stick-to-their-demands-ahead-of-planned-putin-trump-summit-in-alaska" target="_blank">failed</a> to capture.</p>
-            
-            <p>Director of European Studies at the University of Texas, Dr. Michael Mosser says Ukraine's natural gas pipelines and history in the Soviet Union can be traced as justifications for the war.</p>
-            
-            <p>"Russia could impose its will on Ukraine in a way that it had done to other countries that tried to break away." Dr. Mosser said, referencing Georgia in 2008 and Chechnya in 2004.</p>
-            
-            <p>Zelensky has not been invited to Putin and Trump's peace negotiations meeting that'll take place in Alaska this Friday.</p>
-            
-            <p>Missed political deadlines and uncertainty for support might be why the EU is looking at private investors for defense.</p>
-            
-            <p>In 2024, American weapons manufacturers grossed $236 billion in government contracts, more than twice that of European defense. Although the EU primarily purchases weapons from U.S. manufacturers, Dr. Mosser says the EU is beginning to look at domestic producers.</p>
-            
-            <img src="https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/data.png?raw=true" alt="2023 Defense Profits">
-            
-            <p>Boycotting companies have impacted businesses in the past. The Kyiv School of Economics have published a webpage <a href="https://leave-russia.org/staying-companies" target="_blank">tracking</a> companies' financial relationships with Russia. P&G, Adobe and hundreds of others have suspended or reduced their activity in the country.</p>
-            
-            <p>But the Spotify CEO says he doesn't really care about the boycotts.</p>
-            
-            <p>"I'm sure people will criticize it and that's OK. Personally, I'm not concerned about it. I focus more on doing what I think is right and I am 100 per cent convinced that this is the right thing for Europe." Ek told Financial Times</p>
-            
-            <p>Musicians have dropped from the platform in attempts to decouple from war, but <a href="https://www.latimes.com/entertainment-arts/music/story/2025-07-31/spotifys-ceo-owns-an-ai-weapons-company-some-musicians-say-its-time-to-leave" target="_blank">mainstream reports</a> misrepresent Helsing's connection to defending Israel instead of Ukraine.</p>
         </div>
     </div>
-</div>
-
 
     <script>
+        // reCAPTCHA verification system
+        let captchaVerified = false;
 
-    // reCAPTCHA verification system
-    let captchaVerified = false;
-
-    // Old DOMContentLoaded
-   // document.addEventListener('DOMContentLoaded', function() {
-     //   document.getElementById('mainContent').style.display = 'none';
-        // Don't start strawberries until verified
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Page loaded, initializing timeline...');
-    // ... old code
-});
-
-    // Called when captcha is successfully completed
-    function onCaptchaSuccess(token) {
-        console.log('Captcha completed!');
-        
-        if (token && token.length > 10) {
-            captchaVerified = true;
+        // Called when captcha is successfully completed
+        function onCaptchaSuccess(token) {
+            console.log('Captcha completed!');
             
-            // Show success message
-            document.getElementById('captchaSuccess').textContent = '✅ Verification successful! Loading timeline...';
-            document.getElementById('captchaError').textContent = '';
-            
-            // Hide captcha modal after a short delay
-            setTimeout(() => {
-                document.getElementById('recaptchaModal').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
+            if (token && token.length > 10) {
+                captchaVerified = true;
                 
-                // Now start your other features
-                initializeTimeline();
-            }, 1500);
-        } else {
-            document.getElementById('captchaError').textContent = 'Verification failed. Please try again.';
+                // Show success message
+                document.getElementById('captchaSuccess').textContent = '✅ Verification successful! Loading timeline...';
+                document.getElementById('captchaError').textContent = '';
+                
+                // Hide captcha modal after a short delay
+                setTimeout(() => {
+                    document.getElementById('recaptchaModal').style.display = 'none';
+                    
+                    // Now start your other features
+                    initializeTimeline();
+                }, 1500);
+            } else {
+                document.getElementById('captchaError').textContent = 'Verification failed. Please try again.';
+            }
         }
-    }
 
-    // Called when captcha expires
-    function onCaptchaExpired() {
-        captchaVerified = false;
-        document.getElementById('captchaError').textContent = 'Verification expired. Please complete the captcha again.';
-        document.getElementById('captchaSuccess').textContent = '';
-    }
+        // Called when captcha expires
+        function onCaptchaExpired() {
+            captchaVerified = false;
+            document.getElementById('captchaError').textContent = 'Verification expired. Please complete the captcha again.';
+            document.getElementById('captchaSuccess').textContent = '';
+        }
 
-    // Initialize timeline features after captcha success
-    function initializeTimeline() {
-        console.log('Timeline initialized after captcha verification');
-        
-        // Start the clock
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-        
-        // Calculate timeline spacing
-        setTimeout(calculateTimelineSpacing, 100);
+        // Initialize timeline features after captcha success
+        function initializeTimeline() {
+            console.log('Timeline initialized after captcha verification');
+            
+            // Start the clock
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Calculate timeline spacing
+            setTimeout(calculateTimelineSpacing, 100);
 
-        // Reload Bandcamp iframes to display album covers
-        reloadBandcampIframes();
-        
-        // Start strawberries
-        setTimeout(() => {
-            console.log('Auto-starting strawberries...');
-            startStrawberries();
-        }, 1000);
+            // Initialize carousels
+            initializeCarousels();
+
+            // Reload Bandcamp iframes to display album covers
+            reloadBandcampIframes();
+            
+            // Start strawberries
+            setTimeout(() => {
+                console.log('Auto-starting strawberries...');
+                startStrawberries();
+            }, 1000);
+        }
 
         // Add this new function to reload Bandcamp iframes
-            function reloadBandcampIframes() {
-                const bandcampIframes = document.querySelectorAll('iframe[src*="bandcamp.com"]');
-                bandcampIframes.forEach(iframe => {
-                    const src = iframe.src;
-                    iframe.src = '';
-                    setTimeout(() => {
-                        iframe.src = src;
-                    }, 100);
-    });
-}
-    }
-
-    // Your existing functions go here...
-    // (updateDateTime, calculateTimelineSpacing, etc.)
-
+        function reloadBandcampIframes() {
+            const bandcampIframes = document.querySelectorAll('iframe[src*="bandcamp.com"]');
+            bandcampIframes.forEach(iframe => {
+                const src = iframe.src;
+                iframe.src = '';
+                setTimeout(() => {
+                    iframe.src = src;
+                }, 100);
+            });
+        }
         
         // Update current date and time
         function updateDateTime() {
@@ -859,1331 +1384,262 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded, initializing timeline...');
-            
-            // Start the clock
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            
-            // Calculate timeline spacing
-            setTimeout(calculateTimelineSpacing, 100);
-        });
-
         // Image Carousel Functions
-let slideIndex = {};
+        let slideIndex = {};
 
-function changeSlide(carouselId, direction) {
-    const carousel = document.getElementById(carouselId);
-    const slides = carousel.querySelectorAll('.slide');
-    const dots = carousel.parentNode.querySelectorAll('.dot');
-    
-    if (!slideIndex[carouselId]) slideIndex[carouselId] = 1;
-    
-    slideIndex[carouselId] += direction;
-    
-    if (slideIndex[carouselId] > slides.length) {
-        slideIndex[carouselId] = 1;
-    }
-    if (slideIndex[carouselId] < 1) {
-        slideIndex[carouselId] = slides.length;
-    }
-    
-    showSlide(carouselId, slideIndex[carouselId]);
-}
-
-function currentSlide(carouselId, n) {
-    slideIndex[carouselId] = n;
-    showSlide(carouselId, n);
-}
-
-function showSlide(carouselId, n) {
-    const carousel = document.getElementById(carouselId);
-    const slides = carousel.querySelectorAll('.slide');
-    const dots = carousel.parentNode.querySelectorAll('.dot');
-    
-    // Hide all slides
-    slides.forEach(slide => slide.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
-    
-    // Show current slide
-    if (slides[n-1]) {
-        slides[n-1].classList.add('active');
-    }
-    if (dots[n-1]) {
-        dots[n-1].classList.add('active');
-    }
-}
-
-// Touch/Swipe Support for Mobile
-function addSwipeSupport() {
-    const carousels = document.querySelectorAll('.carousel-slides');
-    
-    carousels.forEach(carousel => {
-        let startX = 0;
-        let startY = 0;
-        let endX = 0;
-        let endY = 0;
-        
-        carousel.addEventListener('touchstart', function(e) {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-        });
-        
-        carousel.addEventListener('touchend', function(e) {
-            endX = e.changedTouches[0].clientX;
-            endY = e.changedTouches[0].clientY;
-            handleSwipe(carousel.id);
-        });
-        
-        function handleSwipe(carouselId) {
-            const deltaX = endX - startX;
-            const deltaY = endY - startY;
-            const minSwipeDistance = 50;
+        function changeSlide(carouselId, direction) {
+            const carousel = document.getElementById(carouselId);
+            const slides = carousel.querySelectorAll('.slide');
+            const dots = carousel.parentNode.querySelectorAll('.dot');
             
-            // Check if horizontal swipe is greater than vertical (to avoid interfering with scroll)
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
-                if (deltaX > 0) {
-                    // Swiped right - go to previous
-                    changeSlide(carouselId, -1);
-                } else {
-                    // Swiped left - go to next
-                    changeSlide(carouselId, 1);
-                }
+            if (!slideIndex[carouselId]) slideIndex[carouselId] = 1;
+            
+            slideIndex[carouselId] += direction;
+            
+            if (slideIndex[carouselId] > slides.length) {
+                slideIndex[carouselId] = 1;
+            }
+            if (slideIndex[carouselId] < 1) {
+                slideIndex[carouselId] = slides.length;
+            }
+            
+            showSlide(carouselId, slideIndex[carouselId]);
+        }
+
+        function currentSlide(carouselId, n) {
+            slideIndex[carouselId] = n;
+            showSlide(carouselId, n);
+        }
+
+        function showSlide(carouselId, n) {
+            const carousel = document.getElementById(carouselId);
+            const slides = carousel.querySelectorAll('.slide');
+            const dots = carousel.parentNode.querySelectorAll('.dot');
+            
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Show current slide
+            if (slides[n-1]) {
+                slides[n-1].classList.add('active');
+            }
+            if (dots[n-1]) {
+                dots[n-1].classList.add('active');
             }
         }
-    });
-}
 
-// Initialize carousels when page loads
-function initializeCarousels() {
-    // Set initial slide for all carousels
-    const carousels = document.querySelectorAll('.carousel-slides');
-    carousels.forEach(carousel => {
-        slideIndex[carousel.id] = 1;
-        showSlide(carousel.id, 1);
-    });
-    
-    // Add swipe support
-    addSwipeSupport();
-}
-
-// Add to your existing initializeTimeline function
-function initializeTimeline() {
-    console.log('Timeline initialized after captcha verification');
-    
-    // Your existing code...
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-    setTimeout(calculateTimelineSpacing, 100);
-    
-    // Initialize carousels
-    initializeCarousels();
-    
-    // Start strawberries
-    setTimeout(() => {
-        startStrawberries();
-    }, 1000);
-}
-        
-// Floating strawberries system
-let strawberries = [];
-let isAnimating = false;
-const STRAWBERRY_COUNT = 10;
-const STRAWBERRY_SIZE = 50;
-const SPEED = 1.8;
-
-// Strawberry image URLs (replace with your custom images later)
-const strawberryImages = [
-    'https://github.com/KyoseiJazz/shunyacarroll/blob/main/images/Notion%20pfp.png?raw=true'
-];
-
-function createStrawberry(index) {
-    const strawberry = document.createElement('div');
-    strawberry.className = 'floating-strawberry';
-    strawberry.id = `strawberry-${index}`;
-    
-    // Random strawberry image
-    const imageUrl = strawberryImages[index % strawberryImages.length];
-    strawberry.style.backgroundImage = `url(${imageUrl})`;
-    
-    // Random starting position
-    const x = Math.random() * (window.innerWidth - STRAWBERRY_SIZE);
-    const y = Math.random() * (window.innerHeight - STRAWBERRY_SIZE);
-    
-    // Random movement direction
-    const vx = (Math.random() - 0.5) * SPEED * 2;
-    const vy = (Math.random() - 0.5) * SPEED * 2;
-    
-    strawberry.style.left = x + 'px';
-    strawberry.style.top = y + 'px';
-    
-    document.body.appendChild(strawberry);
-    
-    return {
-        element: strawberry,
-        x: x,
-        y: y,
-        vx: vx,
-        vy: vy,
-        size: STRAWBERRY_SIZE
-    };
-}
-
-function getPostAreas() {
-    const areas = [];
-    const posts = document.querySelectorAll('.post-content');
-    
-    posts.forEach(post => {
-        const rect = post.getBoundingClientRect();
-        areas.push({
-            left: rect.left,
-            right: rect.right,
-            top: rect.top + window.scrollY,
-            bottom: rect.bottom + window.scrollY,
-            element: post
-        });
-    });
-    
-    return areas;
-}
-
-function checkCollisions(strawberry) {
-    const postAreas = getPostAreas();
-    const strawberryRect = {
-        left: strawberry.x,
-        right: strawberry.x + strawberry.size,
-        top: strawberry.y,
-        bottom: strawberry.y + strawberry.size
-    };
-    
-    // Check collision with posts (only visible ones)
-    postAreas.forEach(area => {
-        const viewportTop = window.scrollY;
-        const viewportBottom = window.scrollY + window.innerHeight;
-        
-        // Only check if post is in viewport
-        if (area.bottom > viewportTop && area.top < viewportBottom) {
-            const adjustedTop = area.top - window.scrollY;
-            const adjustedBottom = area.bottom - window.scrollY;
+        // Touch/Swipe Support for Mobile
+        function addSwipeSupport() {
+            const carousels = document.querySelectorAll('.carousel-slides');
             
-            if (strawberryRect.right > area.left && 
-                strawberryRect.left < area.right &&
-                strawberryRect.bottom > adjustedTop && 
-                strawberryRect.top < adjustedBottom) {
+            carousels.forEach(carousel => {
+                let startX = 0;
+                let startY = 0;
+                let endX = 0;
+                let endY = 0;
                 
-                // Simple bounce away from post
-                const overlapX = Math.min(strawberryRect.right - area.left, area.right - strawberryRect.left);
-                const overlapY = Math.min(strawberryRect.bottom - adjustedTop, adjustedBottom - strawberryRect.top);
-                
-                if (overlapX < overlapY) {
-                    strawberry.vx = -strawberry.vx;
-                } else {
-                    strawberry.vy = -strawberry.vy;
-                }
-            }
-        }
-    });
-}
-
-function animateStrawberries() {
-    if (!isAnimating) return;
-    
-    strawberries.forEach(strawberry => {
-        // Update position
-        strawberry.x += strawberry.vx;
-        strawberry.y += strawberry.vy;
-        
-        // Bounce off screen edges
-        if (strawberry.x <= 0 || strawberry.x >= window.innerWidth - strawberry.size) {
-            strawberry.vx = -strawberry.vx;
-            strawberry.x = Math.max(0, Math.min(strawberry.x, window.innerWidth - strawberry.size));
-        }
-        
-        if (strawberry.y <= 0 || strawberry.y >= window.innerHeight - strawberry.size) {
-            strawberry.vy = -strawberry.vy;
-            strawberry.y = Math.max(0, Math.min(strawberry.y, window.innerHeight - strawberry.size));
-        }
-        
-        // Check collisions with posts
-        checkCollisions(strawberry);
-        
-        // Update element position
-        strawberry.element.style.left = strawberry.x + 'px';
-        strawberry.element.style.top = strawberry.y + 'px';
-    });
-    
-    updateDebugInfo();
-    requestAnimationFrame(animateStrawberries);
-}
-
-function startStrawberries() {
-    console.log('Starting strawberries...');
-    
-    // Remove any existing strawberries
-    stopStrawberries();
-    
-    // Create new strawberries
-    for (let i = 0; i < STRAWBERRY_COUNT; i++) {
-        const strawberry = createStrawberry(i);
-        strawberries.push(strawberry);
-    }
-    
-    isAnimating = true;
-    animateStrawberries();
-    updateDebugInfo();
-}
-
-function stopStrawberries() {
-    isAnimating = false;
-    
-    strawberries.forEach(strawberry => {
-        if (strawberry.element && strawberry.element.parentNode) {
-            strawberry.element.parentNode.removeChild(strawberry.element);
-        }
-    });
-    
-    strawberries = [];
-    updateDebugInfo();
-}
-
-function updateDebugInfo() {
-    const debugPanel = document.getElementById('debugPanel');
-    if (debugPanel) {
-        debugPanel.textContent = `Strawberries: ${strawberries.length} | Animation: ${isAnimating ? 'Running' : 'Stopped'}`;
-    }
-}
-
-// Keyboard controls for testing (add to your existing event listeners)
-document.addEventListener('keydown', function(event) {
-    if (event.key === 's' || event.key === 'S') {
-        console.log('S key pressed - toggling strawberries');
-        if (isAnimating) {
-            stopStrawberries();
-        } else {
-            startStrawberries();
-        }
-    }
-});
-
-// Auto-start strawberries (add this to your existing DOMContentLoaded function)
-setTimeout(() => {
-    console.log('Auto-starting strawberries...');
-    startStrawberries();
-}, 1500);
-        
-    </script>
-
-<!-- ========================================== -->
-<!-- 🔐 PASSWORD-PROTECTED CMS MODAL           -->
-<!-- Add this to your main timeline HTML file  -->
-<!-- ========================================== -->
-
-<!-- New Post Button (add this somewhere visible on your page) -->
-<button id="newPostBtn" onclick="openCMSModal()" style="
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    z-index: 100;
-    transition: transform 0.2s ease;
-">
-    ✨ New Post
-</button>
-
-<style>
-#newPostBtn:hover {
-    transform: translateY(-2px);
-}
-
-/* CMS Modal Styles */
-.cms-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    z-index: 2000;
-    overflow-y: auto;
-}
-
-.cms-modal-content {
-    max-width: 1400px;
-    margin: 20px auto;
-    background: #f5f7fa;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    position: relative;
-    min-height: calc(100vh - 40px);
-}
-
-.cms-close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 30px;
-    color: #666;
-    cursor: pointer;
-    z-index: 10;
-    background: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-.cms-close:hover {
-    background: #f0f0f0;
-}
-
-/* Password Screen */
-.password-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
-
-.password-form {
-    background: rgba(255,255,255,0.1);
-    padding: 40px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-    max-width: 400px;
-    width: 100%;
-}
-
-.password-form h2 {
-    margin-bottom: 20px;
-    font-size: 2em;
-}
-
-.password-form input {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    margin: 15px 0;
-    background: rgba(255,255,255,0.9);
-}
-
-.password-form button {
-    width: 100%;
-    padding: 15px;
-    background: rgba(255,255,255,0.2);
-    border: 2px solid white;
-    color: white;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.password-form button:hover {
-    background: white;
-    color: #667eea;
-}
-
-.error-message {
-    color: #ff6b6b;
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-/* CMS Content Styles */
-.cms-container {
-    padding: 20px;
-    color: #333;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.cms-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 30px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.cms-header h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-}
-
-.cms-header p {
-    opacity: 0.9;
-    font-size: 1.1em;
-}
-
-.cms-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-
-.cms-form {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.cms-output {
-    background: #1e1e1e;
-    color: #f8f8f2;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.cms-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #555;
-}
-
-.cms-form input, .cms-form select, .cms-form textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e1e5e9;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-}
-
-.cms-form input:focus, .cms-form select:focus, .cms-form textarea:focus {
-    outline: none;
-    border-color: #667eea;
-}
-
-.cms-form textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.post-type-selector {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.post-type-btn {
-    padding: 15px;
-    border: 2px solid #e1e5e9;
-    background: white;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s ease;
-    font-size: 12px;
-}
-
-.post-type-btn:hover {
-    border-color: #667eea;
-    background: #f8f9ff;
-}
-
-.post-type-btn.active {
-    border-color: #667eea;
-    background: #667eea;
-    color: white;
-}
-
-.post-type-btn .icon {
-    font-size: 24px;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.dynamic-fields {
-    margin-top: 20px;
-}
-
-.carousel-images {
-    margin-top: 10px;
-}
-
-.carousel-image-input {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-}
-
-.carousel-image-input input {
-    flex: 1;
-}
-
-.remove-image {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.add-image-btn {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.generate-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: transform 0.2s ease;
-}
-
-.generate-btn:hover {
-    transform: translateY(-2px);
-}
-
-.output-section {
-    margin-bottom: 25px;
-}
-
-.output-section h3 {
-    color: #61dafb;
-    margin-bottom: 15px;
-    font-size: 1.2em;
-}
-
-.code-output {
-    background: #2d2d2d;
-    border: 1px solid #444;
-    border-radius: 6px;
-    padding: 15px;
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    font-size: 13px;
-    line-height: 1.4;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    margin-bottom: 10px;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.copy-btn {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.copy-btn:hover {
-    background: #218838;
-}
-
-.instructions {
-    background: #e3f2fd;
-    border-left: 4px solid #2196f3;
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 0 6px 6px 0;
-}
-
-.instructions h4 {
-    color: #1976d2;
-    margin-bottom: 10px;
-}
-
-.instructions ol {
-    margin-left: 20px;
-}
-
-.instructions li {
-    margin-bottom: 5px;
-}
-
-@media (max-width: 768px) {
-    .cms-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .post-type-selector {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .carousel-image-input {
-        flex-direction: column;
-    }
-    
-    .cms-modal-content {
-        margin: 10px;
-        min-height: calc(100vh - 20px);
-    }
-}
-</style>
-
-<!-- CMS Modal -->
-<div id="cmsModal" class="cms-modal">
-    <div class="cms-modal-content">
-        <span class="cms-close" onclick="closeCMSModal()">&times;</span>
-        
-        <!-- Password Screen -->
-        <div id="passwordScreen" class="password-screen">
-            <div class="password-form">
-                <h2>🔐 Admin Access</h2>
-                <p>Enter password to access CMS</p>
-                <input type="password" id="cmsPassword" placeholder="Enter password" onkeypress="checkPasswordKey(event)">
-                <button onclick="checkPassword()">Access CMS</button>
-                <div id="passwordError" class="error-message"></div>
-            </div>
-        </div>
-
-        <!-- CMS Content (hidden until password is correct) -->
-        <div id="cmsContent" style="display: none;">
-            <div class="cms-container">
-                <div class="cms-header">
-                    <h1>🎵 Timeline Blog CMS</h1>
-                    <p>Create new posts for your timeline without editing code</p>
-                </div>
-
-                <div class="cms-grid">
-                    <!-- Form Section -->
-                    <div class="cms-form">
-                        <h2>📝 Create New Post</h2>
-                        
-                        <!-- Post Type Selection -->
-                        <div class="form-group">
-                            <label>Post Type</label>
-                            <div class="post-type-selector">
-                                <div class="post-type-btn active" onclick="selectPostType('text')">
-                                    <span class="icon">📝</span>
-                                    Text
-                                </div>
-                                <div class="post-type-btn" onclick="selectPostType('music')">
-                                    <span class="icon">🎵</span>
-                                    Music
-                                </div>
-                                <div class="post-type-btn" onclick="selectPostType('image')">
-                                    <span class="icon">🖼️</span>
-                                    Image
-                                </div>
-                                <div class="post-type-btn" onclick="selectPostType('video')">
-                                    <span class="icon">🎬</span>
-                                    Video
-                                </div>
-                                <div class="post-type-btn" onclick="selectPostType('carousel')">
-                                    <span class="icon">🎠</span>
-                                    Gallery
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Basic Fields -->
-                        <div class="form-group">
-                            <label for="cmsPostDate">Post Date</label>
-                            <input type="date" id="cmsPostDate" required>
-                        </div>
-
-                        <!-- Dynamic Fields Based on Post Type -->
-                        <div class="dynamic-fields" id="cmsDynamicFields">
-                            <!-- Text Post Fields (Default) -->
-                            <div class="form-group">
-                                <label for="cmsTextContent">Text Content</label>
-                                <textarea id="cmsTextContent" placeholder="Enter your text content here..."></textarea>
-                            </div>
-                        </div>
-
-                        <button class="generate-btn" onclick="generateCMSPost()">
-                            ✨ Generate Post Code
-                        </button>
-
-                        <div class="instructions">
-                            <h4>📋 How to Use:</h4>
-                            <ol>
-                                <li>Select your post type above</li>
-                                <li>Fill in the required fields</li>
-                                <li>Click "Generate Post Code"</li>
-                                <li>Copy the generated HTML code</li>
-                                <li>Paste it into your timeline HTML file</li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <!-- Output Section -->
-                    <div class="cms-output">
-                        <h2>🔧 Generated Code</h2>
-                        
-                        <div class="output-section">
-                            <h3>Timeline Post HTML</h3>
-                            <div class="code-output" id="cmsPostOutput">
-Select a post type and fill in the fields to generate code...
-                            </div>
-                            <button class="copy-btn" onclick="copyToClipboard('cmsPostOutput')">📋 Copy Post Code</button>
-                        </div>
-
-                        <div class="output-section" id="cmsModalSection" style="display: none;">
-                            <h3>Modal HTML (if needed)</h3>
-                            <div class="code-output" id="cmsModalOutput"></div>
-                            <button class="copy-btn" onclick="copyToClipboard('cmsModalOutput')">📋 Copy Modal Code</button>
-                        </div>
-
-                        <div class="instructions">
-                            <h4>🎯 Where to Paste:</h4>
-                            <ol>
-                                <li><strong>Timeline Post:</strong> Paste in your timeline section where other posts are</li>
-                                <li><strong>Modal (if shown):</strong> Paste in your modals section at the bottom</li>
-                                <li>Save your HTML file and refresh your site!</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// CMS Variables
-let cmsCurrentPostType = 'text';
-let cmsCarouselImageCount = 3;
-const CMS_PASSWORD = 'MyWebsite'; // CHANGE THIS PASSWORD!
-
-// CMS Modal Functions
-function openCMSModal() {
-    document.getElementById('cmsModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-    
-    // Reset to password screen
-    document.getElementById('passwordScreen').style.display = 'flex';
-    document.getElementById('cmsContent').style.display = 'none';
-    document.getElementById('cmsPassword').value = '';
-    document.getElementById('passwordError').textContent = '';
-    
-    // Set current date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('cmsPostDate').value = today;
-}
-
-function closeCMSModal() {
-    document.getElementById('cmsModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-function checkPasswordKey(event) {
-    if (event.key === 'Enter') {
-        checkPassword();
-    }
-}
-
-function checkPassword() {
-    const enteredPassword = document.getElementById('cmsPassword').value;
-    const errorElement = document.getElementById('passwordError');
-    
-    if (enteredPassword === CMS_PASSWORD) {
-        document.getElementById('passwordScreen').style.display = 'none';
-        document.getElementById('cmsContent').style.display = 'block';
-        errorElement.textContent = '';
-    } else {
-        errorElement.textContent = 'Incorrect password. Please try again.';
-        document.getElementById('cmsPassword').value = '';
-    }
-}
-
-function selectPostType(type) {
-    cmsCurrentPostType = type;
-    
-    // Update active button
-    document.querySelectorAll('.post-type-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    event.target.closest('.post-type-btn').classList.add('active');
-    
-    // Update dynamic fields
-    updateCMSDynamicFields(type);
-}
-
-function updateCMSDynamicFields(type) {
-    const dynamicFields = document.getElementById('cmsDynamicFields');
-    
-    switch(type) {
-        case 'text':
-            dynamicFields.innerHTML = `
-                <div class="form-group">
-                    <label for="cmsTextContent">Text Content</label>
-                    <textarea id="cmsTextContent" placeholder="Enter your text content here..."></textarea>
-                </div>
-            `;
-            break;
-            
-        case 'music':
-            dynamicFields.innerHTML = `
-                <div class="form-group">
-                    <label for="cmsEmbedCode">Bandcamp/Spotify Embed Code</label>
-                    <textarea id="cmsEmbedCode" placeholder="Paste your embed code here (iframe or embed HTML)..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="cmsMusicDescription">Description (optional)</label>
-                    <textarea id="cmsMusicDescription" placeholder="Brief description of the track/album..."></textarea>
-                </div>
-            `;
-            break;
-            
-        case 'image':
-            dynamicFields.innerHTML = `
-                <div class="form-group">
-                    <label for="cmsImageUrl">Image URL</label>
-                    <input type="url" id="cmsImageUrl" placeholder="https://your-image-url.com/image.jpg" required>
-                </div>
-                <div class="form-group">
-                    <label for="cmsImageTitle">Image Title</label>
-                    <input type="text" id="cmsImageTitle" placeholder="Title to display on image">
-                </div>
-                <div class="form-group">
-                    <label for="cmsImageEmoji">Icon/Emoji (optional)</label>
-                    <input type="text" id="cmsImageEmoji" placeholder="📸" maxlength="2">
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="cmsImageModal"> Create modal for full view
-                    </label>
-                </div>
-                <div class="form-group" id="cmsModalContent" style="display: none;">
-                    <label for="cmsModalText">Modal Content</label>
-                    <textarea id="cmsModalText" placeholder="Content to show in modal when image is clicked..."></textarea>
-                </div>
-            `;
-            break;
-            
-        case 'video':
-            dynamicFields.innerHTML = `
-                <div class="form-group">
-                    <label for="cmsVideoType">Video Platform</label>
-                    <select id="cmsVideoType">
-                        <option value="youtube">YouTube</option>
-                        <option value="vimeo">Vimeo</option>
-                        <option value="other">Other/Custom</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="cmsVideoId">Video ID or URL</label>
-                    <input type="text" id="cmsVideoId" placeholder="Video ID or full URL" required>
-                </div>
-                <div class="form-group">
-                    <label for="cmsVideoTitle">Video Title</label>
-                    <input type="text" id="cmsVideoTitle" placeholder="Title of the video">
-                </div>
-                <div class="form-group">
-                    <label for="cmsVideoDescription">Description (optional)</label>
-                    <textarea id="cmsVideoDescription" placeholder="Description of the video..."></textarea>
-                </div>
-            `;
-            break;
-            
-        case 'carousel':
-            dynamicFields.innerHTML = `
-                <div class="form-group">
-                    <label for="cmsGalleryTitle">Gallery Title</label>
-                    <input type="text" id="cmsGalleryTitle" placeholder="Gallery Title" required>
-                </div>
-                <div class="form-group">
-                    <label for="cmsGalleryId">Gallery ID (unique)</label>
-                    <input type="text" id="cmsGalleryId" placeholder="gallery1, studio-session, etc." required>
-                </div>
-                <div class="form-group">
-                    <label>Gallery Images</label>
-                    <div class="carousel-images" id="cmsCarouselImages">
-                        <!-- Images will be added here -->
-                    </div>
-                    <button type="button" class="add-image-btn" onclick="addCMSCarouselImage()">+ Add Image</button>
-                </div>
-            `;
-            // Initialize with 3 image inputs
-            for(let i = 0; i < 3; i++) {
-                addCMSCarouselImage();
-            }
-            break;
-    }
-    
-    // Add event listeners for image modal checkbox
-    if(type === 'image') {
-        setTimeout(() => {
-            const checkbox = document.getElementById('cmsImageModal');
-            if (checkbox) {
-                checkbox.addEventListener('change', function() {
-                    document.getElementById('cmsModalContent').style.display = this.checked ? 'block' : 'none';
+                carousel.addEventListener('touchstart', function(e) {
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
                 });
+                
+                carousel.addEventListener('touchend', function(e) {
+                    endX = e.changedTouches[0].clientX;
+                    endY = e.changedTouches[0].clientY;
+                    handleSwipe(carousel.id);
+                });
+                
+                function handleSwipe(carouselId) {
+                    const deltaX = endX - startX;
+                    const deltaY = endY - startY;
+                    const minSwipeDistance = 50;
+                    
+                    // Check if horizontal swipe is greater than vertical (to avoid interfering with scroll)
+                    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+                        if (deltaX > 0) {
+                            // Swiped right - go to previous
+                            changeSlide(carouselId, -1);
+                        } else {
+                            // Swiped left - go to next
+                            changeSlide(carouselId, 1);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize carousels when page loads
+        function initializeCarousels() {
+            // Set initial slide for all carousels
+            const carousels = document.querySelectorAll('.carousel-slides');
+            carousels.forEach(carousel => {
+                slideIndex[carousel.id] = 1;
+                showSlide(carousel.id, 1);
+            });
+            
+            // Add swipe support
+            addSwipeSupport();
+        }
+                
+        // Floating strawberries system
+        let strawberries = [];
+        let isAnimating = false;
+        const STRAWBERRY_COUNT = 10;
+        const STRAWBERRY_SIZE = 50;
+        const SPEED = 1.8;
+
+        // Strawberry image URLs
+        const strawberryImages = [
+            'https://github.com/KyoseiJazz/shunyacarroll/blob/main/images/Notion%20pfp.png?raw=true'
+        ];
+
+        function createStrawberry(index) {
+            const strawberry = document.createElement('div');
+            strawberry.className = 'floating-strawberry';
+            strawberry.id = `strawberry-${index}`;
+            
+            // Random strawberry image
+            const imageUrl = strawberryImages[index % strawberryImages.length];
+            strawberry.style.backgroundImage = `url(${imageUrl})`;
+            
+            // Random starting position
+            const x = Math.random() * (window.innerWidth - STRAWBERRY_SIZE);
+            const y = Math.random() * (window.innerHeight - STRAWBERRY_SIZE);
+            
+            // Random movement direction
+            const vx = (Math.random() - 0.5) * SPEED * 2;
+            const vy = (Math.random() - 0.5) * SPEED * 2;
+            
+            strawberry.style.left = x + 'px';
+            strawberry.style.top = y + 'px';
+            
+            document.body.appendChild(strawberry);
+            
+            return {
+                element: strawberry,
+                x: x,
+                y: y,
+                vx: vx,
+                vy: vy,
+                size: STRAWBERRY_SIZE
+            };
+        }
+
+        function getPostAreas() {
+            const areas = [];
+            const posts = document.querySelectorAll('.post-content');
+            
+            posts.forEach(post => {
+                const rect = post.getBoundingClientRect();
+                areas.push({
+                    left: rect.left,
+                    right: rect.right,
+                    top: rect.top + window.scrollY,
+                    bottom: rect.bottom + window.scrollY,
+                    element: post
+                });
+            });
+            
+            return areas;
+        }
+
+        function checkCollisions(strawberry) {
+            const postAreas = getPostAreas();
+            const strawberryRect = {
+                left: strawberry.x,
+                right: strawberry.x + strawberry.size,
+                top: strawberry.y,
+                bottom: strawberry.y + strawberry.size
+            };
+            
+            // Check collision with posts (only visible ones)
+            postAreas.forEach(area => {
+                const viewportTop = window.scrollY;
+                const viewportBottom = window.scrollY + window.innerHeight;
+                
+                // Only check if post is in viewport
+                if (area.bottom > viewportTop && area.top < viewportBottom) {
+                    const adjustedTop = area.top - window.scrollY;
+                    const adjustedBottom = area.bottom - window.scrollY;
+                    
+                    if (strawberryRect.right > area.left && 
+                        strawberryRect.left < area.right &&
+                        strawberryRect.bottom > adjustedTop && 
+                        strawberryRect.top < adjustedBottom) {
+                        
+                        // Simple bounce away from post
+                        const overlapX = Math.min(strawberryRect.right - area.left, area.right - strawberryRect.left);
+                        const overlapY = Math.min(strawberryRect.bottom - adjustedTop, adjustedBottom - strawberryRect.top);
+                        
+                        if (overlapX < overlapY) {
+                            strawberry.vx = -strawberry.vx;
+                        } else {
+                            strawberry.vy = -strawberry.vy;
+                        }
+                    }
+                }
+            });
+        }
+
+        function animateStrawberries() {
+            if (!isAnimating) return;
+            
+            strawberries.forEach(strawberry => {
+                // Update position
+                strawberry.x += strawberry.vx;
+                strawberry.y += strawberry.vy;
+                
+                // Bounce off screen edges
+                if (strawberry.x <= 0 || strawberry.x >= window.innerWidth - strawberry.size) {
+                    strawberry.vx = -strawberry.vx;
+                    strawberry.x = Math.max(0, Math.min(strawberry.x, window.innerWidth - strawberry.size));
+                }
+                
+                if (strawberry.y <= 0 || strawberry.y >= window.innerHeight - strawberry.size) {
+                    strawberry.vy = -strawberry.vy;
+                    strawberry.y = Math.max(0, Math.min(strawberry.y, window.innerHeight - strawberry.size));
+                }
+                
+                // Check collisions with posts
+                checkCollisions(strawberry);
+                
+                // Update element position
+                strawberry.element.style.left = strawberry.x + 'px';
+                strawberry.element.style.top = strawberry.y + 'px';
+            });
+            
+            requestAnimationFrame(animateStrawberries);
+        }
+
+        function startStrawberries() {
+            console.log('Starting strawberries...');
+            
+            // Remove any existing strawberries
+            stopStrawberries();
+            
+            // Create new strawberries
+            for (let i = 0; i < STRAWBERRY_COUNT; i++) {
+                const strawberry = createStrawberry(i);
+                strawberries.push(strawberry);
             }
-        }, 100);
-    }
-}
-
-function addCMSCarouselImage() {
-    const container = document.getElementById('cmsCarouselImages');
-    const imageDiv = document.createElement('div');
-    imageDiv.className = 'carousel-image-input';
-    imageDiv.innerHTML = `
-        <input type="url" placeholder="Image URL" class="carousel-url">
-        <input type="text" placeholder="Caption" class="carousel-caption">
-        <button type="button" class="remove-image" onclick="removeCMSCarouselImage(this)">×</button>
-    `;
-    container.appendChild(imageDiv);
-}
-
-function removeCMSCarouselImage(button) {
-    button.parentElement.remove();
-}
-
-function generateCMSPost() {
-    const date = document.getElementById('cmsPostDate').value;
-    if (!date) {
-        alert('Please select a date for your post');
-        return;
-    }
-    
-    const displayDate = formatDisplayDate(date);
-    let postHtml = '';
-    let modalHtml = '';
-    
-    switch(cmsCurrentPostType) {
-        case 'text':
-            postHtml = generateCMSTextPost(date, displayDate);
-            break;
-        case 'music':
-            postHtml = generateCMSMusicPost(date, displayDate);
-            break;
-        case 'image':
-            const result = generateCMSImagePost(date, displayDate);
-            postHtml = result.post;
-            modalHtml = result.modal;
-            break;
-        case 'video':
-            const videoResult = generateCMSVideoPost(date, displayDate);
-            postHtml = videoResult.post;
-            modalHtml = videoResult.modal;
-            break;
-        case 'carousel':
-            const carouselResult = generateCMSCarouselPost(date, displayDate);
-            postHtml = carouselResult.post;
-            modalHtml = carouselResult.modal;
-            break;
-    }
-    
-    document.getElementById('cmsPostOutput').textContent = postHtml;
-    
-    if (modalHtml) {
-        document.getElementById('cmsModalOutput').textContent = modalHtml;
-        document.getElementById('cmsModalSection').style.display = 'block';
-    } else {
-        document.getElementById('cmsModalSection').style.display = 'none';
-    }
-}
-
-function formatDisplayDate(date) {
-    const d = new Date(date);
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const year = d.getFullYear();
-    return `${month}.${day}.${year}`;
-}
-
-function generateCMSTextPost(date, displayDate) {
-    const content = document.getElementById('cmsTextContent').value || 'Your text content here...';
-    
-    return `<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${displayDate}</div>
-    <div class="post-content">
-        <div class="post-text">
-            <p>${content}</p>
-        </div>
-    </div>
-</div>`;
-}
-
-function generateCMSMusicPost(date, displayDate) {
-    const embedCode = document.getElementById('cmsEmbedCode').value || '';
-    const description = document.getElementById('cmsMusicDescription').value;
-    
-    let content = embedCode;
-    if (description) {
-        content += `\n            <p style="margin-top: 10px;">${description}</p>`;
-    }
-    
-    return `<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${displayDate}</div>
-    <div class="post-content">
-        <div class="post-music">
-            ${content}
-        </div>
-    </div>
-</div>`;
-}
-
-function generateCMSImagePost(date, displayDate) {
-    const imageUrl = document.getElementById('cmsImageUrl').value || 'https://your-image-url.com/image.jpg';
-    const title = document.getElementById('cmsImageTitle').value || 'IMAGE TITLE';
-    const emoji = document.getElementById('cmsImageEmoji').value || '📸';
-    const hasModal = document.getElementById('cmsImageModal').checked;
-    const modalText = document.getElementById('cmsModalText').value || 'Image description here...';
-    
-    const modalId = hasModal ? `image-${Date.now()}` : '';
-    const clickHandler = hasModal ? ` onclick="openModal('${modalId}')"` : '';
-    
-    const post = `<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${displayDate}</div>
-    <div class="post-content">
-        <div class="post-large"${clickHandler}
-             style="background-image: url('${imageUrl}');">
-            <div class="post-title">${title}</div>
-            <div class="post-avatar">${emoji}</div>
-        </div>
-    </div>
-</div>`;
-
-    let modal = '';
-    if (hasModal) {
-        modal = `<div id="${modalId}" class="modal">
-    <div class="modal-content">
-        <button class="close" onclick="closeModal('${modalId}')">&times;</button>
-        <div class="full-post">
-            <h2>${title}</h2>
-            <div class="full-date">${new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-            <img src="${imageUrl}" alt="${title}">
-            <p>${modalText}</p>
-        </div>
-    </div>
-</div>`;
-    }
-    
-    return { post, modal };
-}
-
-function generateCMSVideoPost(date, displayDate) {
-    const videoType = document.getElementById('cmsVideoType').value;
-    const videoId = document.getElementById('cmsVideoId').value || '';
-    const title = document.getElementById('cmsVideoTitle').value || 'Video Title';
-    const description = document.getElementById('cmsVideoDescription').value;
-    
-    let embedUrl = '';
-    if (videoType === 'youtube') {
-        const youtubeId = videoId.includes('watch?v=') ? videoId.split('watch?v=')[1].split('&')[0] : 
-                         videoId.includes('youtu.be/') ? videoId.split('youtu.be/')[1] : videoId;
-        embedUrl = `https://www.youtube.com/embed/${youtubeId}`;
-    } else if (videoType === 'vimeo') {
-        const vimeoId = videoId.includes('vimeo.com/') ? videoId.split('vimeo.com/')[1] : videoId;
-        embedUrl = `https://player.vimeo.com/video/${vimeoId}`;
-    } else {
-        embedUrl = videoId;
-    }
-    
-    const modalId = `video-${Date.now()}`;
-    
-    const post = `<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${displayDate}</div>
-    <div class="post-content">
-        <div class="post-video" onclick="openModal('${modalId}')">
-            <iframe width="100%" height="200" 
-                    src="${embedUrl}" 
-                    title="${title}" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-            </iframe>
-            <p style="margin-top: 10px;">Click to read more about this video...</p>
-        </div>
-    </div>
-</div>`;
-
-    const modal = `<div id="${modalId}" class="modal">
-    <div class="modal-content">
-        <button class="close" onclick="closeModal('${modalId}')">&times;</button>
-        <div class="full-post">
-            <h2>${title}</h2>
-            <div class="full-date">${new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-            <iframe width="100%" height="400" 
-                    src="${embedUrl}" 
-                    title="${title}" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-            </iframe>
-            ${description ? `<p>${description}</p>` : ''}
-        </div>
-    </div>
-</div>`;
-    
-    return { post, modal };
-}
-
-function generateCMSCarouselPost(date, displayDate) {
-    const galleryTitle = document.getElementById('cmsGalleryTitle').value || 'Gallery Title';
-    const galleryId = document.getElementById('cmsGalleryId').value || 'gallery1';
-    
-    const imageInputs = document.querySelectorAll('#cmsCarouselImages .carousel-image-input');
-    const images = [];
-    
-    imageInputs.forEach(input => {
-        const url = input.querySelector('.carousel-url').value;
-        const caption = input.querySelector('.carousel-caption').value;
-        if (url) {
-            images.push({ url, caption: caption || 'Image caption' });
+            
+            isAnimating = true;
+            animateStrawberries();
         }
-    });
-    
-    if (images.length === 0) {
-        alert('Please add at least one image to your gallery');
-        return { post: '', modal: '' };
-    }
-    
-    const modalId = `${galleryId}-gallery`;
-    const carouselId = `modal-carousel-${galleryId}`;
-    
-    // Generate slides
-    let slides = '';
-    let dots = '';
-    
-    images.forEach((img, index) => {
-        const activeClass = index === 0 ? ' active' : '';
-        slides += `                    <div class="slide${activeClass}">
-                        <img src="${img.url}" alt="${galleryTitle} ${index + 1}">
-                        <div class="slide-caption">${img.caption}</div>
-                    </div>
-`;
-        dots += `                    <span class="dot${activeClass}" onclick="currentSlide('${carouselId}', ${index + 1})"></span>
-`;
-    });
-    
-    const post = `<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${displayDate}</div>
-    <div class="post-content">
-        <div class="post-large" onclick="openModal('${modalId}')"
-             style="background-image: url('${images[0].url}');">
-            <div class="post-title">${galleryTitle.toUpperCase()}</div>
-            <div class="post-avatar">📸</div>
-        </div>
-    </div>
-</div>`;
 
-    const modal = `<div id="${modalId}" class="modal">
-    <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
-        <button class="close" onclick="closeModal('${modalId}')">&times;</button>
-        
-        <div class="modal-gallery">
-            <div class="carousel-container" style="height: 80vh;">
-                <button class="carousel-nav prev" onclick="changeSlide('${carouselId}', -1)">‹</button>
-                <button class="carousel-nav next" onclick="changeSlide('${carouselId}', 1)">›</button>
-                
-                <div class="carousel-slides" id="${carouselId}">
-${slides}                </div>
-                
-                <div class="carousel-dots">
-${dots}                </div>
-            </div>
-        </div>
-    </div>
-</div>`;
-    
-    return { post, modal };
-}
-
-function copyToClipboard(elementId) {
-    const element = document.getElementById(elementId);
-    const text = element.textContent;
-    
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = '✅ Copied!';
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-            fallbackCopyTextToClipboard(text);
-        });
-    } else {
-        fallbackCopyTextToClipboard(text);
-    }
-}
-
-function fallbackCopyTextToClipboard(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.top = "-9999px";
-    textArea.style.left = "-9999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
-    try {
-        const successful = document.execCommand('copy');
-        if (successful) {
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = '✅ Copied!';
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 2000);
-        } else {
-            alert('Failed to copy. Please select the text manually.');
+        function stopStrawberries() {
+            isAnimating = false;
+            
+            strawberries.forEach(strawberry => {
+                if (strawberry.element && strawberry.element.parentNode) {
+                    strawberry.element.parentNode.removeChild(strawberry.element);
+                }
+            });
+            
+            strawberries = [];
         }
-    } catch (err) {
-        console.error('Fallback: Unable to copy', err);
-        alert('Failed to copy. Please select the text manually.');
-    }
-    
-    document.body.removeChild(textArea);
-}
 
-// Close CMS modal when clicking outside
-document.addEventListener('click', function(event) {
-    if (event.target.id === 'cmsModal') {
-        closeCMSModal();
-    }
-});
-
-// Initialize CMS
-document.addEventListener('DOMContentLoaded', function() {
-    // Set default post type
-    updateCMSDynamicFields('text');
-});
-</script>
-                
-</body>
-</html>
+        // Keyboard controls for testing
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 's' || event.key ===
