@@ -1,482 +1,20 @@
-// Carousel functions for galleries
-        let slideIndex = {};
-
-        function changeSlide(carouselId, direction) {
-            const carousel = document.getElementById(carouselId);
-            if (!carousel) return;
-            
-            const slides = carousel.querySelectorAll('.slide');
-            const dots = carousel.parentNode.querySelectorAll('.dot');
-            
-            if (!slideIndex[carouselId]) slideIndex[carouselId] = 1;
-            
-            slideIndex[carouselId] += direction;
-            
-            if (slideIndex[carouselId] > slides.length) {
-                slideIndex[carouselId] = 1;
-            }
-            if (slideIndex[carouselId] < 1) {
-                slideIndex[carouselId] = slides.length;
-            }
-            
-            showSlide(carouselId, slideIndex[carouselId]);
-        }
-
-        function currentSlide(carouselId, n) {
-            slideIndex[carouselId] = n;
-            showSlide(carouselId, n);
-        }
-
-        function showSlide(carouselId, n) {
-            const carousel = document.getElementById(carouselId);
-            if (!carousel) return;
-            
-            const slides = carousel.querySelectorAll('.slide');
-            const dots = carousel.parentNode.querySelectorAll('.dot');
-            
-            // Hide all slides
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            // Show current slide
-            if (slides[n-1]) {
-                slides[n-1].classList.add('active');
-            }
-            if (dots[n-1]) {
-                dots[n-1].classList.add('active');
-            }
-        }        // CMS Functions
-        function openCMSModal() {
-            document.getElementById('cmsModal').style.display = 'block';
-            document.getElementById('passwordScreen').style.display = 'flex';
-            document.getElementById('cmsContent').style.display = 'none';
-        }
-
-        function closeCMSModal() {
-            document.getElementById('cmsModal').style.display = 'none';
-            document.getElementById('cmsPassword').value = '';
-            document.getElementById('passwordError').textContent = '';
-        }
-
-        function checkPasswordKey(event) {
-            if (event.key === 'Enter') {
-                checkPassword();
-            }
-        }
-
-        function checkPassword() {
-            const password = document.getElementById('cmsPassword').value;
-            // Change this password to whatever you want
-            if (password === 'admin123') {
-                document.getElementById('passwordScreen').style.display = 'none';
-                document.getElementById('cmsContent').style.display = 'block';
-            } else {
-                document.getElementById('passwordError').textContent = 'Incorrect password';
-            }
-        }
-
-        function selectPostType(type) {
-            // Update button styles
-            document.querySelectorAll('.post-type-btn').forEach(btn => {
-                btn.style.background = 'white';
-                btn.style.borderColor = '#e1e5e9';
-                btn.style.color = '#333';
-            });
-            
-            event.target.closest('.post-type-btn').style.background = '#667eea';
-            event.target.closest('.post-type-btn').style.borderColor = '#667eea';
-            event.target.closest('.post-type-btn').style.color = 'white';
-            
-            // Update dynamic fields
-            const dynamicFields = document.getElementById('cmsDynamicFields');
-            
-            switch(type) {
-                case 'text':
-                    dynamicFields.innerHTML = `
-                        <div class="form-group">
-                            <label for="cmsTextContent" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Text Content</label>
-                            <textarea id="cmsTextContent" placeholder="Enter your text content here..." style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                                resize: vertical;
-                                min-height: 100px;
-                            "></textarea>
-                        </div>
-                    `;
-                    break;
-                    
-                case 'music':
-                    dynamicFields.innerHTML = `
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Bandcamp Embed Code</label>
-                            <textarea id="cmsMusicEmbed" placeholder="Paste Bandcamp iframe code here..." style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                                resize: vertical;
-                                min-height: 100px;
-                            "></textarea>
-                        </div>
-                    `;
-                    break;
-                    
-                case 'image':
-                    dynamicFields.innerHTML = `
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Image URL</label>
-                            <input type="text" id="cmsImageUrl" placeholder="https://example.com/image.jpg" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Title</label>
-                            <input type="text" id="cmsImageTitle" placeholder="Post title" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Modal ID</label>
-                            <input type="text" id="cmsModalId" placeholder="unique-modal-id" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                    `;
-                    break;
-                    
-                case 'discussion':
-                    dynamicFields.innerHTML = `
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Discussion Title</label>
-                            <input type="text" id="cmsDiscTitle" placeholder="Discussion title" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Preview Text</label>
-                            <textarea id="cmsDiscPreview" placeholder="Preview text..." style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                                resize: vertical;
-                                min-height: 80px;
-                            "></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Read Time</label>
-                            <input type="text" id="cmsReadTime" placeholder="5 min read" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Modal ID</label>
-                            <input type="text" id="cmsDiscModalId" placeholder="discussion-id" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                    `;
-                    break;
-                    
-                case 'gallery':
-                    dynamicFields.innerHTML = `
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Gallery Title</label>
-                            <input type="text" id="cmsGalleryTitle" placeholder="Gallery title" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Cover Image URL</label>
-                            <input type="text" id="cmsGalleryCover" placeholder="https://example.com/cover.jpg" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Modal ID</label>
-                            <input type="text" id="cmsGalleryModalId" placeholder="gallery-id" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-                        <div class="form-group">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Gallery Images (one URL per line)</label>
-                            <textarea id="cmsGalleryImages" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg&#10;https://example.com/image3.jpg" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                                resize: vertical;
-                                min-height: 150px;
-                            "></textarea>
-                        </div>
-                    `;
-                    break;
-            }
-        }
-
-        function generateCMSPost() {
-            const date = document.getElementById('cmsPostDate').value;
-            const timeline = document.getElementById('cmsTimeline').value;
-            const postType = document.querySelector('.post-type-btn[style*="667eea"]').textContent.trim().toLowerCase();
-            
-            if (!date) {
-                alert('Please select a date');
-                return;
-            }
-            
-            let postHTML = '';
-            let modalHTML = '';
-            
-            // Format date
-            const dateObj = new Date(date);
-            const formattedDate = `${String(dateObj.getMonth() + 1).padStart(2, '0')}.${String(dateObj.getDate()).padStart(2, '0')}.${dateObj.getFullYear()}`;
-            
-            switch(postType) {
-                case 'text':
-                    const textContent = document.getElementById('cmsTextContent').value;
-                    postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-text">
-            <p>${textContent}</p>
-        </div>
-    </div>
-</div>`;
-                    break;
-                    
-                case 'music':
-                    const musicEmbed = document.getElementById('cmsMusicEmbed').value;
-                    postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-music">
-            ${musicEmbed}
-        </div>
-    </div>
-</div>`;
-                    break;
-                    
-                case 'image':
-                    const imageUrl = document.getElementById('cmsImageUrl').value;
-                    const imageTitle = document.getElementById('cmsImageTitle').value;
-                    const modalId = document.getElementById('cmsModalId').value;
-                    
-                    postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-large" onclick="openModal('${modalId}')"
-             style="background-image: url('${imageUrl}');">
-            <div class="post-title">${imageTitle}</div>
-            <div class="post-avatar">🎵</div>
-        </div>
-    </div>
-</div>`;
-                    
-                    modalHTML = `
-<div id="${modalId}" class="modal">
-    <div class="modal-content">
-        <button class="close" onclick="closeModal('${modalId}')">&times;</button>
-        <div class="full-post">
-            <h2>${imageTitle}</h2>
-            <div class="full-date">${formattedDate}</div>
-            <p>Content here...</p>
-        </div>
-    </div>
-</div>`;
-                    break;
-                    
-                case 'discussion':
-                    const discTitle = document.getElementById('cmsDiscTitle').value;
-                    const discPreview = document.getElementById('cmsDiscPreview').value;
-                    const readTime = document.getElementById('cmsReadTime').value;
-                    const discModalId = document.getElementById('cmsDiscModalId').value;
-                    
-                    postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-discussion" onclick="openModal('${discModalId}')">
-            <div class="discussion-title">${discTitle}</div>
-            <div class="discussion-preview">
-                ${discPreview}
-            </div>
-            <div class="discussion-meta">
-                <span>${readTime}</span>
-            </div>
-        </div>
-    </div>
-</div>`;
-                    
-                    modalHTML = `
-<div id="${discModalId}" class="modal">
-    <div class="modal-content">
-        <button class="close" onclick="closeModal('${discModalId}')">&times;</button>
-        <div class="full-post">
-            <h2>${discTitle}</h2>
-            <div class="full-date">${formattedDate}</div>
-            <p>Full discussion content here...</p>
-        </div>
-    </div>
-</div>`;
-                    break;
-                    
-                case 'gallery':
-                    const galleryTitle = document.getElementById('cmsGalleryTitle').value;
-                    const galleryCover = document.getElementById('cmsGalleryCover').value;
-                    const galleryModalId = document.getElementById('cmsGalleryModalId').value;
-                    const galleryImages = document.getElementById('cmsGalleryImages').value.split('\n').filter(url => url.trim());
-                    
-                    postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-large" onclick="openModal('${galleryModalId}')"
-             style="background-image: url('${galleryCover}');">
-            <div class="post-title">${galleryTitle}</div>
-            <div class="post-avatar">🎠</div>
-        </div>
-    </div>
-</div>`;
-                    
-                    const gallerySlides = galleryImages.map((url, index) => `
-        <div class="slide${index === 0 ? ' active' : ''}">
-            <img src="${url}" alt="${galleryTitle} ${index + 1}">
-            <div class="slide-caption">Image ${index + 1}</div>
-        </div>`).join('');
-                    
-                    const galleryDots = galleryImages.map((url, index) => `
-        <span class="dot${index === 0 ? ' active' : ''}" onclick="currentSlide('${galleryModalId}-carousel', ${index + 1})"></span>`).join('');
-                    
-                    modalHTML = `
-<div id="${galleryModalId}" class="modal">
-    <div class="modal-content" style="max-width: 95%; max-height: 95%; padding: 0;">
-        <button class="close" onclick="closeModal('${galleryModalId}')">&times;</button>
-        
-        <div class="modal-gallery">
-            <div class="carousel-container" style="height: 80vh;">
-                <button class="carousel-nav prev" onclick="changeSlide('${galleryModalId}-carousel', -1)">‹</button>
-                <button class="carousel-nav next" onclick="changeSlide('${galleryModalId}-carousel', 1)">›</button>
-                
-                <div class="carousel-slides" id="${galleryModalId}-carousel">
-                    ${gallerySlides}
-                </div>
-                
-                <div class="carousel-dots">
-                    ${galleryDots}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>`;
-                    break;
-            }
-            
-            // Display generated code
-            document.getElementById('cmsPostOutput').textContent = postHTML;
-            
-            if (modalHTML) {
-                document.getElementById('cmsModalSection').style.display = 'block';
-                document.getElementById('cmsModalOutput').textContent = modalHTML;
-            } else {
-                document.getElementById('cmsModalSection').style.display = 'none';
-            }
-            
-            // Show instructions
-            alert(`Generated! Copy the code and paste it into your ${timeline} timeline in the HTML file.`);
-        }
-
-        function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            const text = element.textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Code copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-                // Fallback method
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                alert('Code copied to clipboard!');
-            });
-        }="openModal('${discModalId}')">
-            <div class="discussion-title">${discTitle}</div>
-            <div class="discussion-preview">
-                ${discPreview}
-            </div>
-            <div class="discussion-meta">
-                <span>${readTime}</span>
-            </div>
-        </div>
-    </div>
-</div>`;
-                    
-                    modalHTML = `
-<div id="${discModalId}" class="modal">
-    <div class="modal-content">
-        <button class="close" onclick="closeModal('${discModalId}')">&times;</button>
-        <div class="full-post">
-            <h2>${discTitle}</h2>
-            <div class="full-date">${formattedDate}</div>
-            <p>Full discussion content here    <!-- Text Grid (Our World of Text style) -->
-    <div class="text-grid" id="textGrid"></div>
-    <div class="text-cursor" id="textCursor"></div>
-    <input type="text" class="hidden-input" id="hiddenInput" autocomplete="off"><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timeline Blog</title>
+
+    <!-- Add Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // Initialize Supabase (replace with your keys)
+      const SUPABASE_URL = 'https://cxgbefpmoaeoorysclvx.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4Z2JlZnBtb2Flb29yeXNjbHZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NzY5ODEsImV4cCI6MjA3MTQ1Mjk4MX0.WXJfQtiQzSxW044VIZQT4ODKkOir6SMnJPUPrECh6Ww';
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         * {
             margin: 0;
@@ -515,7 +53,6 @@
             transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        /* Shift container when opinion is active to keep it centered */
         .nav-container.opinion-active {
             transform: translateX(-60px);
         }
@@ -533,7 +70,6 @@
             padding: 0;
         }
 
-        /* Features button - starts large */
         .timeline-btn.features {
             font-size: 2em;
         }
@@ -543,7 +79,6 @@
             color: #999;
         }
 
-        /* Opinion button - starts small */
         .timeline-btn.opinion {
             font-size: 1.2em;
             color: #999;
@@ -558,7 +93,7 @@
             opacity: 0.8;
         }
 
-        /* Timeline Container with 3D Rotation */
+        /* Timeline Container */
         .timeline-wrapper {
             position: relative;
             width: 100%;
@@ -572,7 +107,6 @@
             transform: rotateY(-180deg);
         }
 
-        /* Individual Timeline Panels */
         .timeline-panel {
             position: absolute;
             width: 100%;
@@ -626,7 +160,6 @@
             border: 2px solid #333;
             display: inline-block;
             margin-bottom: 5px;
-            font-feature-settings: 'tnum';
         }
 
         .current-date {
@@ -635,21 +168,7 @@
             margin-bottom: 30px;
         }
 
-        /* Clock connection to timeline */
-        .clock-section::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: -30px;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
-            background: #333;
-            border-radius: 50%;
-            border: 3px solid #f5f5f5;
-            z-index: 2;
-        }
-
+        /* Timeline Posts */
         .timeline-post {
             position: relative;
             margin-top: 0;
@@ -701,13 +220,11 @@
         .post-content {
             background: transparent;
             padding: 20px;
-            box-shadow: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease;
         }
 
         .post-content:hover {
             transform: translateY(-2px);
-            box-shadow: none;
         }
 
         .timeline-post:nth-child(odd) .post-content {
@@ -718,10 +235,11 @@
             margin-left: 30px;
         }
 
+        /* Post Styles */
         .post-large {
-            width: auto;            
-            max-width: 600px;         
-            height: auto;            
+            width: auto;
+            max-width: 600px;
+            height: auto;
             min-height: 300px;
             background-size: contain;
             background-repeat: no-repeat;
@@ -732,7 +250,6 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 5px;
-            background-color: transparent;
             transition: transform 0.2s ease;
         }
 
@@ -750,8 +267,6 @@
         .post-avatar {
             width: 60px;
             height: 60px;
-            background: transparent;
-            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -759,26 +274,11 @@
             font-size: 1.2em;
         }
 
-        .post-text {
-            line-height: 1.6;
-            cursor: pointer;
-        }
-
-        .post-text p {
-            color: #555;
-        }
-
         .post-music {
             text-align: center;
             padding: 10px;
         }
 
-        .post-music iframe {
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Discussion post styles */
         .post-discussion {
             background: white;
             border-radius: 10px;
@@ -809,35 +309,28 @@
         .discussion-meta {
             display: flex;
             justify-content: flex-end;
-            align-items: center;
             font-size: 0.9em;
             color: #999;
         }
 
-        /* Text Grid System (Our World of Text style) */
+        /* Text Grid */
         .text-grid {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            line-height: 20px;
-            letter-spacing: 0;
-            white-space: pre;
             pointer-events: none;
             z-index: 30;
         }
 
-        .text-cell {
+        .text-tile {
             position: absolute;
-            width: 9.6px;  /* Monospace character width */
-            height: 20px;
-            pointer-events: all;
-            color: #333;
-            cursor: text;
-            user-select: none;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 20px;
+            white-space: pre;
+            pointer-events: none;
         }
 
         .text-cursor {
@@ -861,37 +354,6 @@
             50%, 100% { opacity: 0; }
         }
 
-        .text-selection {
-            position: absolute;
-            background: rgba(102, 126, 234, 0.2);
-            pointer-events: none;
-            z-index: 29;
-        }
-
-        /* Hidden input for capturing typing */
-        .hidden-input {
-            position: fixed;
-            left: -9999px;
-            top: -9999px;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Color variations for text */
-        .text-cell.color-1 { color: #333; }
-        .text-cell.color-2 { color: #667eea; }
-        .text-cell.color-3 { color: #764ba2; }
-        .text-cell.color-4 { color: #22c55e; }
-        .text-cell.color-5 { color: #ef4444; }
-        .text-cell.color-6 { color: #f59e0b; }
-
-        /* Prevent selection on timeline content when typing */
-        body.typing-mode .timeline-wrapper {
-            user-select: none;
-        }
-
         /* Floating Speech Bubble */
         .floating-speech-bubble {
             position: fixed;
@@ -912,32 +374,7 @@
             transition: all 0.3s ease;
         }
 
-        .floating-speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 30px;
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid #333;
-        }
-
-        .floating-speech-bubble::before {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 31px;
-            width: 0;
-            height: 0;
-            border-left: 9px solid transparent;
-            border-right: 9px solid transparent;
-            border-top: 9px solid white;
-            z-index: 1;
-        }
-
-        /* Modal Styles */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -969,10 +406,7 @@
             right: 15px;
             font-size: 24px;
             cursor: pointer;
-            background: none;
-            border: none;
             color: #666;
-            transition: color 0.2s ease;
         }
 
         .close:hover {
@@ -981,15 +415,6 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .timeline-nav {
-                top: 10px;
-            }
-
-            .nav-container {
-                gap: 20px;
-            }
-
-            /* Adjust shift amount for mobile */
             .nav-container.opinion-active {
                 transform: translateX(-40px);
             }
@@ -1008,11 +433,6 @@
                 left: 20px;
             }
 
-            .clock-section::after {
-                left: 20px;
-                transform: translateX(-50%);
-            }
-
             .timeline-post {
                 padding-left: 50px !important;
                 padding-right: 20px !important;
@@ -1020,7 +440,6 @@
 
             .timeline-post::before {
                 left: 20px;
-                transform: translateX(-50%);
             }
 
             .post-content {
@@ -1033,18 +452,7 @@
                 top: auto !important;
                 transform: none !important;
                 text-align: left !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-                margin-bottom: 10px !important;
-            }
-
-            .current-time {
-                font-size: 1em;
-                padding: 8px 15px;
-            }
-
-            .timeline-container {
-                padding: 30px 15px;
+                margin: 0 0 10px 0 !important;
             }
         }
     </style>
@@ -1058,7 +466,7 @@
         </div>
     </div>
 
-    <!-- Timeline Wrapper with 3D Rotation -->
+    <!-- Timeline Wrapper -->
     <div class="timeline-wrapper" id="timelineWrapper">
         
         <!-- FEATURES TIMELINE -->
@@ -1066,7 +474,7 @@
             <div class="timeline-container">
                 <div class="clock-section">
                     <div class="current-time" id="currentTime-features">12:00:00 PM</div>
-                    <div class="current-date" id="currentDate-features">08.13.2025</div>
+                    <div class="current-date" id="currentDate-features">01.21.2025</div>
                 </div>
 
                 <div class="timeline">
@@ -1085,7 +493,7 @@
                         <div class="post-date">08.14.2025</div>
                         <div class="post-content">
                             <div class="post-music">
-                                <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless><a href="https://patrickholland.bandcamp.com/album/infra">Infra by Patrick Holland</a></iframe>      
+                                <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless></iframe>
                             </div>
                         </div>
                     </div>
@@ -1108,7 +516,7 @@
             <div class="timeline-container">
                 <div class="clock-section">
                     <div class="current-time" id="currentTime-opinion">12:00:00 PM</div>
-                    <div class="current-date" id="currentDate-opinion">08.13.2025</div>
+                    <div class="current-date" id="currentDate-opinion">01.21.2025</div>
                 </div>
 
                 <div class="timeline">
@@ -1143,383 +551,43 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="timeline-post" data-date="2025-08-16">
-                        <div class="post-date">08.16.2025</div>
-                        <div class="post-content">
-                            <div class="post-discussion" onclick="openModal('discussion-3')">
-                                <div class="discussion-title">The Renaissance of RSS Feeds</div>
-                                <div class="discussion-preview">
-                                    In an era of algorithmic feeds and walled gardens, RSS is making a comeback. 
-                                    Why the old-school tech might be exactly what we need...
-                                </div>
-                                <div class="discussion-meta">
-                                    <span>6 min read</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- New Post Button -->
-    <button id="newPostBtn" onclick="openCMSModal()" style="
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 15px 25px;
-        border-radius: 50px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        z-index: 100;
-        transition: transform 0.2s ease;
-    ">
-        ✨ New Post
-    </button>
-
-    <!-- CMS Modal -->
-    <div id="cmsModal" class="cms-modal" style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.9);
-        z-index: 2000;
-        overflow-y: auto;
-    ">
-        <div class="cms-modal-content" style="
-            max-width: 1400px;
-            margin: 20px auto;
-            background: #f5f7fa;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            position: relative;
-            min-height: calc(100vh - 40px);
-        ">
-            <span class="cms-close" onclick="closeCMSModal()" style="
-                position: absolute;
-                top: 15px;
-                right: 20px;
-                font-size: 30px;
-                color: #666;
-                cursor: pointer;
-                z-index: 10;
-                background: white;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            ">&times;</span>
-            
-            <!-- Password Screen -->
-            <div id="passwordScreen" class="password-screen" style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                text-align: center;
-                padding: 20px;
-            ">
-                <div class="password-form" style="
-                    background: rgba(255,255,255,0.1);
-                    padding: 40px;
-                    border-radius: 15px;
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255,255,255,0.2);
-                    max-width: 400px;
-                    width: 100%;
-                ">
-                    <h2>🔐 Admin Access</h2>
-                    <p>Enter password to access CMS</p>
-                    <input type="password" id="cmsPassword" placeholder="Enter password" style="
-                        width: 100%;
-                        padding: 15px;
-                        border: none;
-                        border-radius: 8px;
-                        font-size: 16px;
-                        margin: 15px 0;
-                        background: rgba(255,255,255,0.9);
-                    " onkeypress="checkPasswordKey(event)">
-                    <button onclick="checkPassword()" style="
-                        width: 100%;
-                        padding: 15px;
-                        background: rgba(255,255,255,0.2);
-                        border: 2px solid white;
-                        color: white;
-                        border-radius: 8px;
-                        font-size: 16px;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                    ">Access CMS</button>
-                    <div id="passwordError" class="error-message" style="
-                        color: #ff6b6b;
-                        margin-top: 10px;
-                        font-weight: bold;
-                    "></div>
-                </div>
-            </div>
-
-            <!-- CMS Content (hidden until password is correct) -->
-            <div id="cmsContent" style="display: none;">
-                <div class="cms-container" style="padding: 20px; color: #333; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                    <div class="cms-header" style="
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        color: white;
-                        padding: 30px;
-                        border-radius: 10px;
-                        margin-bottom: 30px;
-                        text-align: center;
-                    ">
-                        <h1 style="font-size: 2.5em; margin-bottom: 10px;">🎵 Timeline Blog CMS</h1>
-                        <p style="opacity: 0.9; font-size: 1.1em;">Create new posts for your timeline without editing code</p>
-                    </div>
-
-                    <div class="cms-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <!-- Form Section -->
-                        <div class="cms-form" style="
-                            background: white;
-                            padding: 30px;
-                            border-radius: 10px;
-                            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                        ">
-                            <h2>📝 Create New Post</h2>
-                            
-                            <!-- Post Type Selection -->
-                            <div class="form-group" style="margin-bottom: 20px;">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Post Type</label>
-                                <div class="post-type-selector" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px;">
-                                    <div class="post-type-btn active" onclick="selectPostType('text')" style="
-                                        padding: 15px;
-                                        border: 2px solid #667eea;
-                                        background: #667eea;
-                                        color: white;
-                                        border-radius: 8px;
-                                        cursor: pointer;
-                                        text-align: center;
-                                        transition: all 0.3s ease;
-                                        font-size: 12px;
-                                    ">
-                                        <span style="font-size: 24px; display: block; margin-bottom: 5px;">📄</span>
-                                        Text
-                                    </div>
-                                    <div class="post-type-btn" onclick="selectPostType('music')" style="
-                                        padding: 15px;
-                                        border: 2px solid #e1e5e9;
-                                        background: white;
-                                        border-radius: 8px;
-                                        cursor: pointer;
-                                        text-align: center;
-                                        transition: all 0.3s ease;
-                                        font-size: 12px;
-                                    ">
-                                        <span style="font-size: 24px; display: block; margin-bottom: 5px;">🎵</span>
-                                        Music
-                                    </div>
-                                    <div class="post-type-btn" onclick="selectPostType('image')" style="
-                                        padding: 15px;
-                                        border: 2px solid #e1e5e9;
-                                        background: white;
-                                        border-radius: 8px;
-                                        cursor: pointer;
-                                        text-align: center;
-                                        transition: all 0.3s ease;
-                                        font-size: 12px;
-                                    ">
-                                        <span style="font-size: 24px; display: block; margin-bottom: 5px;">🖼️</span>
-                                        Image
-                                    </div>
-                                    <div class="post-type-btn" onclick="selectPostType('discussion')" style="
-                                        padding: 15px;
-                                        border: 2px solid #e1e5e9;
-                                        background: white;
-                                        border-radius: 8px;
-                                        cursor: pointer;
-                                        text-align: center;
-                                        transition: all 0.3s ease;
-                                        font-size: 12px;
-                                    ">
-                                        <span style="font-size: 24px; display: block; margin-bottom: 5px;">💬</span>
-                                        Discussion
-                                    </div>
-                                    <div class="post-type-btn" onclick="selectPostType('gallery')" style="
-                                        padding: 15px;
-                                        border: 2px solid #e1e5e9;
-                                        background: white;
-                                        border-radius: 8px;
-                                        cursor: pointer;
-                                        text-align: center;
-                                        transition: all 0.3s ease;
-                                        font-size: 12px;
-                                    ">
-                                        <span style="font-size: 24px; display: block; margin-bottom: 5px;">🎠</span>
-                                        Gallery
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Basic Fields -->
-                            <div class="form-group" style="margin-bottom: 20px;">
-                                <label for="cmsPostDate" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Post Date</label>
-                                <input type="date" id="cmsPostDate" required style="
-                                    width: 100%;
-                                    padding: 12px;
-                                    border: 2px solid #e1e5e9;
-                                    border-radius: 6px;
-                                    font-size: 14px;
-                                ">
-                            </div>
-
-                            <div class="form-group" style="margin-bottom: 20px;">
-                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Timeline</label>
-                                <select id="cmsTimeline" style="
-                                    width: 100%;
-                                    padding: 12px;
-                                    border: 2px solid #e1e5e9;
-                                    border-radius: 6px;
-                                    font-size: 14px;
-                                ">
-                                    <option value="features">Features</option>
-                                    <option value="opinion">Opinion & Discussion</option>
-                                </select>
-                            </div>
-
-                            <!-- Dynamic Fields Based on Post Type -->
-                            <div class="dynamic-fields" id="cmsDynamicFields">
-                                <!-- Text Post Fields (Default) -->
-                                <div class="form-group">
-                                    <label for="cmsTextContent" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Text Content</label>
-                                    <textarea id="cmsTextContent" placeholder="Enter your text content here..." style="
-                                        width: 100%;
-                                        padding: 12px;
-                                        border: 2px solid #e1e5e9;
-                                        border-radius: 6px;
-                                        font-size: 14px;
-                                        resize: vertical;
-                                        min-height: 100px;
-                                    "></textarea>
-                                </div>
-                            </div>
-
-                            <button class="generate-btn" onclick="generateCMSPost()" style="
-                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                                color: white;
-                                border: none;
-                                padding: 15px 30px;
-                                border-radius: 8px;
-                                font-size: 16px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                width: 100%;
-                                transition: transform 0.2s ease;
-                                margin-top: 20px;
-                            ">
-                                ✨ Generate Post Code
-                            </button>
-                        </div>
-
-                        <!-- Output Section -->
-                        <div class="cms-output" style="
-                            background: #1e1e1e;
-                            color: #f8f8f2;
-                            padding: 30px;
-                            border-radius: 10px;
-                            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                        ">
-                            <h2>🔧 Generated Code</h2>
-                            
-                            <div class="output-section">
-                                <h3 style="color: #61dafb; margin-bottom: 15px; font-size: 1.2em;">Timeline Post HTML</h3>
-                                <div class="code-output" id="cmsPostOutput" style="
-                                    background: #2d2d2d;
-                                    border: 1px solid #444;
-                                    border-radius: 6px;
-                                    padding: 15px;
-                                    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-                                    font-size: 13px;
-                                    line-height: 1.4;
-                                    overflow-x: auto;
-                                    white-space: pre-wrap;
-                                    margin-bottom: 10px;
-                                    max-height: 300px;
-                                    overflow-y: auto;
-                                ">Select a post type and fill in the fields to generate code...</div>
-                                <button class="copy-btn" onclick="copyToClipboard('cmsPostOutput')" style="
-                                    background: #28a745;
-                                    color: white;
-                                    border: none;
-                                    padding: 8px 15px;
-                                    border-radius: 4px;
-                                    cursor: pointer;
-                                    font-size: 12px;
-                                ">📋 Copy Post Code</button>
-                            </div>
-
-                            <div class="output-section" id="cmsModalSection" style="display: none; margin-top: 20px;">
-                                <h3 style="color: #61dafb; margin-bottom: 15px; font-size: 1.2em;">Modal HTML (if needed)</h3>
-                                <div class="code-output" id="cmsModalOutput" style="
-                                    background: #2d2d2d;
-                                    border: 1px solid #444;
-                                    border-radius: 6px;
-                                    padding: 15px;
-                                    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-                                    font-size: 13px;
-                                    line-height: 1.4;
-                                    overflow-x: auto;
-                                    white-space: pre-wrap;
-                                    margin-bottom: 10px;
-                                    max-height: 300px;
-                                    overflow-y: auto;
-                                "></div>
-                                <button class="copy-btn" onclick="copyToClipboard('cmsModalOutput')" style="
-                                    background: #28a745;
-                                    color: white;
-                                    border: none;
-                                    padding: 8px 15px;
-                                    border-radius: 4px;
-                                    cursor: pointer;
-                                    font-size: 12px;
-                                ">📋 Copy Modal Code</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Text Grid -->
+    <div class="text-grid" id="textGrid"></div>
+    <div class="text-cursor" id="textCursor"></div>
 
     <!-- Floating Speech Bubble -->
     <div class="floating-speech-bubble" id="speechBubble">
         💭 click anywhere & type
     </div>
 
-    <!-- Modals (add your existing modal content here) -->
+    <!-- Modals -->
     <div id="soft-power" class="modal">
-        <!-- Your existing soft-power modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('soft-power')">&times;</span>
+            <h2>Thinking About Soft Power</h2>
+            <p>Content here...</p>
+        </div>
     </div>
 
     <div id="spotify-war" class="modal">
-        <!-- Your existing spotify-war modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('spotify-war')">&times;</span>
+            <h2>Spotify's Connection to War</h2>
+            <p>Content here...</p>
+        </div>
     </div>
 
     <script>
-        // Timeline switching with 3D rotation
+        // Core variables
         let currentTimeline = 'features';
 
+        // Timeline switching
         function switchTimeline(timeline) {
             const wrapper = document.getElementById('timelineWrapper');
             const navContainer = document.getElementById('navContainer');
@@ -1543,502 +611,6 @@
             }
             
             currentTimeline = timeline;
-            
-            // Update text visibility for the new timeline
-            updateTextVisibility();
-            
-            // Load tiles for new timeline from Supabase
-            if (typeof loadAllTiles === 'function') {
-                loadAllTiles();
-            }
-        }
-
-        // Our World of Text style typing system (adapted)
-        const TILE_ROWS = 8;
-        const TILE_COLS = 16;
-        const CHAR_WIDTH = 9.6;
-        const CHAR_HEIGHT = 20;
-        
-        // Tile storage for each timeline
-        const tiles = {
-            features: {},
-            opinion: {}
-        };
-        
-        let cursorTileY = 0;
-        let cursorTileX = 0;
-        let cursorCharY = 0;
-        let cursorCharX = 0;
-        let isTyping = false;
-        let hiddenInput = null;
-        let lastFetch = 0;
-        let pendingEdits = [];
-
-        // Initialize text grid system (Our World of Text style)
-        function initTextGrid() {
-            // Create hidden input (YWOT technique)
-            hiddenInput = document.createElement('input');
-            hiddenInput.type = 'text';
-            hiddenInput.style.position = 'absolute';
-            hiddenInput.style.left = '-1000px';
-            hiddenInput.style.top = '-1000px';
-            document.body.appendChild(hiddenInput);
-            
-            // Check for input every 10ms (like YWOT)
-            setInterval(function() {
-                if (hiddenInput.value && isTyping) {
-                    typeChar(hiddenInput.value.charAt(0));
-                    moveCursor('right');
-                    hiddenInput.value = ''; // Clear to prevent paste
-                }
-            }, 10);
-            
-            // Always refocus on hidden input
-            document.addEventListener('mousedown', function() {
-                if (isTyping) {
-                    hiddenInput.focus();
-                }
-            });
-            
-            // Handle special keys
-            document.addEventListener('keydown', function(e) {
-                if (!isTyping) return;
-                
-                hiddenInput.focus(); // Always keep focus
-                
-                switch(e.keyCode) {
-                    case 8: // Backspace
-                        e.preventDefault();
-                        moveCursor('left');
-                        typeChar(' ');
-                        break;
-                    case 13: // Enter
-                        e.preventDefault();
-                        moveCursor('newline');
-                        break;
-                    case 37: // Left arrow
-                        e.preventDefault();
-                        moveCursor('left');
-                        break;
-                    case 39: // Right arrow
-                        e.preventDefault();
-                        moveCursor('right');
-                        break;
-                    case 38: // Up arrow
-                        e.preventDefault();
-                        moveCursor('up');
-                        break;
-                    case 40: // Down arrow
-                        e.preventDefault();
-                        moveCursor('down');
-                        break;
-                    case 27: // Escape
-                        e.preventDefault();
-                        stopTyping();
-                        break;
-                }
-            });
-            
-            // Handle clicks on timeline
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.modal') || 
-                    e.target.closest('.timeline-nav') ||
-                    e.target.tagName === 'BUTTON' ||
-                    e.target.closest('.floating-speech-bubble')) {
-                    if (isTyping) {
-                        stopTyping();
-                    }
-                    return;
-                }
-                
-                // Allow typing on timeline panels
-                if (e.target.closest('.timeline-panel')) {
-                    const rect = e.target.closest('.timeline-panel').getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    startTypingAt(x, y);
-                }
-            });
-            
-            // Fetch updates periodically (like YWOT)
-            setInterval(fetchTileUpdates, 2000);
-            
-            // Send edits periodically
-            setInterval(sendPendingEdits, 1997);
-            
-            // Initial load
-            loadVisibleTiles();
-        }
-
-        function startTypingAt(x, y) {
-            // Calculate tile and character position
-            cursorTileX = Math.floor(x / (CHAR_WIDTH * TILE_COLS));
-            cursorTileY = Math.floor(y / (CHAR_HEIGHT * TILE_ROWS));
-            cursorCharX = Math.floor((x % (CHAR_WIDTH * TILE_COLS)) / CHAR_WIDTH);
-            cursorCharY = Math.floor((y % (CHAR_HEIGHT * TILE_ROWS)) / CHAR_HEIGHT);
-            
-            // Create tile if needed
-            getOrCreateTile(cursorTileY, cursorTileX);
-            
-            // Show cursor
-            updateCursor();
-            
-            // Start typing mode
-            isTyping = true;
-            hiddenInput.focus();
-            
-            // Hide speech bubble
-            document.getElementById('speechBubble').style.opacity = '0';
-        }
-
-        function stopTyping() {
-            isTyping = false;
-            
-            // Hide cursor
-            const cursor = document.getElementById('textCursor');
-            cursor.classList.remove('active');
-            
-            // Show speech bubble
-            setTimeout(() => {
-                document.getElementById('speechBubble').style.opacity = '0.9';
-            }, 1000);
-        }
-
-        function getOrCreateTile(tileY, tileX) {
-            const key = `${tileY},${tileX}`;
-            const timeline = currentTimeline;
-            
-            if (!tiles[timeline][key]) {
-                // Create new tile
-                const tile = {
-                    content: Array(TILE_ROWS * TILE_COLS).fill(' ').join(''),
-                    element: null,
-                    tileY: tileY,
-                    tileX: tileX
-                };
-                tiles[timeline][key] = tile;
-                renderTile(tile);
-            }
-            
-            return tiles[timeline][key];
-        }
-
-        function renderTile(tile) {
-            // Create tile element if it doesn't exist
-            if (!tile.element) {
-                const tileDiv = document.createElement('div');
-                tileDiv.className = 'text-tile';
-                tileDiv.style.position = 'absolute';
-                tileDiv.style.left = (tile.tileX * TILE_COLS * CHAR_WIDTH) + 'px';
-                tileDiv.style.top = (tile.tileY * TILE_ROWS * CHAR_HEIGHT) + 'px';
-                tileDiv.style.width = (TILE_COLS * CHAR_WIDTH) + 'px';
-                tileDiv.style.height = (TILE_ROWS * CHAR_HEIGHT) + 'px';
-                tileDiv.style.fontFamily = 'Courier New, monospace';
-                tileDiv.style.fontSize = '16px';
-                tileDiv.style.lineHeight = CHAR_HEIGHT + 'px';
-                tileDiv.style.whiteSpace = 'pre';
-                tileDiv.dataset.timeline = currentTimeline;
-                
-                document.getElementById('textGrid').appendChild(tileDiv);
-                tile.element = tileDiv;
-            }
-            
-            // Update content
-            let html = '';
-            for (let y = 0; y < TILE_ROWS; y++) {
-                for (let x = 0; x < TILE_COLS; x++) {
-                    const index = y * TILE_COLS + x;
-                    const char = tile.content[index] || ' ';
-                    html += escapeChar(char);
-                }
-                if (y < TILE_ROWS - 1) html += '\n';
-            }
-            tile.element.innerHTML = html;
-            
-            // Show/hide based on current timeline
-            if (tile.element.dataset.timeline === currentTimeline) {
-                tile.element.style.display = 'block';
-            } else {
-                tile.element.style.display = 'none';
-            }
-        }
-
-        function typeChar(char) {
-            if (!isTyping) return;
-            
-            const tile = getOrCreateTile(cursorTileY, cursorTileX);
-            const index = cursorCharY * TILE_COLS + cursorCharX;
-            
-            // Update tile content
-            tile.content = tile.content.substring(0, index) + char + tile.content.substring(index + 1);
-            
-            // Re-render tile
-            renderTile(tile);
-            
-            // Queue edit for server
-            pendingEdits.push({
-                timeline: currentTimeline,
-                tileY: cursorTileY,
-                tileX: cursorTileX,
-                charY: cursorCharY,
-                charX: cursorCharX,
-                char: char,
-                timestamp: Date.now()
-            });
-        }
-
-        function moveCursor(direction) {
-            if (!isTyping) return;
-            
-            switch(direction) {
-                case 'right':
-                    cursorCharX++;
-                    if (cursorCharX >= TILE_COLS) {
-                        cursorCharX = 0;
-                        cursorTileX++;
-                    }
-                    break;
-                case 'left':
-                    cursorCharX--;
-                    if (cursorCharX < 0) {
-                        cursorCharX = TILE_COLS - 1;
-                        cursorTileX--;
-                    }
-                    break;
-                case 'down':
-                    cursorCharY++;
-                    if (cursorCharY >= TILE_ROWS) {
-                        cursorCharY = 0;
-                        cursorTileY++;
-                    }
-                    break;
-                case 'up':
-                    cursorCharY--;
-                    if (cursorCharY < 0) {
-                        cursorCharY = TILE_ROWS - 1;
-                        cursorTileY--;
-                    }
-                    break;
-                case 'newline':
-                    cursorCharX = 0;
-                    cursorCharY++;
-                    if (cursorCharY >= TILE_ROWS) {
-                        cursorCharY = 0;
-                        cursorTileY++;
-                    }
-                    break;
-            }
-            
-            // Ensure tile exists
-            getOrCreateTile(cursorTileY, cursorTileX);
-            
-            // Update cursor position
-            updateCursor();
-        }
-
-        function updateCursor() {
-            const cursor = document.getElementById('textCursor');
-            const x = (cursorTileX * TILE_COLS + cursorCharX) * CHAR_WIDTH;
-            const y = (cursorTileY * TILE_ROWS + cursorCharY) * CHAR_HEIGHT;
-            
-            cursor.style.left = x + 'px';
-            cursor.style.top = y + 'px';
-            cursor.classList.add('active');
-        }
-
-        function escapeChar(s) {
-            if (s === '<') return '&lt;';
-            if (s === '>') return '&gt;';
-            if (s === '&') return '&amp;';
-            if (s === ' ') return '&nbsp;';
-            return s;
-        }
-
-        function loadVisibleTiles() {
-            // Calculate visible tile bounds
-            const panel = document.querySelector('.timeline-panel.active');
-            if (!panel) return;
-            
-            const rect = panel.getBoundingClientRect();
-            const minTileY = Math.floor(panel.scrollTop / (CHAR_HEIGHT * TILE_ROWS)) - 1;
-            const maxTileY = Math.ceil((panel.scrollTop + rect.height) / (CHAR_HEIGHT * TILE_ROWS)) + 1;
-            const minTileX = Math.floor(panel.scrollLeft / (CHAR_WIDTH * TILE_COLS)) - 1;
-            const maxTileX = Math.ceil((panel.scrollLeft + rect.width) / (CHAR_WIDTH * TILE_COLS)) + 1;
-            
-            // Load tiles in visible range
-            for (let y = minTileY; y <= maxTileY; y++) {
-                for (let x = minTileX; x <= maxTileX; x++) {
-                    getOrCreateTile(y, x);
-                }
-            }
-        }
-
-        async function sendPendingEdits() {
-            if (pendingEdits.length === 0) return;
-            
-            // Group edits by tile
-            const tileUpdates = {};
-            pendingEdits.forEach(edit => {
-                const key = `${edit.tileY},${edit.tileX}`;
-                if (!tileUpdates[key]) {
-                    tileUpdates[key] = {
-                        timeline: edit.timeline,
-                        tile_key: key,
-                        tile_x: edit.tileX,
-                        tile_y: edit.tileY,
-                        content: tiles[edit.timeline][key]?.content || ''
-                    };
-                }
-            });
-            
-            // Send to Supabase
-            try {
-                const updates = Object.values(tileUpdates);
-                if (updates.length > 0) {
-                    const { error } = await supabase
-                        .from('tiles')
-                        .upsert(updates, {
-                            onConflict: 'timeline,tile_key'
-                        });
-                    
-                    if (error) {
-                        console.error('Error saving tiles:', error);
-                        // Fall back to localStorage
-                        updates.forEach(update => {
-                            const allTiles = JSON.parse(localStorage.getItem(`tiles_${update.timeline}`) || '{}');
-                            allTiles[update.tile_key] = update;
-                            localStorage.setItem(`tiles_${update.timeline}`, JSON.stringify(allTiles));
-                        });
-                    }
-                }
-            } catch (err) {
-                console.error('Supabase error:', err);
-            }
-            
-            pendingEdits = [];
-        }
-
-        async function fetchTileUpdates() {
-            // Only fetch if we have Supabase configured
-            if (typeof supabase === 'undefined') {
-                // Fall back to localStorage
-                const saved = localStorage.getItem(`tiles_${currentTimeline}`);
-                if (saved) {
-                    const savedTiles = JSON.parse(saved);
-                    Object.entries(savedTiles).forEach(([key, tileData]) => {
-                        if (!tiles[currentTimeline][key]) {
-                            tiles[currentTimeline][key] = tileData;
-                            renderTile(tileData);
-                        }
-                    });
-                }
-                return;
-            }
-            
-            try {
-                // Fetch updates from last 30 seconds
-                const since = new Date(Date.now() - 30000).toISOString();
-                
-                const { data, error } = await supabase
-                    .from('tiles')
-                    .select('*')
-                    .eq('timeline', currentTimeline)
-                    .gte('updated_at', since);
-                
-                if (error) {
-                    console.error('Error fetching tiles:', error);
-                    return;
-                }
-                
-                // Update local tiles with server data
-                data?.forEach(row => {
-                    const tile = tiles[currentTimeline][row.tile_key];
-                    
-                    if (!tile || tile.content !== row.content) {
-                        // New or updated tile
-                        tiles[currentTimeline][row.tile_key] = {
-                            content: row.content,
-                            tileY: row.tile_y,
-                            tileX: row.tile_x,
-                            element: tile?.element || null
-                        };
-                        renderTile(tiles[currentTimeline][row.tile_key]);
-                    }
-                });
-            } catch (err) {
-                console.error('Fetch error:', err);
-            }
-        }
-
-        // Load all tiles when switching timelines or on page load
-        async function loadAllTiles() {
-            if (typeof supabase === 'undefined') return;
-            
-            try {
-                const { data, error } = await supabase
-                    .from('tiles')
-                    .select('*')
-                    .eq('timeline', currentTimeline);
-                
-                if (error) {
-                    console.error('Error loading tiles:', error);
-                    return;
-                }
-                
-                // Clear and reload all tiles for this timeline
-                const textGrid = document.getElementById('textGrid');
-                
-                // Remove old tiles from this timeline
-                document.querySelectorAll(`.text-tile[data-timeline="${currentTimeline}"]`).forEach(el => {
-                    el.remove();
-                });
-                
-                // Load new tiles
-                data?.forEach(row => {
-                    tiles[currentTimeline][row.tile_key] = {
-                        content: row.content,
-                        tileY: row.tile_y,
-                        tileX: row.tile_x,
-                        element: null
-                    };
-                    renderTile(tiles[currentTimeline][row.tile_key]);
-                });
-            } catch (err) {
-                console.error('Load error:', err);
-            }
-        }
-
-        // Speech Bubble Animation
-        function initSpeechBubble() {
-            const bubble = document.getElementById('speechBubble');
-            let x = Math.random() * (window.innerWidth - 250);
-            let y = Math.random() * (window.innerHeight - 100);
-            let vx = (Math.random() - 0.5) * 1.5;
-            let vy = (Math.random() - 0.5) * 1.5;
-
-            bubble.style.left = x + 'px';
-            bubble.style.top = y + 'px';
-
-            function animateBubble() {
-                x += vx;
-                y += vy;
-
-                if (x <= 0 || x >= window.innerWidth - 250) {
-                    vx = -vx;
-                    x = Math.max(0, Math.min(x, window.innerWidth - 250));
-                }
-                if (y <= 0 || y >= window.innerHeight - 60) {
-                    vy = -vy;
-                    y = Math.max(0, Math.min(y, window.innerHeight - 60));
-                }
-
-                bubble.style.left = x + 'px';
-                bubble.style.top = y + 'px';
-
-                requestAnimationFrame(animateBubble);
-            }
-
-            animateBubble();
         }
 
         // Update date and time
@@ -2074,7 +646,6 @@
             if (modal) {
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
-                event.stopPropagation();
             }
         }
 
@@ -2086,17 +657,44 @@
             }
         }
 
+        // Speech bubble animation
+        function initSpeechBubble() {
+            const bubble = document.getElementById('speechBubble');
+            let x = Math.random() * (window.innerWidth - 250);
+            let y = Math.random() * (window.innerHeight - 100);
+            let vx = (Math.random() - 0.5) * 1.5;
+            let vy = (Math.random() - 0.5) * 1.5;
+
+            bubble.style.left = x + 'px';
+            bubble.style.top = y + 'px';
+
+            function animateBubble() {
+                x += vx;
+                y += vy;
+
+                if (x <= 0 || x >= window.innerWidth - 250) {
+                    vx = -vx;
+                    x = Math.max(0, Math.min(x, window.innerWidth - 250));
+                }
+                if (y <= 0 || y >= window.innerHeight - 60) {
+                    vy = -vy;
+                    y = Math.max(0, Math.min(y, window.innerHeight - 60));
+                }
+
+                bubble.style.left = x + 'px';
+                bubble.style.top = y + 'px';
+
+                requestAnimationFrame(animateBubble);
+            }
+
+            animateBubble();
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             updateDateTime();
             setInterval(updateDateTime, 1000);
             initSpeechBubble();
-            initTextGrid();
-            
-            // Load initial tiles from Supabase
-            if (typeof loadAllTiles === 'function') {
-                setTimeout(loadAllTiles, 500); // Small delay to ensure Supabase is ready
-            }
         });
 
         // Close modal on outside click
@@ -2104,17 +702,6 @@
             if (event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
                 document.body.style.overflow = 'auto';
-            }
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(event) {
-            if (event.target.tagName === 'TEXTAREA') return;
-            
-            if (event.key === 'ArrowLeft' && currentTimeline === 'opinion') {
-                switchTimeline('features');
-            } else if (event.key === 'ArrowRight' && currentTimeline === 'features') {
-                switchTimeline('opinion');
             }
         });
     </script>
