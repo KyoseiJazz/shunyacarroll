@@ -1318,5 +1318,683 @@
             }
         });
     </script>
+
+<!-- Desktop-only New Post Button -->
+<button id="newPostBtn" onclick="openCMSModal()" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+    transition: transform 0.2s ease;
+    display: none;
+">
+    ✨ New Post
+</button>
+
+<!-- Additional Floating Bubbles -->
+<div class="floating-bubble-2" id="cookieBubble" style="
+    position: fixed;
+    width: auto;
+    min-width: 180px;
+    max-width: 220px;
+    background: white;
+    border: 2px solid #333;
+    border-radius: 20px;
+    padding: 12px 18px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    font-weight: 500;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 99;
+    pointer-events: none;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+">
+    🍪 No Cookies No Surveillance
+</div>
+
+<div class="floating-bubble-3" id="shunyaBubble" style="
+    position: fixed;
+    width: auto;
+    min-width: 150px;
+    max-width: 180px;
+    background: white;
+    border: 2px solid #333;
+    border-radius: 20px;
+    padding: 12px 18px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    font-weight: 500;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 98;
+    pointer-events: none;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+">
+    ✨ Shunya was here
+</div>
+
+<!-- CMS Modal -->
+<div id="cmsModal" style="
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 2000;
+    overflow-y: auto;
+">
+    <div style="
+        max-width: 1400px;
+        margin: 20px auto;
+        background: #f5f7fa;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        position: relative;
+        min-height: calc(100vh - 40px);
+    ">
+        <span onclick="closeCMSModal()" style="
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            color: #666;
+            cursor: pointer;
+            z-index: 10;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        ">&times;</span>
+        
+        <!-- Password Screen -->
+        <div id="passwordScreen" style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        ">
+            <div style="
+                background: rgba(255,255,255,0.1);
+                padding: 40px;
+                border-radius: 15px;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.2);
+                max-width: 400px;
+                width: 100%;
+            ">
+                <h2>🔐 Admin Access</h2>
+                <p>Enter password to access CMS</p>
+                <input type="password" id="cmsPassword" placeholder="Enter password" style="
+                    width: 100%;
+                    padding: 15px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    margin: 15px 0;
+                    background: rgba(255,255,255,0.9);
+                " onkeypress="checkPasswordKey(event)">
+                <button onclick="checkPassword()" style="
+                    width: 100%;
+                    padding: 15px;
+                    background: rgba(255,255,255,0.2);
+                    border: 2px solid white;
+                    color: white;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                ">Access CMS</button>
+                <div id="passwordError" style="
+                    color: #ff6b6b;
+                    margin-top: 10px;
+                    font-weight: bold;
+                "></div>
+            </div>
+        </div>
+
+        <!-- CMS Content -->
+        <div id="cmsContent" style="display: none;">
+            <div style="padding: 20px; color: #333; font-family: 'Inter', sans-serif;">
+                <div style="
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 30px;
+                    border-radius: 10px;
+                    margin-bottom: 30px;
+                    text-align: center;
+                ">
+                    <h1 style="font-size: 2.5em; margin-bottom: 10px;">🎵 Timeline Blog CMS</h1>
+                    <p style="opacity: 0.9; font-size: 1.1em;">Create new posts for your timeline without editing code</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <!-- Form Section -->
+                    <div style="
+                        background: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                    ">
+                        <h2>📝 Create New Post</h2>
+                        
+                        <!-- Post Type Selection -->
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Post Type</label>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
+                                <div class="post-type-btn active" onclick="selectPostType('text')" style="
+                                    padding: 15px;
+                                    border: 2px solid #667eea;
+                                    background: #667eea;
+                                    color: white;
+                                    border-radius: 8px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    transition: all 0.3s ease;
+                                    font-size: 12px;
+                                ">
+                                    <span style="font-size: 24px; display: block; margin-bottom: 5px;">📄</span>
+                                    Text
+                                </div>
+                                <div class="post-type-btn" onclick="selectPostType('music')" style="
+                                    padding: 15px;
+                                    border: 2px solid #e1e5e9;
+                                    background: white;
+                                    border-radius: 8px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    transition: all 0.3s ease;
+                                    font-size: 12px;
+                                ">
+                                    <span style="font-size: 24px; display: block; margin-bottom: 5px;">🎵</span>
+                                    Music
+                                </div>
+                                <div class="post-type-btn" onclick="selectPostType('image')" style="
+                                    padding: 15px;
+                                    border: 2px solid #e1e5e9;
+                                    background: white;
+                                    border-radius: 8px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    transition: all 0.3s ease;
+                                    font-size: 12px;
+                                ">
+                                    <span style="font-size: 24px; display: block; margin-bottom: 5px;">🖼️</span>
+                                    Image
+                                </div>
+                                <div class="post-type-btn" onclick="selectPostType('discussion')" style="
+                                    padding: 15px;
+                                    border: 2px solid #e1e5e9;
+                                    background: white;
+                                    border-radius: 8px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    transition: all 0.3s ease;
+                                    font-size: 12px;
+                                ">
+                                    <span style="font-size: 24px; display: block; margin-bottom: 5px;">💬</span>
+                                    Discussion
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Basic Fields -->
+                        <div style="margin-bottom: 20px;">
+                            <label for="cmsPostDate" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Post Date</label>
+                            <input type="date" id="cmsPostDate" required style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 2px solid #e1e5e9;
+                                border-radius: 6px;
+                                font-size: 14px;
+                            ">
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Timeline</label>
+                            <select id="cmsTimeline" style="
+                                width: 100%;
+                                padding: 12px;
+                                border: 2px solid #e1e5e9;
+                                border-radius: 6px;
+                                font-size: 14px;
+                            ">
+                                <option value="features">Features</option>
+                                <option value="opinion">Opinion & Discussion</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Fields -->
+                        <div id="cmsDynamicFields">
+                            <div>
+                                <label for="cmsTextContent" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Text Content</label>
+                                <textarea id="cmsTextContent" placeholder="Enter your text content here..." style="
+                                    width: 100%;
+                                    padding: 12px;
+                                    border: 2px solid #e1e5e9;
+                                    border-radius: 6px;
+                                    font-size: 14px;
+                                    resize: vertical;
+                                    min-height: 100px;
+                                "></textarea>
+                            </div>
+                        </div>
+
+                        <button onclick="generateCMSPost()" style="
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            border: none;
+                            padding: 15px 30px;
+                            border-radius: 8px;
+                            font-size: 16px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            width: 100%;
+                            transition: transform 0.2s ease;
+                            margin-top: 20px;
+                        ">
+                            ✨ Generate Post Code
+                        </button>
+                    </div>
+
+                    <!-- Output Section -->
+                    <div style="
+                        background: #1e1e1e;
+                        color: #f8f8f2;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                    ">
+                        <h2>🔧 Generated Code</h2>
+                        
+                        <div>
+                            <h3 style="color: #61dafb; margin-bottom: 15px; font-size: 1.2em;">Timeline Post HTML</h3>
+                            <div id="cmsPostOutput" style="
+                                background: #2d2d2d;
+                                border: 1px solid #444;
+                                border-radius: 6px;
+                                padding: 15px;
+                                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                                font-size: 13px;
+                                line-height: 1.4;
+                                overflow-x: auto;
+                                white-space: pre-wrap;
+                                margin-bottom: 10px;
+                                max-height: 300px;
+                                overflow-y: auto;
+                            ">Select a post type and fill in the fields to generate code...</div>
+                            <button onclick="copyToClipboard('cmsPostOutput')" style="
+                                background: #28a745;
+                                color: white;
+                                border: none;
+                                padding: 8px 15px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 12px;
+                            ">📋 Copy Post Code</button>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 15px; background: #2d2d2d; border-radius: 6px;">
+                            <h4 style="color: #61dafb; margin-bottom: 10px;">How to Add Your Post:</h4>
+                            <ol style="color: #f8f8f2; font-size: 12px; line-height: 1.6;">
+                                <li>Click "Generate Post Code" above</li>
+                                <li>Click "Copy Post Code" to copy the HTML</li>
+                                <li>Open your HTML file in a text editor</li>
+                                <li>Find the timeline section you selected (Features or Opinion)</li>
+                                <li>Paste the code inside the timeline div, before the closing &lt;/div&gt;</li>
+                                <li>Save your file - your new post will appear!</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Show CMS button only on desktop
+if (window.innerWidth > 768) {
+    document.getElementById('newPostBtn').style.display = 'block';
+}
+
+// Initialize additional floating bubbles
+function initAdditionalBubbles() {
+    // Cookie bubble
+    const cookieBubble = document.getElementById('cookieBubble');
+    let cookieX = Math.random() * (window.innerWidth - 220);
+    let cookieY = Math.random() * (window.innerHeight - 100);
+    let cookieVx = (Math.random() - 0.5) * 1;
+    let cookieVy = (Math.random() - 0.5) * 1;
+
+    cookieBubble.style.left = cookieX + 'px';
+    cookieBubble.style.top = cookieY + 'px';
+
+    // Shunya bubble
+    const shunyaBubble = document.getElementById('shunyaBubble');
+    let shunyaX = Math.random() * (window.innerWidth - 180);
+    let shunyaY = Math.random() * (window.innerHeight - 100);
+    let shunyaVx = (Math.random() - 0.5) * 0.8;
+    let shunyaVy = (Math.random() - 0.5) * 0.8;
+
+    shunyaBubble.style.left = shunyaX + 'px';
+    shunyaBubble.style.top = shunyaY + 'px';
+
+    function animateAdditionalBubbles() {
+        // Cookie bubble movement
+        cookieX += cookieVx;
+        cookieY += cookieVy;
+
+        if (cookieX <= 0 || cookieX >= window.innerWidth - 220) {
+            cookieVx = -cookieVx;
+            cookieX = Math.max(0, Math.min(cookieX, window.innerWidth - 220));
+        }
+        if (cookieY <= 0 || cookieY >= window.innerHeight - 60) {
+            cookieVy = -cookieVy;
+            cookieY = Math.max(0, Math.min(cookieY, window.innerHeight - 60));
+        }
+
+        cookieBubble.style.left = cookieX + 'px';
+        cookieBubble.style.top = cookieY + 'px';
+
+        // Shunya bubble movement
+        shunyaX += shunyaVx;
+        shunyaY += shunyaVy;
+
+        if (shunyaX <= 0 || shunyaX >= window.innerWidth - 180) {
+            shunyaVx = -shunyaVx;
+            shunyaX = Math.max(0, Math.min(shunyaX, window.innerWidth - 180));
+        }
+        if (shunyaY <= 0 || shunyaY >= window.innerHeight - 60) {
+            shunyaVy = -shunyaVy;
+            shunyaY = Math.max(0, Math.min(shunyaY, window.innerHeight - 60));
+        }
+
+        shunyaBubble.style.left = shunyaX + 'px';
+        shunyaBubble.style.top = shunyaY + 'px';
+
+        requestAnimationFrame(animateAdditionalBubbles);
+    }
+
+    animateAdditionalBubbles();
+}
+
+// Initialize bubbles after page load
+setTimeout(initAdditionalBubbles, 1000);
+
+// CMS Functions
+function openCMSModal() {
+    document.getElementById('cmsModal').style.display = 'block';
+    document.getElementById('passwordScreen').style.display = 'flex';
+    document.getElementById('cmsContent').style.display = 'none';
+}
+
+function closeCMSModal() {
+    document.getElementById('cmsModal').style.display = 'none';
+    document.getElementById('cmsPassword').value = '';
+    document.getElementById('passwordError').textContent = '';
+}
+
+function checkPasswordKey(event) {
+    if (event.key === 'Enter') {
+        checkPassword();
+    }
+}
+
+function checkPassword() {
+    const password = document.getElementById('cmsPassword').value;
+    // Change this password to whatever you want
+    if (password === 'admin123') {
+        document.getElementById('passwordScreen').style.display = 'none';
+        document.getElementById('cmsContent').style.display = 'block';
+    } else {
+        document.getElementById('passwordError').textContent = 'Incorrect password';
+    }
+}
+
+function selectPostType(type) {
+    // Update button styles
+    document.querySelectorAll('.post-type-btn').forEach(btn => {
+        btn.style.background = 'white';
+        btn.style.borderColor = '#e1e5e9';
+        btn.style.color = '#333';
+    });
+    
+    event.target.closest('.post-type-btn').style.background = '#667eea';
+    event.target.closest('.post-type-btn').style.borderColor = '#667eea';
+    event.target.closest('.post-type-btn').style.color = 'white';
+    
+    // Update dynamic fields
+    const dynamicFields = document.getElementById('cmsDynamicFields');
+    
+    switch(type) {
+        case 'text':
+            dynamicFields.innerHTML = `
+                <div>
+                    <label for="cmsTextContent" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Text Content</label>
+                    <textarea id="cmsTextContent" placeholder="Enter your text content here..." style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #e1e5e9;
+                        border-radius: 6px;
+                        font-size: 14px;
+                        resize: vertical;
+                        min-height: 100px;
+                    "></textarea>
+                </div>
+            `;
+            break;
+            
+        case 'music':
+            dynamicFields.innerHTML = `
+                <div>
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Bandcamp Embed Code</label>
+                    <textarea id="cmsMusicEmbed" placeholder="Paste Bandcamp iframe code here..." style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #e1e5e9;
+                        border-radius: 6px;
+                        font-size: 14px;
+                        resize: vertical;
+                        min-height: 100px;
+                    "></textarea>
+                    <small style="color: #666; font-size: 12px;">Go to Bandcamp, click Share, copy the iframe code and paste it here</small>
+                </div>
+            `;
+            break;
+            
+        case 'image':
+            dynamicFields.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Image URL</label>
+                    <input type="text" id="cmsImageUrl" placeholder="https://example.com/image.jpg" style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #e1e5e9;
+                        border-radius: 6px;
+                        font-size: 14px;
+                    ">
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Title</label>
+                    <input type="text" id="cmsImageTitle" placeholder="Post title" style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #e1e5e9;
+                        border-radius: 6px;
+                        font-size: 14px;
+                    ">
+                </div>
+            `;
+            break;
+            
+        case 'discussion':
+            dynamicFields.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Discussion Title</label>
+                    <input type="text" id="cmsDiscTitle" placeholder="Discussion title" style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #e1e5e9;
+                        border-radius: 6px;
+                        font-size: 14px;
+                    ">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Preview Text</label>
+                    <textarea id="cmsDiscPreview" placeholder="Preview text..." style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #e1e5e9;
+                        border-radius: 6px;
+                        font-size: 14px;
+                        resize: vertical;
+                        min-height: 80px;
+                    "></textarea>
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Read Time</label>
+                    <input type="text" id="cmsReadTime" placeholder="5 min read" style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #e1e5e9;
+                        border-radius: 6px;
+                        font-size: 14px;
+                    ">
+                </div>
+            `;
+            break;
+    }
+}
+
+function generateCMSPost() {
+    const date = document.getElementById('cmsPostDate').value;
+    const timeline = document.getElementById('cmsTimeline').value;
+    const postType = document.querySelector('.post-type-btn[style*="667eea"]').textContent.trim().toLowerCase();
+    
+    if (!date) {
+        alert('Please select a date');
+        return;
+    }
+    
+    let postHTML = '';
+    
+    // Format date
+    const dateObj = new Date(date);
+    const formattedDate = `${String(dateObj.getMonth() + 1).padStart(2, '0')}.${String(dateObj.getDate()).padStart(2, '0')}.${dateObj.getFullYear()}`;
+    
+    switch(postType) {
+        case 'text':
+            const textContent = document.getElementById('cmsTextContent').value;
+            postHTML = `
+<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${formattedDate}</div>
+    <div class="post-content">
+        <div class="post-text">
+            <p>${textContent}</p>
+        </div>
+    </div>
+</div>`;
+            break;
+            
+        case 'music':
+            const musicEmbed = document.getElementById('cmsMusicEmbed').value;
+            postHTML = `
+<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${formattedDate}</div>
+    <div class="post-content">
+        <div class="post-music">
+            ${musicEmbed}
+        </div>
+    </div>
+</div>`;
+            break;
+            
+        case 'image':
+            const imageUrl = document.getElementById('cmsImageUrl').value;
+            const imageTitle = document.getElementById('cmsImageTitle').value;
+            
+            postHTML = `
+<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${formattedDate}</div>
+    <div class="post-content">
+        <div class="post-large" style="background-image: url('${imageUrl}');">
+            <div class="post-title">${imageTitle}</div>
+            <div class="post-avatar">🎵</div>
+        </div>
+    </div>
+</div>`;
+            break;
+            
+        case 'discussion':
+            const discTitle = document.getElementById('cmsDiscTitle').value;
+            const discPreview = document.getElementById('cmsDiscPreview').value;
+            const readTime = document.getElementById('cmsReadTime').value;
+            
+            postHTML = `
+<div class="timeline-post" data-date="${date}">
+    <div class="post-date">${formattedDate}</div>
+    <div class="post-content">
+        <div class="post-discussion">
+            <div class="discussion-title">${discTitle}</div>
+            <div class="discussion-preview">
+                ${discPreview}
+            </div>
+            <div class="discussion-meta">
+                <span>${readTime}</span>
+            </div>
+        </div>
+    </div>
+</div>`;
+            break;
+    }
+    
+    // Display generated code
+    document.getElementById('cmsPostOutput').textContent = postHTML;
+    
+    // Show instructions
+    alert(`Generated! Copy the code and paste it into your ${timeline} timeline in the HTML file.`);
+}
+
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    const text = element.textContent;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Code copied to clipboard!');
+    }).catch(err => {
+        console.error('Failed to copy:', err);
+        // Fallback method
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('Code copied to clipboard!');
+    });
+}
+</script>
 </body>
 </html>
