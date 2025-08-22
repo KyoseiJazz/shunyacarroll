@@ -15,154 +15,174 @@
 
         body {
             font-family: 'Roboto Mono', 'Courier New', monospace;
-            background: #f5f5f5;
+            background: linear-gradient(180deg, #e8e8e8 0%, #f5f5f5 100%);
             color: #333;
             line-height: 1.4;
             overflow-x: hidden;
-            perspective: 1500px;
+            min-height: 100vh;
+            position: relative;
         }
 
-        /* Timeline Carousel Container */
-        .timeline-carousel-wrapper {
+        /* Postcard Carousel Container */
+        .carousel-stand {
             position: relative;
             width: 100%;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            transform-style: preserve-3d;
-            padding-top: 40px;
-            perspective: 2000px;
+            perspective: 1500px;
+            overflow: hidden;
         }
 
-        .timeline-carousel {
+        .postcard-carousel {
             position: relative;
-            width: 100%;
-            max-width: 900px;
+            width: 800px;
+            height: 90vh;
             transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        /* Individual Timeline Panels */
-        .timeline-panel {
+        /* Individual Postcard Timelines */
+        .timeline-postcard {
             position: absolute;
             width: 100%;
-            min-height: 100vh;
-            background: #f5f5f5;
-            backface-visibility: visible;
+            height: 100%;
+            background: white;
+            border: 3px solid #333;
+            border-radius: 8px;
+            overflow-y: auto;
+            overflow-x: hidden;
             transform-style: preserve-3d;
-            padding: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            border-radius: 15px;
-            transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
-            transform-origin: center center;
+            backface-visibility: visible;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        /* Features Timeline (Front) */
-        .timeline-panel.features {
+        /* Active (front) card */
+        .timeline-postcard.position-0 {
             transform: translateZ(0px);
-            z-index: 2;
+            z-index: 10;
             opacity: 1;
         }
 
-        .timeline-panel.features.active {
-            transform: translateZ(0px);
-            z-index: 2;
+        .timeline-postcard.position-0 .timeline-line,
+        .timeline-postcard.position-0 .timeline-post::before,
+        .timeline-postcard.position-0 .current-time {
+            background: #333;
+            border-color: #333;
+        }
+
+        .timeline-postcard.position-0 .timeline-title {
+            color: #333;
             opacity: 1;
         }
 
-        /* Opinion Timeline (Back - visible in distance) */
-        .timeline-panel.opinion {
-            transform: translateX(150px) translateZ(-400px) scale(0.8);
-            opacity: 0.6;
-            z-index: 1;
+        .timeline-postcard.position-0 .timeline-container {
+            display: block;
         }
 
-        /* When Opinion is active */
-        .timeline-carousel.show-opinion .timeline-panel.features {
-            transform: translateX(-150px) translateZ(-400px) scale(0.8);
-            opacity: 0.6;
-            z-index: 1;
+        /* Background cards - grey and distant */
+        .timeline-postcard.position-1 {
+            transform: translateX(200px) translateZ(-300px) scale(0.9);
+            z-index: 5;
+            opacity: 0.8;
+            border-color: #ccc;
         }
 
-        .timeline-carousel.show-opinion .timeline-panel.opinion {
+        .timeline-postcard.position-2 {
+            transform: translateX(-200px) translateZ(-300px) scale(0.9);
+            z-index: 5;
+            opacity: 0.8;
+            border-color: #ccc;
+        }
+
+        /* Grey styling for inactive cards */
+        .timeline-postcard:not(.position-0) {
+            background: #f9f9f9;
+        }
+
+        .timeline-postcard:not(.position-0) .timeline-title {
+            color: #999;
+            opacity: 0.7;
+        }
+
+        .timeline-postcard:not(.position-0) .timeline-container {
+            display: none; /* Hide content of inactive timelines */
+        }
+
+        /* Carousel rotation states */
+        .postcard-carousel.rotate-1 .timeline-postcard[data-timeline="features"] {
+            transform: translateX(-200px) translateZ(-300px) scale(0.9);
+            border-color: #ccc;
+        }
+
+        .postcard-carousel.rotate-1 .timeline-postcard[data-timeline="opinion"] {
             transform: translateZ(0px);
-            opacity: 1;
-            z-index: 2;
+            border-color: #333;
         }
 
-        /* Timeline Title - Now clickable */
+        .postcard-carousel.rotate-1 .timeline-postcard[data-timeline="future"] {
+            transform: translateX(200px) translateZ(-300px) scale(0.9);
+            border-color: #ccc;
+        }
+
+        .postcard-carousel.rotate-2 .timeline-postcard[data-timeline="features"] {
+            transform: translateX(200px) translateZ(-300px) scale(0.9);
+            border-color: #ccc;
+        }
+
+        .postcard-carousel.rotate-2 .timeline-postcard[data-timeline="opinion"] {
+            transform: translateX(-200px) translateZ(-300px) scale(0.9);
+            border-color: #ccc;
+        }
+
+        .postcard-carousel.rotate-2 .timeline-postcard[data-timeline="future"] {
+            transform: translateZ(0px);
+            border-color: #333;
+        }
+
+        /* Postcard Tab (for clicking) */
+        .postcard-tab {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .timeline-postcard:not(.position-0) .postcard-tab:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .timeline-postcard.position-0 .postcard-tab {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        /* Timeline Title on Tab */
         .timeline-title {
-            font-size: 3em;
+            font-size: 2.5em;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 20px;
             letter-spacing: -1px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             text-transform: uppercase;
+            padding: 20px;
             transition: all 0.3s ease;
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-
-        /* Clickable title for inactive timelines */
-        .timeline-panel:not(.active) .timeline-title {
-            cursor: pointer;
-        }
-
-        .timeline-panel:not(.active) .timeline-title:hover {
-            transform: scale(1.05);
-            filter: brightness(1.2);
-        }
-
-        /* Active timeline title */
-        .timeline-panel.active .timeline-title {
-            cursor: default;
-        }
-
-        /* Visual hint for clickable titles */
-        .timeline-panel:not(.active) .timeline-title::after {
-            content: '→';
-            position: absolute;
-            right: -40px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.7em;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-panel:not(.active) .timeline-title:hover::after {
-            opacity: 1;
-            right: -50px;
         }
 
         .timeline-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 30px 20px;
+            padding: 120px 40px 40px 40px;
         }
 
-        .timeline {
-            position: relative;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 0;
-            width: 2px;
-            height: 100%;
-            background: #333;
-        }
-
-        /* Updated Clock Section */
+        /* Clock Section */
         .clock-section {
             text-align: center;
             margin-bottom: 40px;
@@ -173,7 +193,7 @@
             font-size: 1.2em;
             color: #333;
             font-weight: bold;
-            background: #f5f5f5;
+            background: white;
             padding: 10px 20px;
             border: 2px solid #333;
             display: inline-block;
@@ -187,19 +207,30 @@
             margin-bottom: 20px;
         }
 
-        /* Clock connection to timeline */
-        .clock-section::after {
+        /* Timeline */
+        .timeline {
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background: #333;
+        }
+
+        .timeline::before {
             content: '';
             position: absolute;
             left: 50%;
-            bottom: -20px;
             transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
+            top: 0;
+            width: 3px;
+            height: 100%;
             background: #333;
-            border-radius: 50%;
-            border: 3px solid #f5f5f5;
-            z-index: 2;
         }
 
         .timeline-post {
@@ -226,7 +257,7 @@
             height: 12px;
             background: #333;
             border-radius: 50%;
-            border: 3px solid #f5f5f5;
+            border: 3px solid white;
             z-index: 2;
         }
 
@@ -253,13 +284,7 @@
         .post-content {
             background: transparent;
             padding: 20px;
-            box-shadow: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .post-content:hover {
-            transform: translateY(-2px);
-            box-shadow: none;
+            transition: transform 0.2s ease;
         }
 
         .timeline-post:nth-child(odd) .post-content {
@@ -270,105 +295,52 @@
             margin-left: 30px;
         }
 
-        .post-large {
-            width: auto;            
-            max-width: 600px;         
-            height: auto;            
-            min-height: 300px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 5px;
-            background-color: transparent;
-            transition: transform 0.2s ease;
+        /* Direct Text Input System */
+        .text-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
         }
 
-        .post-large:hover {
-            transform: scale(1.02);
-        }
-
-        .post-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-        }
-
-        .post-avatar {
-            width: 60px;
-            height: 60px;
+        .text-input {
+            position: absolute;
             background: transparent;
-            border-radius: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            align-self: flex-end;
-            font-size: 1.2em;
-        }
-
-        .post-avatar img {
-            width: 80px;
-            height: 80px;
-            border-radius: 0;
-        }
-
-        .post-text {
-            line-height: 1.6;
-            cursor: pointer;
-        }
-
-        .post-text p {
-            color: #555;
-        }
-
-        .post-music {
-            text-align: center;
-            padding: 10px;
-        }
-
-        .post-music iframe {
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Discussion post styles */
-        .post-discussion {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .post-discussion:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-
-        .discussion-title {
-            font-size: 1.3em;
-            font-weight: bold;
+            border: none;
+            outline: none;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
             color: #333;
-            margin-bottom: 10px;
+            padding: 2px;
+            min-width: 20px;
+            width: auto;
+            pointer-events: all;
+            resize: none;
+            overflow: hidden;
+            white-space: pre;
         }
 
-        .discussion-preview {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 15px;
+        .text-input:focus {
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 1px rgba(102, 126, 234, 0.5);
         }
 
-        .discussion-meta {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            font-size: 0.9em;
-            color: #999;
+        .text-cursor {
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: #667eea;
+            animation: blink 1s infinite;
+            pointer-events: none;
+            display: none;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         /* Floating Speech Bubble */
@@ -416,177 +388,82 @@
             z-index: 1;
         }
 
-        .floating-speech-bubble.pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        /* Sticky Note Styles */
-        .sticky-note {
-            position: absolute;
-            width: 250px;
-            min-height: 250px;
-            background: linear-gradient(135deg, #fef5d4 0%, #fef3c0 100%);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            padding: 20px;
-            font-family: 'Roboto Mono', monospace;
-            transform: rotate(-2deg);
-            transition: all 0.3s ease;
-            cursor: move;
-            z-index: 100;
-        }
-
-        .sticky-note::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 30px;
-            background: rgba(255,255,255,0.5);
-            border: 1px solid #ddd;
-            border-bottom: none;
-            opacity: 0.8;
-        }
-
-        .sticky-note:hover {
-            transform: rotate(0deg) scale(1.02);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            z-index: 101;
-        }
-
-        .sticky-note.placing {
-            opacity: 0.7;
-            pointer-events: none;
-            position: fixed;
-        }
-
-        .sticky-note textarea {
-            width: 100%;
-            height: 180px;
-            background: transparent;
-            border: none;
-            resize: none;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 14px;
-            color: #333;
-            outline: none;
-            line-height: 1.6;
-        }
-
-        .sticky-note-actions {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .sticky-note-btn {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            border: 1px solid #333;
-            background: white;
+        /* Post styles */
+        .post-large {
+            width: auto;            
+            max-width: 600px;         
+            height: auto;            
+            min-height: 300px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px;
+            transition: transform 0.2s ease;
+        }
+
+        .post-large:hover {
+            transform: scale(1.02);
+        }
+
+        .post-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            color: white;
+        }
+
+        .post-avatar {
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            transition: all 0.2s ease;
-            opacity: 0.6;
+            align-self: flex-end;
+            font-size: 1.2em;
         }
 
-        .sticky-note-btn:hover {
-            opacity: 1;
-            transform: scale(1.1);
+        .post-music {
+            text-align: center;
+            padding: 10px;
         }
 
-        .sticky-note-btn.delete {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .sticky-note-btn.done {
-            background: #51cf66;
-            color: white;
-        }
-
-        /* Placement mode overlay */
-        .placement-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.1);
-            z-index: 99;
-            cursor: crosshair;
-        }
-
-        .placement-overlay.active {
-            display: block;
-        }
-
-        .placement-instructions {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .post-discussion {
             background: white;
-            padding: 20px 30px;
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            font-size: 16px;
-            font-weight: 500;
-            z-index: 100;
-            pointer-events: none;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        /* Mobile adjustments */
-        @media (max-width: 768px) {
-            .sticky-note {
-                width: 200px;
-                min-height: 200px;
-                padding: 15px;
-            }
-
-            .sticky-note textarea {
-                height: 140px;
-                font-size: 12px;
-            }
-
-            .placement-instructions {
-                font-size: 14px;
-                padding: 15px 20px;
-            }
+        .post-discussion:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        /* Different sticky note colors */
-        .sticky-note.color-yellow {
-            background: linear-gradient(135deg, #fef5d4 0%, #fef3c0 100%);
+        .discussion-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
         }
 
-        .sticky-note.color-pink {
-            background: linear-gradient(135deg, #ffe0ec 0%, #ffc9dd 100%);
+        .discussion-preview {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
 
-        .sticky-note.color-blue {
-            background: linear-gradient(135deg, #d4e8ff 0%, #b8d7ff 100%);
-        }
-
-        .sticky-note.color-green {
-            background: linear-gradient(135deg, #d4ffd4 0%, #b8ffb8 100%);
+        .discussion-meta {
+            display: flex;
+            justify-content: flex-end;
+            font-size: 0.9em;
+            color: #999;
         }
 
         /* Modal Styles */
@@ -621,10 +498,7 @@
             right: 15px;
             font-size: 24px;
             cursor: pointer;
-            background: none;
-            border: none;
             color: #666;
-            transition: color 0.2s ease;
         }
 
         .close:hover {
@@ -633,34 +507,25 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .timeline-carousel-wrapper {
-                perspective: 1500px;
-                padding-top: 20px;
+            .postcard-carousel {
+                width: 90vw;
+                height: 85vh;
             }
 
-            .timeline-panel.opinion {
-                transform: translateX(80px) translateZ(-300px) scale(0.85);
-            }
-
-            .timeline-carousel.show-opinion .timeline-panel.features {
-                transform: translateX(-80px) translateZ(-300px) scale(0.85);
+            .timeline-postcard {
+                font-size: 0.9em;
             }
 
             .timeline-title {
-                font-size: 2em;
+                font-size: 1.5em;
             }
 
-            .timeline-panel:not(.active) .timeline-title::after {
-                display: none;
+            .timeline-container {
+                padding: 80px 20px 20px 20px;
             }
 
             .timeline::before {
                 left: 20px;
-            }
-
-            .clock-section::after {
-                left: 20px;
-                transform: translateX(-50%);
             }
 
             .timeline-post {
@@ -670,7 +535,6 @@
 
             .timeline-post::before {
                 left: 20px;
-                transform: translateX(-50%);
             }
 
             .post-content {
@@ -683,41 +547,29 @@
                 top: auto !important;
                 transform: none !important;
                 text-align: left !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-                margin-bottom: 10px !important;
-            }
-
-            .current-time {
-                font-size: 1em;
-                padding: 8px 15px;
-            }
-
-            .timeline-container {
-                padding: 20px 15px;
+                margin: 0 0 10px 0 !important;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Main Timeline Carousel -->
-    <div class="timeline-carousel-wrapper">
-        <div class="timeline-carousel" id="timelineCarousel">
+    <!-- Postcard Carousel Stand -->
+    <div class="carousel-stand">
+        <div class="postcard-carousel" id="postcardCarousel">
             
-            <!-- FEATURES TIMELINE -->
-            <div class="timeline-panel features active">
+            <!-- FEATURES POSTCARD -->
+            <div class="timeline-postcard position-0" data-timeline="features">
+                <div class="postcard-tab" onclick="rotateToCard(0)">
+                    <h1 class="timeline-title">Features</h1>
+                </div>
+                
                 <div class="timeline-container">
-                    <!-- Timeline Title -->
-                    <h1 class="timeline-title" onclick="handleTitleClick('features')">Features</h1>
-                    
-                    <!-- Clock Section -->
                     <div class="clock-section">
                         <div class="current-time" id="currentTime-features">12:00:00 PM</div>
                         <div class="current-date" id="currentDate-features">08.13.2025</div>
                     </div>
 
                     <div class="timeline">
-                        <!-- Your existing posts here -->
                         <div class="timeline-post" data-date="2025-08-15">
                             <div class="post-date">08.15.2025</div>
                             <div class="post-content">
@@ -733,7 +585,7 @@
                             <div class="post-date">08.14.2025</div>
                             <div class="post-content">
                                 <div class="post-music">
-                                    <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless><a href="https://patrickholland.bandcamp.com/album/infra">Infra by Patrick Holland</a></iframe>      
+                                    <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless></iframe>      
                                 </div>
                             </div>
                         </div>
@@ -751,20 +603,19 @@
                 </div>
             </div>
 
-            <!-- OPINION & DISCUSSION TIMELINE -->
-            <div class="timeline-panel opinion">
+            <!-- OPINION & DISCUSSION POSTCARD -->
+            <div class="timeline-postcard position-1" data-timeline="opinion">
+                <div class="postcard-tab" onclick="rotateToCard(1)">
+                    <h1 class="timeline-title">Opinion & Discussion</h1>
+                </div>
+                
                 <div class="timeline-container">
-                    <!-- Timeline Title -->
-                    <h1 class="timeline-title" onclick="handleTitleClick('opinion')">Opinion & Discussion</h1>
-                    
-                    <!-- Clock Section -->
                     <div class="clock-section">
                         <div class="current-time" id="currentTime-opinion">12:00:00 PM</div>
                         <div class="current-date" id="currentDate-opinion">08.13.2025</div>
                     </div>
 
                     <div class="timeline">
-                        <!-- Sample discussion posts -->
                         <div class="timeline-post" data-date="2025-08-20">
                             <div class="post-date">08.20.2025</div>
                             <div class="post-content">
@@ -796,121 +647,202 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="timeline-post" data-date="2025-08-16">
-                            <div class="post-date">08.16.2025</div>
-                            <div class="post-content">
-                                <div class="post-discussion" onclick="openModal('discussion-3')">
-                                    <div class="discussion-title">The Renaissance of RSS Feeds</div>
-                                    <div class="discussion-preview">
-                                        In an era of algorithmic feeds and walled gardens, RSS is making a comeback. 
-                                        Why the old-school tech might be exactly what we need...
-                                    </div>
-                                    <div class="discussion-meta">
-                                        <span>6 min read</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- FUTURE TIMELINE TEMPLATE (hidden for now) -->
-            <!-- 
-            <div class="timeline-panel future-1" onclick="handlePanelClick('future-1')">
+            <!-- FUTURE POSTCARD (Example) -->
+            <div class="timeline-postcard position-2" data-timeline="future">
+                <div class="postcard-tab" onclick="rotateToCard(2)">
+                    <h1 class="timeline-title">Coming Soon</h1>
+                </div>
+                
                 <div class="timeline-container">
-                    <h1 class="timeline-title">Future Timeline</h1>
-                    <div class="clock-section">
-                        <div class="current-time" id="currentTime-future-1">12:00:00 PM</div>
-                        <div class="current-date" id="currentDate-future-1">08.13.2025</div>
-                    </div>
-                    <div class="timeline">
-                        <!-- Future posts here -->
+                    <div style="text-align: center; padding: 100px 20px; color: #999;">
+                        <h2>New Timeline Coming Soon</h2>
+                        <p>This space is reserved for future content</p>
                     </div>
                 </div>
             </div>
-            -->
 
         </div>
     </div>
 
-    <!-- Existing Modals -->
+    <!-- Text Canvas for Direct Typing -->
+    <div class="text-canvas" id="textCanvas"></div>
+    <div class="text-cursor" id="textCursor"></div>
+
+    <!-- Floating Speech Bubble -->
+    <div class="floating-speech-bubble" id="speechBubble">
+        💭 click anywhere & type
+    </div>
+
+    <!-- Modals -->
     <div id="soft-power" class="modal">
-        <!-- Your existing soft-power modal content -->
+        <div class="modal-content">
+            <button class="close" onclick="closeModal('soft-power')">&times;</button>
+            <div class="full-post">
+                <h2>Thinking About Soft Power</h2>
+                <p>Content here...</p>
+            </div>
+        </div>
     </div>
 
     <div id="spotify-war" class="modal">
-        <!-- Your existing spotify-war modal content -->
-    </div>
-
-    <!-- New Discussion Modals -->
-    <div id="discussion-1" class="modal">
         <div class="modal-content">
-            <button class="close" onclick="closeModal('discussion-1')">&times;</button>
+            <button class="close" onclick="closeModal('spotify-war')">&times;</button>
             <div class="full-post">
-                <h2>The Future of Digital Art in the Age of AI</h2>
-                <div class="full-date">August 20, 2025</div>
-                <p>Discussion content here...</p>
+                <h2>Spotify War</h2>
+                <p>Content here...</p>
             </div>
         </div>
     </div>
 
-    <!-- Floating Speech Bubble -->
-    <div class="floating-speech-bubble pulse" id="speechBubble">
-        💭 type anywhere to leave a note
-    </div>
-
-    <!-- Placement Overlay -->
-    <div class="placement-overlay" id="placementOverlay">
-        <div class="placement-instructions">
-            📍 Click anywhere to place your sticky note
-        </div>
-    </div>
-
-    <!-- Container for sticky notes -->
-    <div id="stickyNotesContainer"></div>
-
     <script>
-        // Timeline switching functionality
-        let currentTimeline = 'features';
+        // Postcard Carousel System
+        let currentCard = 0;
+        const totalCards = 3;
 
-        function switchTimeline(timeline) {
-            const carousel = document.getElementById('timelineCarousel');
-            const panels = document.querySelectorAll('.timeline-panel');
+        function rotateToCard(cardIndex) {
+            if (cardIndex === currentCard) return;
             
-            // Update panel states
-            panels.forEach(panel => {
-                panel.classList.remove('active');
-                if (panel.classList.contains(timeline)) {
-                    panel.classList.add('active');
+            const carousel = document.getElementById('postcardCarousel');
+            const cards = document.querySelectorAll('.timeline-postcard');
+            
+            // Update carousel rotation class
+            carousel.className = 'postcard-carousel';
+            if (cardIndex > 0) {
+                carousel.classList.add(`rotate-${cardIndex}`);
+            }
+            
+            // Update card positions
+            cards.forEach((card, index) => {
+                // Remove all position classes
+                card.classList.remove('position-0', 'position-1', 'position-2');
+                
+                // Calculate relative position
+                if (index === cardIndex) {
+                    card.classList.add('position-0');
+                } else if (index < cardIndex) {
+                    card.classList.add('position-2'); // Left side
+                } else {
+                    card.classList.add('position-1'); // Right side
                 }
             });
             
-            // Update carousel rotation
-            carousel.className = 'timeline-carousel';
-            if (timeline === 'opinion') {
-                carousel.classList.add('show-opinion');
-            } else if (timeline === 'future-1') {
-                carousel.classList.add('show-future-1');
+            currentCard = cardIndex;
+        }
+
+        // Direct Text Input System
+        const textInputs = new Map();
+        let activeInput = null;
+
+        document.addEventListener('click', function(e) {
+            // Don't create text inputs on certain elements
+            if (e.target.closest('.timeline-postcard') || 
+                e.target.closest('.modal') || 
+                e.target.tagName === 'BUTTON' ||
+                e.target.tagName === 'INPUT' ||
+                e.target.tagName === 'TEXTAREA' ||
+                e.target.closest('.floating-speech-bubble')) {
+                return;
             }
+
+            createTextInput(e.clientX, e.clientY);
+        });
+
+        function createTextInput(x, y) {
+            // Hide speech bubble
+            document.getElementById('speechBubble').style.opacity = '0';
             
-            currentTimeline = timeline;
+            // Create new text input
+            const input = document.createElement('textarea');
+            input.className = 'text-input';
+            input.style.left = x + 'px';
+            input.style.top = y + 'px';
+            input.rows = 1;
+            
+            // Add to canvas
+            document.getElementById('textCanvas').appendChild(input);
+            
+            // Focus and setup
+            input.focus();
+            activeInput = input;
+            
+            // Auto-resize as user types
+            input.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.width = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+                this.style.width = Math.max(20, this.scrollWidth) + 'px';
+            });
+            
+            // Handle blur
+            input.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    this.remove();
+                }
+                activeInput = null;
+                // Show speech bubble again after a delay
+                setTimeout(() => {
+                    document.getElementById('speechBubble').style.opacity = '0.9';
+                }, 1000);
+            });
+            
+            // Prevent Enter from creating new line (optional)
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.blur();
+                }
+            });
+            
+            // Store the input
+            const inputId = Date.now();
+            textInputs.set(inputId, {
+                element: input,
+                x: x,
+                y: y,
+                text: ''
+            });
         }
 
-        // Handle clicking on timeline titles
-        function handleTitleClick(timeline) {
-            // Only switch if clicking on a non-active timeline
-            const panel = event.target.closest('.timeline-panel');
-            if (!panel.classList.contains('active')) {
-                event.stopPropagation();
-                switchTimeline(timeline);
+        // Speech Bubble Animation
+        function initSpeechBubble() {
+            const bubble = document.getElementById('speechBubble');
+            let x = Math.random() * (window.innerWidth - 250);
+            let y = Math.random() * (window.innerHeight - 100);
+            let vx = (Math.random() - 0.5) * 1.5;
+            let vy = (Math.random() - 0.5) * 1.5;
+
+            bubble.style.left = x + 'px';
+            bubble.style.top = y + 'px';
+
+            function animateBubble() {
+                x += vx;
+                y += vy;
+
+                if (x <= 0 || x >= window.innerWidth - 250) {
+                    vx = -vx;
+                    x = Math.max(0, Math.min(x, window.innerWidth - 250));
+                }
+                if (y <= 0 || y >= window.innerHeight - 60) {
+                    vy = -vy;
+                    y = Math.max(0, Math.min(y, window.innerHeight - 60));
+                }
+
+                bubble.style.left = x + 'px';
+                bubble.style.top = y + 'px';
+
+                requestAnimationFrame(animateBubble);
             }
+
+            animateBubble();
         }
 
-        // Update date and time for all timelines
+        // Update date and time
         function updateDateTime() {
-            const timelines = ['features', 'opinion']; // Add more as needed
+            const timelines = ['features', 'opinion'];
             const today = new Date();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
@@ -941,7 +873,7 @@
             if (modal) {
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
-                event.stopPropagation(); // Prevent panel click
+                event.stopPropagation();
             }
         }
 
@@ -953,290 +885,20 @@
             }
         }
 
-        // Close modal when clicking outside
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            initSpeechBubble();
+        });
+
+        // Close modal on outside click
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
         });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            initSpeechBubble();
-            initStickyNoteSystem();
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(event) {
-            // Don't switch timelines if user is typing in a sticky note
-            if (event.target.tagName === 'TEXTAREA') return;
-            
-            if (event.key === 'ArrowLeft' && currentTimeline === 'opinion') {
-                switchTimeline('features');
-            } else if (event.key === 'ArrowRight' && currentTimeline === 'features') {
-                switchTimeline('opinion');
-            }
-        });
-
-        // Speech Bubble Animation and Movement
-        function initSpeechBubble() {
-            const bubble = document.getElementById('speechBubble');
-            let x = Math.random() * (window.innerWidth - 250);
-            let y = Math.random() * (window.innerHeight - 100);
-            let vx = (Math.random() - 0.5) * 1.5;
-            let vy = (Math.random() - 0.5) * 1.5;
-
-            bubble.style.left = x + 'px';
-            bubble.style.top = y + 'px';
-
-            function animateBubble() {
-                x += vx;
-                y += vy;
-
-                // Bounce off edges
-                if (x <= 0 || x >= window.innerWidth - 250) {
-                    vx = -vx;
-                    x = Math.max(0, Math.min(x, window.innerWidth - 250));
-                }
-                if (y <= 0 || y >= window.innerHeight - 60) {
-                    vy = -vy;
-                    y = Math.max(0, Math.min(y, window.innerHeight - 60));
-                }
-
-                bubble.style.left = x + 'px';
-                bubble.style.top = y + 'px';
-
-                requestAnimationFrame(animateBubble);
-            }
-
-            animateBubble();
-        }
-
-        // Sticky Note System
-        let isPlacingNote = false;
-        let typedText = '';
-        let stickyNotes = [];
-        let noteIdCounter = 0;
-
-        function initStickyNoteSystem() {
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                // Mobile: Click/tap to trigger note placement
-                document.addEventListener('click', function(event) {
-                    // Ignore if clicking on UI elements
-                    if (event.target.closest('.sticky-note') || 
-                        event.target.closest('.timeline-switcher') ||
-                        event.target.closest('.modal') ||
-                        event.target.tagName === 'BUTTON' ||
-                        event.target.tagName === 'TEXTAREA' ||
-                        event.target.tagName === 'INPUT') {
-                        return;
-                    }
-
-                    if (!isPlacingNote) {
-                        startNotePlacement();
-                    }
-                });
-            } else {
-                // Desktop: Type anywhere to trigger
-                document.addEventListener('keypress', function(event) {
-                    // Ignore if user is in an input field or textarea
-                    if (event.target.tagName === 'INPUT' || 
-                        event.target.tagName === 'TEXTAREA' || 
-                        event.target.contentEditable === 'true') {
-                        return;
-                    }
-
-                    // Ignore special keys
-                    if (event.ctrlKey || event.metaKey || event.altKey) {
-                        return;
-                    }
-
-                    // Start note placement
-                    if (!isPlacingNote) {
-                        typedText = event.key;
-                        startNotePlacement();
-                    }
-                });
-            }
-
-            // Handle placement overlay clicks
-            document.getElementById('placementOverlay').addEventListener('click', function(event) {
-                if (isPlacingNote) {
-                    placeNoteAt(event.clientX, event.clientY);
-                }
-            });
-
-            // Handle ESC key to cancel placement
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape' && isPlacingNote) {
-                    cancelNotePlacement();
-                }
-            });
-        }
-
-        function startNotePlacement() {
-            isPlacingNote = true;
-            const overlay = document.getElementById('placementOverlay');
-            const bubble = document.getElementById('speechBubble');
-            
-            overlay.classList.add('active');
-            bubble.style.opacity = '0';
-        }
-
-        function placeNoteAt(x, y) {
-            const noteId = 'note-' + noteIdCounter++;
-            const colors = ['color-yellow', 'color-pink', 'color-blue', 'color-green'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            const randomRotation = Math.random() * 6 - 3; // -3 to 3 degrees
-            
-            // Create sticky note element
-            const noteHtml = `
-                <div class="sticky-note ${randomColor}" id="${noteId}" style="left: ${x - 125}px; top: ${y + window.scrollY - 125}px; transform: rotate(${randomRotation}deg);">
-                    <textarea placeholder="Write your note here..." autofocus>${typedText}</textarea>
-                    <div class="sticky-note-actions">
-                        <button class="sticky-note-btn done" onclick="finishNote('${noteId}')" title="Done">✓</button>
-                        <button class="sticky-note-btn delete" onclick="deleteNote('${noteId}')" title="Delete">×</button>
-                    </div>
-                </div>
-            `;
-            
-            // Add to container
-            document.getElementById('stickyNotesContainer').insertAdjacentHTML('beforeend', noteHtml);
-            
-            // Make the note draggable
-            makeNoteDraggable(noteId);
-            
-            // Focus on textarea
-            const note = document.getElementById(noteId);
-            const textarea = note.querySelector('textarea');
-            setTimeout(() => {
-                textarea.focus();
-                textarea.setSelectionRange(typedText.length, typedText.length);
-            }, 100);
-            
-            // Store note
-            stickyNotes.push({
-                id: noteId,
-                x: x - 125,
-                y: y + window.scrollY - 125,
-                text: typedText,
-                color: randomColor
-            });
-            
-            // Reset placement mode
-            cancelNotePlacement();
-            typedText = '';
-        }
-
-        function cancelNotePlacement() {
-            isPlacingNote = false;
-            const overlay = document.getElementById('placementOverlay');
-            const bubble = document.getElementById('speechBubble');
-            
-            overlay.classList.remove('active');
-            bubble.style.opacity = '0.9';
-        }
-
-        function makeNoteDraggable(noteId) {
-            const note = document.getElementById(noteId);
-            let isDragging = false;
-            let startX, startY, initialX, initialY;
-            
-            // Mouse events
-            note.addEventListener('mousedown', startDrag);
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('mouseup', stopDrag);
-            
-            // Touch events for mobile
-            note.addEventListener('touchstart', startDrag, {passive: false});
-            document.addEventListener('touchmove', drag, {passive: false});
-            document.addEventListener('touchend', stopDrag);
-            
-            function startDrag(e) {
-                // Don't drag if clicking on textarea or buttons
-                if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON') return;
-                
-                isDragging = true;
-                note.style.zIndex = 1000;
-                
-                if (e.type === 'touchstart') {
-                    startX = e.touches[0].clientX;
-                    startY = e.touches[0].clientY;
-                } else {
-                    startX = e.clientX;
-                    startY = e.clientY;
-                }
-                
-                initialX = note.offsetLeft;
-                initialY = note.offsetTop;
-                
-                e.preventDefault();
-            }
-            
-            function drag(e) {
-                if (!isDragging) return;
-                
-                let currentX, currentY;
-                
-                if (e.type === 'touchmove') {
-                    currentX = e.touches[0].clientX;
-                    currentY = e.touches[0].clientY;
-                } else {
-                    currentX = e.clientX;
-                    currentY = e.clientY;
-                }
-                
-                const deltaX = currentX - startX;
-                const deltaY = currentY - startY;
-                
-                note.style.left = (initialX + deltaX) + 'px';
-                note.style.top = (initialY + deltaY) + 'px';
-                
-                e.preventDefault();
-            }
-            
-            function stopDrag() {
-                isDragging = false;
-                note.style.zIndex = 100;
-            }
-        }
-
-        function finishNote(noteId) {
-            const note = document.getElementById(noteId);
-            const textarea = note.querySelector('textarea');
-            textarea.blur();
-            
-            // Update stored note
-            const storedNote = stickyNotes.find(n => n.id === noteId);
-            if (storedNote) {
-                storedNote.text = textarea.value;
-            }
-            
-            // Visual feedback
-            note.style.transform = 'rotate(0deg) scale(0.95)';
-            setTimeout(() => {
-                note.style.transform = `rotate(${Math.random() * 6 - 3}deg)`;
-            }, 200);
-        }
-
-        function deleteNote(noteId) {
-            const note = document.getElementById(noteId);
-            
-            // Animate out
-            note.style.transform = 'scale(0) rotate(20deg)';
-            note.style.opacity = '0';
-            
-            setTimeout(() => {
-                note.remove();
-                // Remove from stored notes
-                stickyNotes = stickyNotes.filter(n => n.id !== noteId);
-            }, 300);
-        }
     </script>
 </body>
 </html>
