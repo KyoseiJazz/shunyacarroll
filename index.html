@@ -15,177 +15,134 @@
 
         body {
             font-family: 'Roboto Mono', 'Courier New', monospace;
-            background: linear-gradient(180deg, #e8e8e8 0%, #f5f5f5 100%);
+            background: #f5f5f5;
             color: #333;
             line-height: 1.4;
             overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Postcard Carousel Container */
-        .carousel-stand {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             perspective: 1500px;
-            overflow: hidden;
         }
 
-        .postcard-carousel {
-            position: relative;
-            width: 800px;
-            height: 90vh;
-            transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-
-        /* Individual Postcard Timelines */
-        .timeline-postcard {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: white;
-            border: 3px solid #333;
-            border-radius: 8px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transform-style: preserve-3d;
-            backface-visibility: visible;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-
-        /* Active (front) card */
-        .timeline-postcard.position-0 {
-            transform: translateZ(0px);
-            z-index: 10;
-            opacity: 1;
-        }
-
-        .timeline-postcard.position-0 .timeline-line,
-        .timeline-postcard.position-0 .timeline-post::before,
-        .timeline-postcard.position-0 .current-time {
-            background: #333;
-            border-color: #333;
-        }
-
-        .timeline-postcard.position-0 .timeline-title {
-            color: #333;
-            opacity: 1;
-        }
-
-        .timeline-postcard.position-0 .timeline-container {
-            display: block;
-        }
-
-        /* Background cards - grey and distant */
-        .timeline-postcard.position-1 {
-            transform: translateX(200px) translateZ(-300px) scale(0.9);
-            z-index: 5;
-            opacity: 0.8;
-            border-color: #ccc;
-        }
-
-        .timeline-postcard.position-2 {
-            transform: translateX(-200px) translateZ(-300px) scale(0.9);
-            z-index: 5;
-            opacity: 0.8;
-            border-color: #ccc;
-        }
-
-        /* Grey styling for inactive cards */
-        .timeline-postcard:not(.position-0) {
-            background: #f9f9f9;
-        }
-
-        .timeline-postcard:not(.position-0) .timeline-title {
-            color: #999;
-            opacity: 0.7;
-        }
-
-        .timeline-postcard:not(.position-0) .timeline-container {
-            display: none; /* Hide content of inactive timelines */
-        }
-
-        /* Carousel rotation states */
-        .postcard-carousel.rotate-1 .timeline-postcard[data-timeline="features"] {
-            transform: translateX(-200px) translateZ(-300px) scale(0.9);
-            border-color: #ccc;
-        }
-
-        .postcard-carousel.rotate-1 .timeline-postcard[data-timeline="opinion"] {
-            transform: translateZ(0px);
-            border-color: #333;
-        }
-
-        .postcard-carousel.rotate-1 .timeline-postcard[data-timeline="future"] {
-            transform: translateX(200px) translateZ(-300px) scale(0.9);
-            border-color: #ccc;
-        }
-
-        .postcard-carousel.rotate-2 .timeline-postcard[data-timeline="features"] {
-            transform: translateX(200px) translateZ(-300px) scale(0.9);
-            border-color: #ccc;
-        }
-
-        .postcard-carousel.rotate-2 .timeline-postcard[data-timeline="opinion"] {
-            transform: translateX(-200px) translateZ(-300px) scale(0.9);
-            border-color: #ccc;
-        }
-
-        .postcard-carousel.rotate-2 .timeline-postcard[data-timeline="future"] {
-            transform: translateZ(0px);
-            border-color: #333;
-        }
-
-        /* Postcard Tab (for clicking) */
-        .postcard-tab {
-            position: absolute;
-            top: 0;
+        /* Timeline Navigation */
+        .timeline-nav {
+            position: fixed;
+            top: 30px;
             left: 0;
             right: 0;
-            height: 100px;
-            cursor: pointer;
-            z-index: 10;
+            width: 100%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            background: transparent;
+            align-items: baseline;
+            z-index: 1000;
+            transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        .timeline-postcard:not(.position-0) .postcard-tab:hover {
-            background: rgba(255,255,255,0.1);
+        .nav-container {
+            position: relative;
+            display: flex;
+            align-items: baseline;
+            gap: 40px;
+            transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
-        .timeline-postcard.position-0 .postcard-tab {
-            cursor: default;
-            pointer-events: none;
+        /* Shift container when opinion is active to keep it centered */
+        .nav-container.opinion-active {
+            transform: translateX(-60px);
         }
 
-        /* Timeline Title on Tab */
-        .timeline-title {
-            font-size: 2.5em;
+        .timeline-btn {
+            background: none;
+            border: none;
+            font-family: 'Roboto Mono', monospace;
             font-weight: 700;
-            text-align: center;
-            letter-spacing: -1px;
             text-transform: uppercase;
-            padding: 20px;
-            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+            color: #333;
+            padding: 0;
+        }
+
+        /* Features button - starts large */
+        .timeline-btn.features {
+            font-size: 2em;
+        }
+
+        .timeline-btn.features.inactive {
+            font-size: 1.2em;
+            color: #999;
+        }
+
+        /* Opinion button - starts small */
+        .timeline-btn.opinion {
+            font-size: 1.2em;
+            color: #999;
+        }
+
+        .timeline-btn.opinion.active {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .timeline-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Timeline Container with 3D Rotation */
+        .timeline-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            padding-top: 120px;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .timeline-wrapper.show-opinion {
+            transform: rotateY(-180deg);
+        }
+
+        /* Individual Timeline Panels */
+        .timeline-panel {
+            position: absolute;
+            width: 100%;
+            min-height: 100vh;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .timeline-panel.features {
+            transform: rotateY(0deg);
+        }
+
+        .timeline-panel.opinion {
+            transform: rotateY(180deg);
         }
 
         .timeline-container {
-            padding: 120px 40px 40px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #333;
         }
 
         /* Clock Section */
         .clock-section {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 60px;
             position: relative;
         }
 
@@ -193,7 +150,7 @@
             font-size: 1.2em;
             color: #333;
             font-weight: bold;
-            background: white;
+            background: #f5f5f5;
             padding: 10px 20px;
             border: 2px solid #333;
             display: inline-block;
@@ -204,33 +161,22 @@
         .current-date {
             font-size: 1em;
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        /* Timeline */
-        .timeline {
-            position: relative;
-        }
-
-        .timeline-line {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 0;
-            width: 3px;
-            height: 100%;
-            background: #333;
-        }
-
-        .timeline::before {
+        /* Clock connection to timeline */
+        .clock-section::after {
             content: '';
             position: absolute;
             left: 50%;
+            bottom: -30px;
             transform: translateX(-50%);
-            top: 0;
-            width: 3px;
-            height: 100%;
+            width: 12px;
+            height: 12px;
             background: #333;
+            border-radius: 50%;
+            border: 3px solid #f5f5f5;
+            z-index: 2;
         }
 
         .timeline-post {
@@ -257,7 +203,7 @@
             height: 12px;
             background: #333;
             border-radius: 50%;
-            border: 3px solid white;
+            border: 3px solid #f5f5f5;
             z-index: 2;
         }
 
@@ -284,7 +230,13 @@
         .post-content {
             background: transparent;
             padding: 20px;
-            transition: transform 0.2s ease;
+            box-shadow: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .post-content:hover {
+            transform: translateY(-2px);
+            box-shadow: none;
         }
 
         .timeline-post:nth-child(odd) .post-content {
@@ -295,52 +247,178 @@
             margin-left: 30px;
         }
 
-        /* Direct Text Input System */
-        .text-canvas {
+        .post-large {
+            width: auto;            
+            max-width: 600px;         
+            height: auto;            
+            min-height: 300px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px;
+            background-color: transparent;
+            transition: transform 0.2s ease;
+        }
+
+        .post-large:hover {
+            transform: scale(1.02);
+        }
+
+        .post-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            color: white;
+        }
+
+        .post-avatar {
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-end;
+            font-size: 1.2em;
+        }
+
+        .post-text {
+            line-height: 1.6;
+            cursor: pointer;
+        }
+
+        .post-text p {
+            color: #555;
+        }
+
+        .post-music {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .post-music iframe {
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Discussion post styles */
+        .post-discussion {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .post-discussion:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .discussion-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .discussion-preview {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .discussion-meta {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 0.9em;
+            color: #999;
+        }
+
+        /* Text Grid System (Our World of Text style) */
+        .text-grid {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 50;
-        }
-
-        .text-input {
-            position: absolute;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 14px;
-            color: #333;
-            padding: 2px;
-            min-width: 20px;
-            width: auto;
-            pointer-events: all;
-            resize: none;
-            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 20px;
+            letter-spacing: 0;
             white-space: pre;
+            pointer-events: none;
+            z-index: 30;
         }
 
-        .text-input:focus {
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 0 1px rgba(102, 126, 234, 0.5);
+        .text-cell {
+            position: absolute;
+            width: 9.6px;  /* Monospace character width */
+            height: 20px;
+            pointer-events: all;
+            color: #333;
+            cursor: text;
+            user-select: none;
         }
 
         .text-cursor {
             position: absolute;
-            width: 2px;
+            width: 9.6px;
             height: 20px;
-            background: #667eea;
-            animation: blink 1s infinite;
+            background: rgba(102, 126, 234, 0.3);
+            border-left: 2px solid #667eea;
+            animation: cursorBlink 1s infinite;
             pointer-events: none;
+            z-index: 31;
             display: none;
         }
 
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+        .text-cursor.active {
+            display: block;
+        }
+
+        @keyframes cursorBlink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .text-selection {
+            position: absolute;
+            background: rgba(102, 126, 234, 0.2);
+            pointer-events: none;
+            z-index: 29;
+        }
+
+        /* Hidden input for capturing typing */
+        .hidden-input {
+            position: fixed;
+            left: -9999px;
+            top: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Color variations for text */
+        .text-cell.color-1 { color: #333; }
+        .text-cell.color-2 { color: #667eea; }
+        .text-cell.color-3 { color: #764ba2; }
+        .text-cell.color-4 { color: #22c55e; }
+        .text-cell.color-5 { color: #ef4444; }
+        .text-cell.color-6 { color: #f59e0b; }
+
+        /* Prevent selection on timeline content when typing */
+        body.typing-mode .timeline-wrapper {
+            user-select: none;
         }
 
         /* Floating Speech Bubble */
@@ -388,84 +466,6 @@
             z-index: 1;
         }
 
-        /* Post styles */
-        .post-large {
-            width: auto;            
-            max-width: 600px;         
-            height: auto;            
-            min-height: 300px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 5px;
-            transition: transform 0.2s ease;
-        }
-
-        .post-large:hover {
-            transform: scale(1.02);
-        }
-
-        .post-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-            color: white;
-        }
-
-        .post-avatar {
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            align-self: flex-end;
-            font-size: 1.2em;
-        }
-
-        .post-music {
-            text-align: center;
-            padding: 10px;
-        }
-
-        .post-discussion {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .post-discussion:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-
-        .discussion-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .discussion-preview {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .discussion-meta {
-            display: flex;
-            justify-content: flex-end;
-            font-size: 0.9em;
-            color: #999;
-        }
-
         /* Modal Styles */
         .modal {
             display: none;
@@ -498,7 +498,10 @@
             right: 15px;
             font-size: 24px;
             cursor: pointer;
+            background: none;
+            border: none;
             color: #666;
+            transition: color 0.2s ease;
         }
 
         .close:hover {
@@ -507,25 +510,36 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .postcard-carousel {
-                width: 90vw;
-                height: 85vh;
+            .timeline-nav {
+                top: 10px;
             }
 
-            .timeline-postcard {
-                font-size: 0.9em;
+            .nav-container {
+                gap: 20px;
             }
 
-            .timeline-title {
+            /* Adjust shift amount for mobile */
+            .nav-container.opinion-active {
+                transform: translateX(-40px);
+            }
+
+            .timeline-btn.features,
+            .timeline-btn.opinion.active {
                 font-size: 1.5em;
             }
 
-            .timeline-container {
-                padding: 80px 20px 20px 20px;
+            .timeline-btn.opinion,
+            .timeline-btn.features.inactive {
+                font-size: 1em;
             }
 
             .timeline::before {
                 left: 20px;
+            }
+
+            .clock-section::after {
+                left: 20px;
+                transform: translateX(-50%);
             }
 
             .timeline-post {
@@ -535,6 +549,7 @@
 
             .timeline-post::before {
                 left: 20px;
+                transform: translateX(-50%);
             }
 
             .post-content {
@@ -547,265 +562,481 @@
                 top: auto !important;
                 transform: none !important;
                 text-align: left !important;
-                margin: 0 0 10px 0 !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                margin-bottom: 10px !important;
+            }
+
+            .current-time {
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+
+            .timeline-container {
+                padding: 30px 15px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Postcard Carousel Stand -->
-    <div class="carousel-stand">
-        <div class="postcard-carousel" id="postcardCarousel">
-            
-            <!-- FEATURES POSTCARD -->
-            <div class="timeline-postcard position-0" data-timeline="features">
-                <div class="postcard-tab" onclick="rotateToCard(0)">
-                    <h1 class="timeline-title">Features</h1>
-                </div>
-                
-                <div class="timeline-container">
-                    <div class="clock-section">
-                        <div class="current-time" id="currentTime-features">12:00:00 PM</div>
-                        <div class="current-date" id="currentDate-features">08.13.2025</div>
-                    </div>
-
-                    <div class="timeline">
-                        <div class="timeline-post" data-date="2025-08-15">
-                            <div class="post-date">08.15.2025</div>
-                            <div class="post-content">
-                                <div class="post-large" onclick="openModal('soft-power')"
-                                     style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true');">
-                                    <div class="post-title">Thinking About Soft Power</div>
-                                    <div class="post-avatar">🎵</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="timeline-post" data-date="2025-08-14">
-                            <div class="post-date">08.14.2025</div>
-                            <div class="post-content">
-                                <div class="post-music">
-                                    <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless></iframe>      
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="timeline-post" data-date="2025-08-12">
-                            <div class="post-date">08.12.2025</div>
-                            <div class="post-content">
-                                <div class="post-large" onclick="openModal('spotify-war')"
-                                     style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/subhead.png?raw=true');">
-                                    <div class="post-title"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- OPINION & DISCUSSION POSTCARD -->
-            <div class="timeline-postcard position-1" data-timeline="opinion">
-                <div class="postcard-tab" onclick="rotateToCard(1)">
-                    <h1 class="timeline-title">Opinion & Discussion</h1>
-                </div>
-                
-                <div class="timeline-container">
-                    <div class="clock-section">
-                        <div class="current-time" id="currentTime-opinion">12:00:00 PM</div>
-                        <div class="current-date" id="currentDate-opinion">08.13.2025</div>
-                    </div>
-
-                    <div class="timeline">
-                        <div class="timeline-post" data-date="2025-08-20">
-                            <div class="post-date">08.20.2025</div>
-                            <div class="post-content">
-                                <div class="post-discussion" onclick="openModal('discussion-1')">
-                                    <div class="discussion-title">The Future of Digital Art in the Age of AI</div>
-                                    <div class="discussion-preview">
-                                        As AI tools become more sophisticated, what does this mean for traditional digital artists? 
-                                        Let's explore the evolving relationship between human creativity and machine learning...
-                                    </div>
-                                    <div class="discussion-meta">
-                                        <span>5 min read</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="timeline-post" data-date="2025-08-18">
-                            <div class="post-date">08.18.2025</div>
-                            <div class="post-content">
-                                <div class="post-discussion" onclick="openModal('discussion-2')">
-                                    <div class="discussion-title">Music Streaming Economics: A Broken System?</div>
-                                    <div class="discussion-preview">
-                                        With artists earning fractions of cents per stream, is the current model sustainable? 
-                                        An examination of alternative models and their viability...
-                                    </div>
-                                    <div class="discussion-meta">
-                                        <span>8 min read</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FUTURE POSTCARD (Example) -->
-            <div class="timeline-postcard position-2" data-timeline="future">
-                <div class="postcard-tab" onclick="rotateToCard(2)">
-                    <h1 class="timeline-title">Coming Soon</h1>
-                </div>
-                
-                <div class="timeline-container">
-                    <div style="text-align: center; padding: 100px 20px; color: #999;">
-                        <h2>New Timeline Coming Soon</h2>
-                        <p>This space is reserved for future content</p>
-                    </div>
-                </div>
-            </div>
-
+    <!-- Timeline Navigation -->
+    <div class="timeline-nav">
+        <div class="nav-container" id="navContainer">
+            <button class="timeline-btn features active" onclick="switchTimeline('features')">Features</button>
+            <button class="timeline-btn opinion" onclick="switchTimeline('opinion')">Opinion & Discussion</button>
         </div>
     </div>
 
-    <!-- Text Canvas for Direct Typing -->
-    <div class="text-canvas" id="textCanvas"></div>
+    <!-- Timeline Wrapper with 3D Rotation -->
+    <div class="timeline-wrapper" id="timelineWrapper">
+        
+        <!-- FEATURES TIMELINE -->
+        <div class="timeline-panel features">
+            <div class="timeline-container">
+                <div class="clock-section">
+                    <div class="current-time" id="currentTime-features">12:00:00 PM</div>
+                    <div class="current-date" id="currentDate-features">08.13.2025</div>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-post" data-date="2025-08-15">
+                        <div class="post-date">08.15.2025</div>
+                        <div class="post-content">
+                            <div class="post-large" onclick="openModal('soft-power')"
+                                 style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/soft-power/soft-power-11.jpg?raw=true');">
+                                <div class="post-title">Thinking About Soft Power</div>
+                                <div class="post-avatar">🎵</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-post" data-date="2025-08-14">
+                        <div class="post-date">08.14.2025</div>
+                        <div class="post-content">
+                            <div class="post-music">
+                                <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless><a href="https://patrickholland.bandcamp.com/album/infra">Infra by Patrick Holland</a></iframe>      
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-post" data-date="2025-08-12">
+                        <div class="post-date">08.12.2025</div>
+                        <div class="post-content">
+                            <div class="post-large" onclick="openModal('spotify-war')"
+                                 style="background-image: url('https://github.com/KyoseiJazz/shunyacarroll/blob/main/stories/spotify%20war/subhead.png?raw=true');">
+                                <div class="post-title"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OPINION & DISCUSSION TIMELINE -->
+        <div class="timeline-panel opinion">
+            <div class="timeline-container">
+                <div class="clock-section">
+                    <div class="current-time" id="currentTime-opinion">12:00:00 PM</div>
+                    <div class="current-date" id="currentDate-opinion">08.13.2025</div>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-post" data-date="2025-08-20">
+                        <div class="post-date">08.20.2025</div>
+                        <div class="post-content">
+                            <div class="post-discussion" onclick="openModal('discussion-1')">
+                                <div class="discussion-title">The Future of Digital Art in the Age of AI</div>
+                                <div class="discussion-preview">
+                                    As AI tools become more sophisticated, what does this mean for traditional digital artists? 
+                                    Let's explore the evolving relationship between human creativity and machine learning...
+                                </div>
+                                <div class="discussion-meta">
+                                    <span>5 min read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-post" data-date="2025-08-18">
+                        <div class="post-date">08.18.2025</div>
+                        <div class="post-content">
+                            <div class="post-discussion" onclick="openModal('discussion-2')">
+                                <div class="discussion-title">Music Streaming Economics: A Broken System?</div>
+                                <div class="discussion-preview">
+                                    With artists earning fractions of cents per stream, is the current model sustainable? 
+                                    An examination of alternative models and their viability...
+                                </div>
+                                <div class="discussion-meta">
+                                    <span>8 min read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-post" data-date="2025-08-16">
+                        <div class="post-date">08.16.2025</div>
+                        <div class="post-content">
+                            <div class="post-discussion" onclick="openModal('discussion-3')">
+                                <div class="discussion-title">The Renaissance of RSS Feeds</div>
+                                <div class="discussion-preview">
+                                    In an era of algorithmic feeds and walled gardens, RSS is making a comeback. 
+                                    Why the old-school tech might be exactly what we need...
+                                </div>
+                                <div class="discussion-meta">
+                                    <span>6 min read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Text Grid (Our World of Text style) -->
+    <div class="text-grid" id="textGrid"></div>
     <div class="text-cursor" id="textCursor"></div>
+    <input type="text" class="hidden-input" id="hiddenInput" autocomplete="off">
 
     <!-- Floating Speech Bubble -->
     <div class="floating-speech-bubble" id="speechBubble">
         💭 click anywhere & type
     </div>
 
-    <!-- Modals -->
+    <!-- Modals (add your existing modal content here) -->
     <div id="soft-power" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal('soft-power')">&times;</button>
-            <div class="full-post">
-                <h2>Thinking About Soft Power</h2>
-                <p>Content here...</p>
-            </div>
-        </div>
+        <!-- Your existing soft-power modal content -->
     </div>
 
     <div id="spotify-war" class="modal">
-        <div class="modal-content">
-            <button class="close" onclick="closeModal('spotify-war')">&times;</button>
-            <div class="full-post">
-                <h2>Spotify War</h2>
-                <p>Content here...</p>
-            </div>
-        </div>
+        <!-- Your existing spotify-war modal content -->
     </div>
 
     <script>
-        // Postcard Carousel System
-        let currentCard = 0;
-        const totalCards = 3;
+        // Timeline switching with 3D rotation
+        let currentTimeline = 'features';
 
-        function rotateToCard(cardIndex) {
-            if (cardIndex === currentCard) return;
+        function switchTimeline(timeline) {
+            const wrapper = document.getElementById('timelineWrapper');
+            const navContainer = document.getElementById('navContainer');
+            const featuresBtn = document.querySelector('.timeline-btn.features');
+            const opinionBtn = document.querySelector('.timeline-btn.opinion');
             
-            const carousel = document.getElementById('postcardCarousel');
-            const cards = document.querySelectorAll('.timeline-postcard');
-            
-            // Update carousel rotation class
-            carousel.className = 'postcard-carousel';
-            if (cardIndex > 0) {
-                carousel.classList.add(`rotate-${cardIndex}`);
+            if (timeline === 'opinion') {
+                wrapper.classList.add('show-opinion');
+                navContainer.classList.add('opinion-active');
+                featuresBtn.classList.remove('active');
+                featuresBtn.classList.add('inactive');
+                opinionBtn.classList.add('active');
+                opinionBtn.classList.remove('inactive');
+            } else {
+                wrapper.classList.remove('show-opinion');
+                navContainer.classList.remove('opinion-active');
+                featuresBtn.classList.add('active');
+                featuresBtn.classList.remove('inactive');
+                opinionBtn.classList.remove('active');
+                opinionBtn.classList.add('inactive');
             }
             
-            // Update card positions
-            cards.forEach((card, index) => {
-                // Remove all position classes
-                card.classList.remove('position-0', 'position-1', 'position-2');
+            currentTimeline = timeline;
+            
+            // Update text visibility for the new timeline
+            updateTextVisibility();
+        }
+
+        // Our World of Text style typing system
+        const CHAR_WIDTH = 9.6;  // Width of monospace character
+        const LINE_HEIGHT = 20;   // Height of each line
+        const textGrids = {
+            features: new Map(),
+            opinion: new Map()
+        }; // Separate storage for each timeline
+        let cursorX = 0;
+        let cursorY = 0;
+        let isTyping = false;
+        let currentColor = 'color-1';
+
+        // Initialize text grid system
+        function initTextGrid() {
+            const cursor = document.getElementById('textCursor');
+            const hiddenInput = document.getElementById('hiddenInput');
+            
+            // Handle clicks anywhere on the page
+            document.addEventListener('click', function(e) {
+                // Don't activate on certain elements
+                if (e.target.closest('.modal') || 
+                    e.target.closest('.timeline-nav') ||
+                    e.target.tagName === 'BUTTON' ||
+                    e.target.closest('.floating-speech-bubble')) {
+                    if (isTyping) {
+                        stopTyping();
+                    }
+                    return;
+                }
                 
-                // Calculate relative position
-                if (index === cardIndex) {
-                    card.classList.add('position-0');
-                } else if (index < cardIndex) {
-                    card.classList.add('position-2'); // Left side
-                } else {
-                    card.classList.add('position-1'); // Right side
+                // Allow typing on timeline panels
+                if (e.target.closest('.timeline-panel')) {
+                    startTyping(e.clientX, e.clientY);
                 }
             });
             
-            currentCard = cardIndex;
+            // Handle typing
+            hiddenInput.addEventListener('input', function(e) {
+                const char = e.target.value.slice(-1);
+                if (char) {
+                    addCharacter(char);
+                    e.target.value = '';
+                }
+            });
+            
+            // Handle special keys
+            hiddenInput.addEventListener('keydown', function(e) {
+                if (!isTyping) return;
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        moveCursor(-1, 0);
+                        e.preventDefault();
+                        break;
+                    case 'ArrowRight':
+                        moveCursor(1, 0);
+                        e.preventDefault();
+                        break;
+                    case 'ArrowUp':
+                        moveCursor(0, -1);
+                        e.preventDefault();
+                        break;
+                    case 'ArrowDown':
+                        moveCursor(0, 1);
+                        e.preventDefault();
+                        break;
+                    case 'Backspace':
+                        removeCharacter();
+                        e.preventDefault();
+                        break;
+                    case 'Enter':
+                        moveCursor(-cursorX, 1);
+                        e.preventDefault();
+                        break;
+                    case 'Tab':
+                        // Add 4 spaces
+                        for (let i = 0; i < 4; i++) {
+                            addCharacter(' ');
+                        }
+                        e.preventDefault();
+                        break;
+                    case 'Escape':
+                        stopTyping();
+                        e.preventDefault();
+                        break;
+                }
+            });
+            
+            // Keep focus on hidden input when typing
+            document.addEventListener('click', function() {
+                if (isTyping) {
+                    hiddenInput.focus();
+                }
+            });
+            
+            // Load saved text from localStorage (if available)
+            loadSavedText();
         }
 
-        // Direct Text Input System
-        const textInputs = new Map();
-        let activeInput = null;
-
-        document.addEventListener('click', function(e) {
-            // Don't create text inputs on certain elements
-            if (e.target.closest('.timeline-postcard') || 
-                e.target.closest('.modal') || 
-                e.target.tagName === 'BUTTON' ||
-                e.target.tagName === 'INPUT' ||
-                e.target.tagName === 'TEXTAREA' ||
-                e.target.closest('.floating-speech-bubble')) {
-                return;
-            }
-
-            createTextInput(e.clientX, e.clientY);
-        });
-
-        function createTextInput(x, y) {
+        function startTyping(x, y) {
+            const hiddenInput = document.getElementById('hiddenInput');
+            const cursor = document.getElementById('textCursor');
+            const bubble = document.getElementById('speechBubble');
+            
+            // Calculate grid position
+            cursorX = Math.floor(x / CHAR_WIDTH);
+            cursorY = Math.floor(y / LINE_HEIGHT);
+            
+            // Show cursor
+            cursor.style.left = (cursorX * CHAR_WIDTH) + 'px';
+            cursor.style.top = (cursorY * LINE_HEIGHT) + 'px';
+            cursor.classList.add('active');
+            
+            // Focus hidden input
+            hiddenInput.focus();
+            
             // Hide speech bubble
-            document.getElementById('speechBubble').style.opacity = '0';
+            bubble.style.opacity = '0';
             
-            // Create new text input
-            const input = document.createElement('textarea');
-            input.className = 'text-input';
-            input.style.left = x + 'px';
-            input.style.top = y + 'px';
-            input.rows = 1;
+            isTyping = true;
+            document.body.classList.add('typing-mode');
+        }
+
+        function stopTyping() {
+            const cursor = document.getElementById('textCursor');
+            const hiddenInput = document.getElementById('hiddenInput');
+            const bubble = document.getElementById('speechBubble');
             
-            // Add to canvas
-            document.getElementById('textCanvas').appendChild(input);
+            cursor.classList.remove('active');
+            hiddenInput.blur();
             
-            // Focus and setup
-            input.focus();
-            activeInput = input;
+            // Show speech bubble again after delay
+            setTimeout(() => {
+                bubble.style.opacity = '0.9';
+            }, 1000);
             
-            // Auto-resize as user types
-            input.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.width = 'auto';
-                this.style.height = this.scrollHeight + 'px';
-                this.style.width = Math.max(20, this.scrollWidth) + 'px';
-            });
+            isTyping = false;
+            document.body.classList.remove('typing-mode');
             
-            // Handle blur
-            input.addEventListener('blur', function() {
-                if (this.value.trim() === '') {
-                    this.remove();
+            // Save to localStorage
+            saveText();
+        }
+
+        function addCharacter(char) {
+            const grid = document.getElementById('textGrid');
+            const key = `${cursorX},${cursorY}`;
+            const textMap = textGrids[currentTimeline];
+            
+            // Remove existing character at this position if any
+            const existing = textMap.get(key);
+            if (existing) {
+                existing.remove();
+            }
+            
+            // Create new character cell
+            const cell = document.createElement('div');
+            cell.className = `text-cell ${currentColor}`;
+            cell.style.left = (cursorX * CHAR_WIDTH) + 'px';
+            cell.style.top = (cursorY * LINE_HEIGHT) + 'px';
+            cell.textContent = char;
+            cell.dataset.timeline = currentTimeline;
+            
+            // Only show if on current timeline
+            if (currentTimeline === getCurrentActiveTimeline()) {
+                cell.style.display = 'block';
+            } else {
+                cell.style.display = 'none';
+            }
+            
+            grid.appendChild(cell);
+            textMap.set(key, cell);
+            
+            // Move cursor forward
+            moveCursor(1, 0);
+        }
+
+        function removeCharacter() {
+            // Move back and delete
+            moveCursor(-1, 0);
+            
+            const key = `${cursorX},${cursorY}`;
+            const textMap = textGrids[currentTimeline];
+            const cell = textMap.get(key);
+            
+            if (cell) {
+                cell.remove();
+                textMap.delete(key);
+            }
+        }
+
+        function moveCursor(dx, dy) {
+            cursorX = Math.max(0, cursorX + dx);
+            cursorY = Math.max(0, cursorY + dy);
+            
+            // Keep cursor in viewport
+            const maxX = Math.floor(window.innerWidth / CHAR_WIDTH) - 1;
+            const maxY = Math.floor(window.innerHeight / LINE_HEIGHT) - 1;
+            
+            cursorX = Math.min(cursorX, maxX);
+            cursorY = Math.min(cursorY, maxY);
+            
+            // Update cursor position
+            const cursor = document.getElementById('textCursor');
+            cursor.style.left = (cursorX * CHAR_WIDTH) + 'px';
+            cursor.style.top = (cursorY * LINE_HEIGHT) + 'px';
+        }
+
+        function getCurrentActiveTimeline() {
+            return currentTimeline;
+        }
+
+        // Show/hide text based on active timeline
+        function updateTextVisibility() {
+            const allCells = document.querySelectorAll('.text-cell');
+            allCells.forEach(cell => {
+                if (cell.dataset.timeline === currentTimeline) {
+                    cell.style.display = 'block';
+                } else {
+                    cell.style.display = 'none';
                 }
-                activeInput = null;
-                // Show speech bubble again after a delay
-                setTimeout(() => {
-                    document.getElementById('speechBubble').style.opacity = '0.9';
-                }, 1000);
-            });
-            
-            // Prevent Enter from creating new line (optional)
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    this.blur();
-                }
-            });
-            
-            // Store the input
-            const inputId = Date.now();
-            textInputs.set(inputId, {
-                element: input,
-                x: x,
-                y: y,
-                text: ''
             });
         }
+
+        // Save text to localStorage
+        function saveText() {
+            const saveData = {
+                features: [],
+                opinion: []
+            };
+            
+            // Convert Maps to arrays for storage
+            for (const [timeline, gridMap] of Object.entries(textGrids)) {
+                gridMap.forEach((cell, key) => {
+                    const [x, y] = key.split(',').map(Number);
+                    saveData[timeline].push({
+                        x: x,
+                        y: y,
+                        char: cell.textContent,
+                        color: cell.className.replace('text-cell ', '')
+                    });
+                });
+            }
+            
+            localStorage.setItem('timelineText', JSON.stringify(saveData));
+        }
+
+        // Load saved text from localStorage
+        function loadSavedText() {
+            const saved = localStorage.getItem('timelineText');
+            if (!saved) return;
+            
+            try {
+                const saveData = JSON.parse(saved);
+                const grid = document.getElementById('textGrid');
+                
+                for (const [timeline, chars] of Object.entries(saveData)) {
+                    chars.forEach(charData => {
+                        const key = `${charData.x},${charData.y}`;
+                        
+                        // Create cell
+                        const cell = document.createElement('div');
+                        cell.className = `text-cell ${charData.color}`;
+                        cell.style.left = (charData.x * CHAR_WIDTH) + 'px';
+                        cell.style.top = (charData.y * LINE_HEIGHT) + 'px';
+                        cell.textContent = charData.char;
+                        cell.dataset.timeline = timeline;
+                        
+                        // Only show if on current timeline
+                        if (timeline === currentTimeline) {
+                            cell.style.display = 'block';
+                        } else {
+                            cell.style.display = 'none';
+                        }
+                        
+                        grid.appendChild(cell);
+                        textGrids[timeline].set(key, cell);
+                    });
+                }
+            } catch (e) {
+                console.error('Failed to load saved text:', e);
+            }
+        }
+
+        // Color picker with number keys
+        document.addEventListener('keydown', function(e) {
+            if (!isTyping) return;
+            
+            if (e.key >= '1' && e.key <= '6' && e.ctrlKey) {
+                currentColor = `color-${e.key}`;
+                e.preventDefault();
+            }
+        });
 
         // Speech Bubble Animation
         function initSpeechBubble() {
@@ -890,6 +1121,7 @@
             updateDateTime();
             setInterval(updateDateTime, 1000);
             initSpeechBubble();
+            initTextGrid();
         });
 
         // Close modal on outside click
@@ -897,6 +1129,17 @@
             if (event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
                 document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.target.tagName === 'TEXTAREA') return;
+            
+            if (event.key === 'ArrowLeft' && currentTimeline === 'opinion') {
+                switchTimeline('features');
+            } else if (event.key === 'ArrowRight' && currentTimeline === 'features') {
+                switchTimeline('opinion');
             }
         });
     </script>
