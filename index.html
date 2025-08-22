@@ -1,4 +1,95 @@
-<!DOCTYPE html>
+</div>
+
+    <!-- New Post Button -->
+    <button id="newPostBtn" onclick="openCMSModal()" style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        z-index: 100;
+        transition: transform 0.2s ease;
+    ">
+        ✨ New Post
+    </button>
+
+    <!-- CMS Modal -->
+    <div id="cmsModal" class="cms-modal" style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 2000;
+        overflow-y: auto;
+    ">
+        <div class="cms-modal-content" style="
+            max-width: 1400px;
+            margin: 20px auto;
+            background: #f5f7fa;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            min-height: calc(100vh - 40px);
+        ">
+            <span class="cms-close" onclick="closeCMSModal()" style="
+                position: absolute;
+                top: 15px;
+                right: 20px;
+                font-size: 30px;
+                color: #666;
+                cursor: pointer;
+                z-index: 10;
+                background: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            ">&times;</span>
+            
+            <!-- Password Screen -->
+            <div id="passwordScreen" class="password-screen" style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                text-align: center;
+                padding: 20px;
+            ">
+                <div class="password-form" style="
+                    background: rgba(255,255,255,0.1);
+                    padding: 40px;
+                    border-radius: 15px;
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255,255,255,0.2);
+                    max-width: 400px;
+                    width: 100%;
+                ">
+                    <h2>🔐 Admin Access</h2>
+                    <p>Enter password to access CMS</p>
+                    <input type="password" id="cmsPassword" placeholder="Enter password" style="
+                        width: 100%;
+                        padding: 15px;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        margin: 15px 0;
+                        background: rgba(255,255,255,0.9);
+                    " onkeypress="checkPasswordKey<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +105,7 @@
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 </script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         * {
@@ -24,7 +115,7 @@
         }
 
         body {
-            font-family: 'Roboto Mono', 'Courier New', monospace;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f5f5f5;
             color: #333;
             line-height: 1.4;
@@ -62,7 +153,7 @@
         .timeline-btn {
             background: none;
             border: none;
-            font-family: 'Roboto Mono', monospace;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             text-transform: uppercase;
             cursor: pointer;
@@ -159,7 +250,8 @@
         .current-time {
             font-size: 1.2em;
             color: #333;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             background: #f5f5f5;
             padding: 10px 20px;
             border: 2px solid #333;
@@ -171,6 +263,7 @@
         .current-date {
             font-size: 1em;
             color: #666;
+            font-family: 'Inter', sans-serif;
             margin-bottom: 30px;
         }
 
@@ -220,6 +313,8 @@
         .post-date {
             font-size: 0.9em;
             color: #666;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             position: absolute;
             top: 20px;
             transform: translateY(-50%);
@@ -281,7 +376,8 @@
 
         .post-title {
             font-size: 1.2em;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
             color: white;
         }
@@ -301,6 +397,7 @@
         .post-text {
             line-height: 1.6;
             cursor: pointer;
+            font-family: 'Inter', sans-serif;
         }
 
         .post-text p {
@@ -334,13 +431,16 @@
 
         .discussion-title {
             font-size: 1.3em;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             color: #333;
             margin-bottom: 10px;
         }
 
         .discussion-preview {
             color: #666;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
             line-height: 1.6;
             margin-bottom: 15px;
         }
@@ -350,6 +450,8 @@
             justify-content: flex-end;
             align-items: center;
             font-size: 0.9em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             color: #999;
         }
 
@@ -435,6 +537,7 @@
             border-radius: 20px;
             padding: 12px 18px;
             font-size: 14px;
+            font-family: 'Inter', sans-serif;
             color: #333;
             font-weight: 500;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -511,72 +614,62 @@
             color: #333;
         }
 
-        /* Mobile Responsive */
+        /* Mobile-specific typing improvements */
+        .mobile-typing-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.1);
+            z-index: 25;
+            display: none;
+            pointer-events: none;
+        }
+
+        .mobile-typing-overlay.active {
+            display: block;
+        }
+
+        /* Mobile input handling - keep typing improvements but remove layout changes */
         @media (max-width: 768px) {
-            .timeline-nav {
-                top: 10px;
+            .hidden-input {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                pointer-events: none;
+                font-size: 16px; /* Prevents zoom on iOS */
             }
 
-            .nav-container {
-                gap: 20px;
+            .hidden-input.active {
+                pointer-events: all;
             }
 
-            /* Adjust shift amount for mobile */
-            .nav-container.opinion-active {
-                transform: translateX(-40px);
+            /* Make text slightly larger on mobile for better visibility */
+            .text-tile {
+                font-size: 18px !important;
+                line-height: 22px !important;
             }
 
-            .timeline-btn.features,
-            .timeline-btn.opinion.active {
-                font-size: 1.5em;
+            .text-cursor {
+                width: 10.8px;
+                height: 22px;
             }
 
-            .timeline-btn.opinion,
-            .timeline-btn.features.inactive {
-                font-size: 1em;
+            /* Only keep essential mobile adjustments */
+            body {
+                padding-bottom: 100px; /* Some space for virtual keyboard */
             }
 
-            .timeline::before {
-                left: 20px;
-            }
-
-            .clock-section::after {
-                left: 20px;
-                transform: translateX(-50%);
-            }
-
-            .timeline-post {
-                padding-left: 50px !important;
-                padding-right: 20px !important;
-            }
-
-            .timeline-post::before {
-                left: 20px;
-                transform: translateX(-50%);
-            }
-
-            .post-content {
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-            }
-
-            .post-date {
-                position: relative !important;
-                top: auto !important;
-                transform: none !important;
-                text-align: left !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-                margin-bottom: 10px !important;
-            }
-
-            .current-time {
-                font-size: 1em;
-                padding: 8px 15px;
-            }
-
-            .timeline-container {
-                padding: 30px 15px;
+            /* Make floating bubble smaller on mobile */
+            .floating-speech-bubble {
+                min-width: 150px;
+                max-width: 200px;
+                font-size: 12px;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -700,7 +793,8 @@
     <!-- Text Grid (Our World of Text style) -->
     <div class="text-grid" id="textGrid"></div>
     <div class="text-cursor" id="textCursor"></div>
-    <input type="text" class="hidden-input" id="hiddenInput" autocomplete="off">
+    <input type="text" class="hidden-input" id="hiddenInput" autocomplete="off" inputmode="text">
+    <div class="mobile-typing-overlay" id="mobileTypingOverlay"></div>
 
     <!-- Floating Speech Bubble -->
     <div class="floating-speech-bubble" id="speechBubble">
@@ -754,8 +848,9 @@
         // Our World of Text style typing system
         const TILE_ROWS = 8;
         const TILE_COLS = 16;
-        const CHAR_WIDTH = 9.6;
-        const CHAR_HEIGHT = 20;
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const CHAR_WIDTH = isMobile ? 10.8 : 9.6;  // Slightly larger on mobile
+        const CHAR_HEIGHT = isMobile ? 22 : 20;    // Slightly larger on mobile
         
         // Tile storage for each timeline
         const tiles = {
@@ -774,6 +869,25 @@
         // Initialize text grid system
         function initTextGrid() {
             hiddenInput = document.getElementById('hiddenInput');
+            const mobileOverlay = document.getElementById('mobileTypingOverlay');
+            
+            // Mobile-specific setup
+            if (isMobile) {
+                // Prevent zoom on input focus
+                hiddenInput.setAttribute('inputmode', 'text');
+                hiddenInput.style.fontSize = '16px';
+                
+                // Handle mobile virtual keyboard
+                let viewportHeight = window.innerHeight;
+                window.addEventListener('resize', function() {
+                    if (window.innerHeight < viewportHeight * 0.75) {
+                        // Keyboard is probably open
+                        document.body.style.paddingBottom = '300px';
+                    } else {
+                        document.body.style.paddingBottom = isMobile ? '200px' : '0px';
+                    }
+                });
+            }
             
             // Check for input every 10ms
             setInterval(function() {
@@ -786,17 +900,38 @@
             }, 10);
             
             // Always refocus on hidden input
-            document.addEventListener('mousedown', function() {
-                if (isTyping) {
-                    setTimeout(() => hiddenInput.focus(), 0);
+            document.addEventListener('mousedown', function(e) {
+                if (isTyping && !e.target.closest('.modal') && !e.target.closest('.timeline-nav')) {
+                    setTimeout(() => {
+                        hiddenInput.focus();
+                        if (isMobile) {
+                            hiddenInput.click(); // Extra trigger for mobile
+                        }
+                    }, 0);
                 }
             });
+
+            // Touch handling for mobile
+            if (isMobile) {
+                document.addEventListener('touchstart', function(e) {
+                    if (isTyping && !e.target.closest('.modal') && !e.target.closest('.timeline-nav')) {
+                        e.preventDefault();
+                        setTimeout(() => {
+                            hiddenInput.focus();
+                            hiddenInput.click();
+                        }, 0);
+                    }
+                });
+            }
             
             // Handle special keys
             document.addEventListener('keydown', function(e) {
                 if (!isTyping) return;
                 
-                hiddenInput.focus();
+                // Keep focus on hidden input
+                if (document.activeElement !== hiddenInput) {
+                    hiddenInput.focus();
+                }
                 
                 switch(e.keyCode) {
                     case 8: // Backspace
@@ -809,20 +944,28 @@
                         moveCursor('newline');
                         break;
                     case 37: // Left arrow
-                        e.preventDefault();
-                        moveCursor('left');
+                        if (!isMobile) { // Disable arrows on mobile to avoid keyboard issues
+                            e.preventDefault();
+                            moveCursor('left');
+                        }
                         break;
                     case 39: // Right arrow
-                        e.preventDefault();
-                        moveCursor('right');
+                        if (!isMobile) {
+                            e.preventDefault();
+                            moveCursor('right');
+                        }
                         break;
                     case 38: // Up arrow
-                        e.preventDefault();
-                        moveCursor('up');
+                        if (!isMobile) {
+                            e.preventDefault();
+                            moveCursor('up');
+                        }
                         break;
                     case 40: // Down arrow
-                        e.preventDefault();
-                        moveCursor('down');
+                        if (!isMobile) {
+                            e.preventDefault();
+                            moveCursor('down');
+                        }
                         break;
                     case 27: // Escape
                         e.preventDefault();
@@ -831,12 +974,17 @@
                 }
             });
             
-            // Handle clicks on timeline
-            document.addEventListener('click', function(e) {
+            // Handle clicks/touches on timeline
+            const eventType = isMobile ? 'touchstart' : 'click';
+            document.addEventListener(eventType, function(e) {
                 if (e.target.closest('.modal') || 
                     e.target.closest('.timeline-nav') ||
                     e.target.tagName === 'BUTTON' ||
-                    e.target.closest('.floating-speech-bubble')) {
+                    e.target.closest('.floating-speech-bubble') ||
+                    e.target.tagName === 'A' ||
+                    e.target.closest('.post-large') ||
+                    e.target.closest('.post-discussion') ||
+                    e.target.closest('.post-music')) {
                     if (isTyping) {
                         stopTyping();
                     }
@@ -845,10 +993,10 @@
                 
                 // Allow typing on timeline panels
                 if (e.target.closest('.timeline-panel')) {
-                    const rect = document.body.getBoundingClientRect();
-                    const x = e.clientX;
-                    const y = e.clientY;
-                    startTypingAt(x, y);
+                    e.preventDefault();
+                    const clientX = isMobile ? e.touches[0].clientX : e.clientX;
+                    const clientY = isMobile ? e.touches[0].clientY : e.clientY;
+                    startTypingAt(clientX, clientY);
                 }
             });
             
@@ -877,7 +1025,28 @@
             
             // Start typing mode
             isTyping = true;
-            hiddenInput.focus();
+            
+            // Mobile-specific handling
+            if (isMobile) {
+                const mobileOverlay = document.getElementById('mobileTypingOverlay');
+                const hiddenInput = document.getElementById('hiddenInput');
+                
+                // Show overlay to indicate typing mode
+                mobileOverlay.classList.add('active');
+                hiddenInput.classList.add('active');
+                
+                // Focus and trigger keyboard
+                hiddenInput.focus();
+                hiddenInput.click();
+                
+                // Scroll cursor into view on mobile
+                setTimeout(() => {
+                    const cursor = document.getElementById('textCursor');
+                    cursor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            } else {
+                hiddenInput.focus();
+            }
             
             // Hide speech bubble
             document.getElementById('speechBubble').style.opacity = '0';
@@ -889,6 +1058,16 @@
             // Hide cursor
             const cursor = document.getElementById('textCursor');
             cursor.classList.remove('active');
+            
+            // Mobile-specific cleanup
+            if (isMobile) {
+                const mobileOverlay = document.getElementById('mobileTypingOverlay');
+                const hiddenInput = document.getElementById('hiddenInput');
+                
+                mobileOverlay.classList.remove('active');
+                hiddenInput.classList.remove('active');
+                hiddenInput.blur(); // Hide mobile keyboard
+            }
             
             // Show speech bubble
             setTimeout(() => {
