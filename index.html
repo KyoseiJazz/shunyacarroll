@@ -6,15 +6,16 @@
     <title>Timeline Blog</title>
 
     <!-- Add Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-      // Initialize Supabase (replace with your keys)
-      const SUPABASE_URL = 'https://cxgbefpmoaeoorysclvx.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4Z2JlZnBtb2Flb29yeXNjbHZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NzY5ODEsImV4cCI6MjA3MTQ1Mjk4MX0.WXJfQtiQzSxW044VIZQT4ODKkOir6SMnJPUPrECh6Ww';
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Initialize Supabase (replace with your keys)
+  const SUPABASE_URL = 'https://cxgbefpmoaeoorysclvx.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4Z2JlZnBtb2Flb29yeXNjbHZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NzY5ODEsImV4cCI6MjA3MTQ1Mjk4MX0.WXJfQtiQzSxW044VIZQT4ODKkOir6SMnJPUPrECh6Ww';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         * {
             margin: 0;
@@ -53,6 +54,7 @@
             transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
+        /* Shift container when opinion is active to keep it centered */
         .nav-container.opinion-active {
             transform: translateX(-60px);
         }
@@ -70,6 +72,7 @@
             padding: 0;
         }
 
+        /* Features button - starts large */
         .timeline-btn.features {
             font-size: 2em;
         }
@@ -79,6 +82,7 @@
             color: #999;
         }
 
+        /* Opinion button - starts small */
         .timeline-btn.opinion {
             font-size: 1.2em;
             color: #999;
@@ -93,7 +97,7 @@
             opacity: 0.8;
         }
 
-        /* Timeline Container */
+        /* Timeline Container with 3D Rotation */
         .timeline-wrapper {
             position: relative;
             width: 100%;
@@ -107,6 +111,7 @@
             transform: rotateY(-180deg);
         }
 
+        /* Individual Timeline Panels */
         .timeline-panel {
             position: absolute;
             width: 100%;
@@ -160,6 +165,7 @@
             border: 2px solid #333;
             display: inline-block;
             margin-bottom: 5px;
+            font-feature-settings: 'tnum';
         }
 
         .current-date {
@@ -168,7 +174,21 @@
             margin-bottom: 30px;
         }
 
-        /* Timeline Posts */
+        /* Clock connection to timeline */
+        .clock-section::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -30px;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+            border: 3px solid #f5f5f5;
+            z-index: 2;
+        }
+
         .timeline-post {
             position: relative;
             margin-top: 0;
@@ -220,11 +240,13 @@
         .post-content {
             background: transparent;
             padding: 20px;
-            transition: transform 0.2s ease;
+            box-shadow: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .post-content:hover {
             transform: translateY(-2px);
+            box-shadow: none;
         }
 
         .timeline-post:nth-child(odd) .post-content {
@@ -235,11 +257,10 @@
             margin-left: 30px;
         }
 
-        /* Post Styles */
         .post-large {
-            width: auto;
-            max-width: 600px;
-            height: auto;
+            width: auto;            
+            max-width: 600px;         
+            height: auto;            
             min-height: 300px;
             background-size: contain;
             background-repeat: no-repeat;
@@ -250,6 +271,7 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 5px;
+            background-color: transparent;
             transition: transform 0.2s ease;
         }
 
@@ -267,6 +289,8 @@
         .post-avatar {
             width: 60px;
             height: 60px;
+            background: transparent;
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -274,11 +298,26 @@
             font-size: 1.2em;
         }
 
+        .post-text {
+            line-height: 1.6;
+            cursor: pointer;
+        }
+
+        .post-text p {
+            color: #555;
+        }
+
         .post-music {
             text-align: center;
             padding: 10px;
         }
 
+        .post-music iframe {
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Discussion post styles */
         .post-discussion {
             background: white;
             border-radius: 10px;
@@ -309,17 +348,23 @@
         .discussion-meta {
             display: flex;
             justify-content: flex-end;
+            align-items: center;
             font-size: 0.9em;
             color: #999;
         }
 
-        /* Text Grid */
+        /* Text Grid System (Our World of Text style) */
         .text-grid {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 20px;
+            letter-spacing: 0;
+            white-space: pre;
             pointer-events: none;
             z-index: 30;
         }
@@ -331,6 +376,7 @@
             line-height: 20px;
             white-space: pre;
             pointer-events: none;
+            color: #333;
         }
 
         .text-cursor {
@@ -354,6 +400,30 @@
             50%, 100% { opacity: 0; }
         }
 
+        /* Hidden input for capturing typing */
+        .hidden-input {
+            position: fixed;
+            left: -9999px;
+            top: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Color variations for text */
+        .text-tile.color-1 { color: #333; }
+        .text-tile.color-2 { color: #667eea; }
+        .text-tile.color-3 { color: #764ba2; }
+        .text-tile.color-4 { color: #22c55e; }
+        .text-tile.color-5 { color: #ef4444; }
+        .text-tile.color-6 { color: #f59e0b; }
+
+        /* Prevent selection on timeline content when typing */
+        body.typing-mode .timeline-wrapper {
+            user-select: none;
+        }
+
         /* Floating Speech Bubble */
         .floating-speech-bubble {
             position: fixed;
@@ -374,7 +444,32 @@
             transition: all 0.3s ease;
         }
 
-        /* Modal */
+        .floating-speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #333;
+        }
+
+        .floating-speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 31px;
+            width: 0;
+            height: 0;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-top: 9px solid white;
+            z-index: 1;
+        }
+
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -406,7 +501,10 @@
             right: 15px;
             font-size: 24px;
             cursor: pointer;
+            background: none;
+            border: none;
             color: #666;
+            transition: color 0.2s ease;
         }
 
         .close:hover {
@@ -415,6 +513,15 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
+            .timeline-nav {
+                top: 10px;
+            }
+
+            .nav-container {
+                gap: 20px;
+            }
+
+            /* Adjust shift amount for mobile */
             .nav-container.opinion-active {
                 transform: translateX(-40px);
             }
@@ -433,6 +540,11 @@
                 left: 20px;
             }
 
+            .clock-section::after {
+                left: 20px;
+                transform: translateX(-50%);
+            }
+
             .timeline-post {
                 padding-left: 50px !important;
                 padding-right: 20px !important;
@@ -440,6 +552,7 @@
 
             .timeline-post::before {
                 left: 20px;
+                transform: translateX(-50%);
             }
 
             .post-content {
@@ -452,7 +565,18 @@
                 top: auto !important;
                 transform: none !important;
                 text-align: left !important;
-                margin: 0 0 10px 0 !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                margin-bottom: 10px !important;
+            }
+
+            .current-time {
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+
+            .timeline-container {
+                padding: 30px 15px;
             }
         }
     </style>
@@ -466,7 +590,7 @@
         </div>
     </div>
 
-    <!-- Timeline Wrapper -->
+    <!-- Timeline Wrapper with 3D Rotation -->
     <div class="timeline-wrapper" id="timelineWrapper">
         
         <!-- FEATURES TIMELINE -->
@@ -474,7 +598,7 @@
             <div class="timeline-container">
                 <div class="clock-section">
                     <div class="current-time" id="currentTime-features">12:00:00 PM</div>
-                    <div class="current-date" id="currentDate-features">01.21.2025</div>
+                    <div class="current-date" id="currentDate-features">08.13.2025</div>
                 </div>
 
                 <div class="timeline">
@@ -493,7 +617,7 @@
                         <div class="post-date">08.14.2025</div>
                         <div class="post-content">
                             <div class="post-music">
-                                <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless></iframe>
+                                <iframe style="border: 0; width: 250px; height: 250px;" src="https://bandcamp.com/EmbeddedPlayer/album=3152343611/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/track=750296502/transparent=true/" seamless><a href="https://patrickholland.bandcamp.com/album/infra">Infra by Patrick Holland</a></iframe>      
                             </div>
                         </div>
                     </div>
@@ -516,7 +640,7 @@
             <div class="timeline-container">
                 <div class="clock-section">
                     <div class="current-time" id="currentTime-opinion">12:00:00 PM</div>
-                    <div class="current-date" id="currentDate-opinion">01.21.2025</div>
+                    <div class="current-date" id="currentDate-opinion">08.13.2025</div>
                 </div>
 
                 <div class="timeline">
@@ -551,43 +675,51 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="timeline-post" data-date="2025-08-16">
+                        <div class="post-date">08.16.2025</div>
+                        <div class="post-content">
+                            <div class="post-discussion" onclick="openModal('discussion-3')">
+                                <div class="discussion-title">The Renaissance of RSS Feeds</div>
+                                <div class="discussion-preview">
+                                    In an era of algorithmic feeds and walled gardens, RSS is making a comeback. 
+                                    Why the old-school tech might be exactly what we need...
+                                </div>
+                                <div class="discussion-meta">
+                                    <span>6 min read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Text Grid -->
+    <!-- Text Grid (Our World of Text style) -->
     <div class="text-grid" id="textGrid"></div>
     <div class="text-cursor" id="textCursor"></div>
+    <input type="text" class="hidden-input" id="hiddenInput" autocomplete="off">
 
     <!-- Floating Speech Bubble -->
     <div class="floating-speech-bubble" id="speechBubble">
         💭 click anywhere & type
     </div>
 
-    <!-- Modals -->
+    <!-- Modals (add your existing modal content here) -->
     <div id="soft-power" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('soft-power')">&times;</span>
-            <h2>Thinking About Soft Power</h2>
-            <p>Content here...</p>
-        </div>
+        <!-- Your existing soft-power modal content -->
     </div>
 
     <div id="spotify-war" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('spotify-war')">&times;</span>
-            <h2>Spotify's Connection to War</h2>
-            <p>Content here...</p>
-        </div>
+        <!-- Your existing spotify-war modal content -->
     </div>
 
     <script>
-        // Core variables
+        // Timeline switching with 3D rotation
         let currentTimeline = 'features';
 
-        // Timeline switching
         function switchTimeline(timeline) {
             const wrapper = document.getElementById('timelineWrapper');
             const navContainer = document.getElementById('navContainer');
@@ -611,6 +743,507 @@
             }
             
             currentTimeline = timeline;
+            
+            // Update text visibility for the new timeline
+            updateTextVisibility();
+            
+            // Load tiles for new timeline from Supabase
+            setTimeout(loadAllTiles, 100);
+        }
+
+        // Our World of Text style typing system
+        const TILE_ROWS = 8;
+        const TILE_COLS = 16;
+        const CHAR_WIDTH = 9.6;
+        const CHAR_HEIGHT = 20;
+        
+        // Tile storage for each timeline
+        const tiles = {
+            features: {},
+            opinion: {}
+        };
+        
+        let cursorTileY = 0;
+        let cursorTileX = 0;
+        let cursorCharY = 0;
+        let cursorCharX = 0;
+        let isTyping = false;
+        let hiddenInput = null;
+        let pendingEdits = [];
+
+        // Initialize text grid system
+        function initTextGrid() {
+            hiddenInput = document.getElementById('hiddenInput');
+            
+            // Check for input every 10ms
+            setInterval(function() {
+                if (hiddenInput.value && isTyping) {
+                    const char = hiddenInput.value.charAt(0);
+                    typeChar(char);
+                    moveCursor('right');
+                    hiddenInput.value = '';
+                }
+            }, 10);
+            
+            // Always refocus on hidden input
+            document.addEventListener('mousedown', function() {
+                if (isTyping) {
+                    setTimeout(() => hiddenInput.focus(), 0);
+                }
+            });
+            
+            // Handle special keys
+            document.addEventListener('keydown', function(e) {
+                if (!isTyping) return;
+                
+                hiddenInput.focus();
+                
+                switch(e.keyCode) {
+                    case 8: // Backspace
+                        e.preventDefault();
+                        moveCursor('left');
+                        typeChar(' ');
+                        break;
+                    case 13: // Enter
+                        e.preventDefault();
+                        moveCursor('newline');
+                        break;
+                    case 37: // Left arrow
+                        e.preventDefault();
+                        moveCursor('left');
+                        break;
+                    case 39: // Right arrow
+                        e.preventDefault();
+                        moveCursor('right');
+                        break;
+                    case 38: // Up arrow
+                        e.preventDefault();
+                        moveCursor('up');
+                        break;
+                    case 40: // Down arrow
+                        e.preventDefault();
+                        moveCursor('down');
+                        break;
+                    case 27: // Escape
+                        e.preventDefault();
+                        stopTyping();
+                        break;
+                }
+            });
+            
+            // Handle clicks on timeline
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.modal') || 
+                    e.target.closest('.timeline-nav') ||
+                    e.target.tagName === 'BUTTON' ||
+                    e.target.closest('.floating-speech-bubble')) {
+                    if (isTyping) {
+                        stopTyping();
+                    }
+                    return;
+                }
+                
+                // Allow typing on timeline panels
+                if (e.target.closest('.timeline-panel')) {
+                    const rect = document.body.getBoundingClientRect();
+                    const x = e.clientX;
+                    const y = e.clientY;
+                    startTypingAt(x, y);
+                }
+            });
+            
+            // Fetch updates periodically
+            setInterval(fetchTileUpdates, 2000);
+            
+            // Send edits periodically
+            setInterval(sendPendingEdits, 1997);
+            
+            // Initial load
+            setTimeout(loadAllTiles, 500);
+        }
+
+        function startTypingAt(x, y) {
+            // Calculate tile and character position
+            cursorTileX = Math.floor(x / (CHAR_WIDTH * TILE_COLS));
+            cursorTileY = Math.floor(y / (CHAR_HEIGHT * TILE_ROWS));
+            cursorCharX = Math.floor((x % (CHAR_WIDTH * TILE_COLS)) / CHAR_WIDTH);
+            cursorCharY = Math.floor((y % (CHAR_HEIGHT * TILE_ROWS)) / CHAR_HEIGHT);
+            
+            // Create tile if needed
+            getOrCreateTile(cursorTileY, cursorTileX);
+            
+            // Show cursor
+            updateCursor();
+            
+            // Start typing mode
+            isTyping = true;
+            hiddenInput.focus();
+            
+            // Hide speech bubble
+            document.getElementById('speechBubble').style.opacity = '0';
+        }
+
+        function stopTyping() {
+            isTyping = false;
+            
+            // Hide cursor
+            const cursor = document.getElementById('textCursor');
+            cursor.classList.remove('active');
+            
+            // Show speech bubble
+            setTimeout(() => {
+                document.getElementById('speechBubble').style.opacity = '0.9';
+            }, 1000);
+        }
+
+        function getOrCreateTile(tileY, tileX) {
+            const key = `${tileY},${tileX}`;
+            const timeline = currentTimeline;
+            
+            if (!tiles[timeline][key]) {
+                // Create new tile
+                const tile = {
+                    content: Array(TILE_ROWS * TILE_COLS).fill(' ').join(''),
+                    element: null,
+                    tileY: tileY,
+                    tileX: tileX
+                };
+                tiles[timeline][key] = tile;
+                renderTile(tile);
+            }
+            
+            return tiles[timeline][key];
+        }
+
+        function renderTile(tile) {
+            // Create tile element if it doesn't exist
+            if (!tile.element) {
+                const tileDiv = document.createElement('div');
+                tileDiv.className = 'text-tile';
+                tileDiv.style.position = 'absolute';
+                tileDiv.style.left = (tile.tileX * TILE_COLS * CHAR_WIDTH) + 'px';
+                tileDiv.style.top = (tile.tileY * TILE_ROWS * CHAR_HEIGHT) + 'px';
+                tileDiv.style.width = (TILE_COLS * CHAR_WIDTH) + 'px';
+                tileDiv.style.height = (TILE_ROWS * CHAR_HEIGHT) + 'px';
+                tileDiv.style.fontFamily = 'Courier New, monospace';
+                tileDiv.style.fontSize = '16px';
+                tileDiv.style.lineHeight = CHAR_HEIGHT + 'px';
+                tileDiv.style.whiteSpace = 'pre';
+                tileDiv.dataset.timeline = currentTimeline;
+                
+                document.getElementById('textGrid').appendChild(tileDiv);
+                tile.element = tileDiv;
+            }
+            
+            // Update content
+            let html = '';
+            for (let y = 0; y < TILE_ROWS; y++) {
+                for (let x = 0; x < TILE_COLS; x++) {
+                    const index = y * TILE_COLS + x;
+                    const char = tile.content[index] || ' ';
+                    html += escapeChar(char);
+                }
+                if (y < TILE_ROWS - 1) html += '\n';
+            }
+            tile.element.innerHTML = html;
+            
+            // Show/hide based on current timeline
+            updateTextVisibility();
+        }
+
+        function updateTextVisibility() {
+            // Show/hide tiles based on current timeline
+            document.querySelectorAll('.text-tile').forEach(tileElement => {
+                if (tileElement.dataset.timeline === currentTimeline) {
+                    tileElement.style.display = 'block';
+                } else {
+                    tileElement.style.display = 'none';
+                }
+            });
+        }
+
+        function typeChar(char) {
+            if (!isTyping) return;
+            
+            const tile = getOrCreateTile(cursorTileY, cursorTileX);
+            const index = cursorCharY * TILE_COLS + cursorCharX;
+            
+            // Update tile content
+            tile.content = tile.content.substring(0, index) + char + tile.content.substring(index + 1);
+            
+            // Re-render tile
+            renderTile(tile);
+            
+            // Queue edit for server
+            pendingEdits.push({
+                timeline: currentTimeline,
+                tileY: cursorTileY,
+                tileX: cursorTileX,
+                charY: cursorCharY,
+                charX: cursorCharX,
+                char: char,
+                timestamp: Date.now()
+            });
+        }
+
+        function moveCursor(direction) {
+            if (!isTyping) return;
+            
+            switch(direction) {
+                case 'right':
+                    cursorCharX++;
+                    if (cursorCharX >= TILE_COLS) {
+                        cursorCharX = 0;
+                        cursorTileX++;
+                    }
+                    break;
+                case 'left':
+                    cursorCharX--;
+                    if (cursorCharX < 0) {
+                        cursorCharX = TILE_COLS - 1;
+                        cursorTileX--;
+                    }
+                    break;
+                case 'down':
+                    cursorCharY++;
+                    if (cursorCharY >= TILE_ROWS) {
+                        cursorCharY = 0;
+                        cursorTileY++;
+                    }
+                    break;
+                case 'up':
+                    cursorCharY--;
+                    if (cursorCharY < 0) {
+                        cursorCharY = TILE_ROWS - 1;
+                        cursorTileY--;
+                    }
+                    break;
+                case 'newline':
+                    cursorCharX = 0;
+                    cursorCharY++;
+                    if (cursorCharY >= TILE_ROWS) {
+                        cursorCharY = 0;
+                        cursorTileY++;
+                    }
+                    break;
+            }
+            
+            // Ensure tile exists
+            getOrCreateTile(cursorTileY, cursorTileX);
+            
+            // Update cursor position
+            updateCursor();
+        }
+
+        function updateCursor() {
+            const cursor = document.getElementById('textCursor');
+            const x = (cursorTileX * TILE_COLS + cursorCharX) * CHAR_WIDTH;
+            const y = (cursorTileY * TILE_ROWS + cursorCharY) * CHAR_HEIGHT;
+            
+            cursor.style.left = x + 'px';
+            cursor.style.top = y + 'px';
+            cursor.classList.add('active');
+        }
+
+        function escapeChar(s) {
+            if (s === '<') return '&lt;';
+            if (s === '>') return '&gt;';
+            if (s === '&') return '&amp;';
+            if (s === ' ') return '&nbsp;';
+            return s;
+        }
+
+        async function sendPendingEdits() {
+            if (pendingEdits.length === 0) return;
+            
+            // Group edits by tile
+            const tileUpdates = {};
+            pendingEdits.forEach(edit => {
+                const key = `${edit.tileY},${edit.tileX}`;
+                if (!tileUpdates[key]) {
+                    tileUpdates[key] = {
+                        timeline: edit.timeline,
+                        tile_key: key,
+                        tile_x: edit.tileX,
+                        tile_y: edit.tileY,
+                        content: tiles[edit.timeline][key]?.content || ''
+                    };
+                }
+            });
+            
+            // Send to Supabase
+            try {
+                const updates = Object.values(tileUpdates);
+                if (updates.length > 0) {
+                    const { error } = await supabase
+                        .from('tiles')
+                        .upsert(updates, {
+                            onConflict: 'timeline,tile_key'
+                        });
+                    
+                    if (error) {
+                        console.error('Error saving tiles:', error);
+                        // Fall back to localStorage
+                        updates.forEach(update => {
+                            const allTiles = JSON.parse(localStorage.getItem(`tiles_${update.timeline}`) || '{}');
+                            allTiles[update.tile_key] = update;
+                            localStorage.setItem(`tiles_${update.timeline}`, JSON.stringify(allTiles));
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error('Supabase error:', err);
+                // Fall back to localStorage for all updates
+                Object.values(tileUpdates).forEach(update => {
+                    const allTiles = JSON.parse(localStorage.getItem(`tiles_${update.timeline}`) || '{}');
+                    allTiles[update.tile_key] = update;
+                    localStorage.setItem(`tiles_${update.timeline}`, JSON.stringify(allTiles));
+                });
+            }
+            
+            pendingEdits = [];
+        }
+
+        async function fetchTileUpdates() {
+            try {
+                // Fetch updates from last 30 seconds
+                const since = new Date(Date.now() - 30000).toISOString();
+                
+                const { data, error } = await supabase
+                    .from('tiles')
+                    .select('*')
+                    .eq('timeline', currentTimeline)
+                    .gte('updated_at', since);
+                
+                if (error) {
+                    console.error('Error fetching tiles:', error);
+                    // Fall back to localStorage
+                    const saved = localStorage.getItem(`tiles_${currentTimeline}`);
+                    if (saved) {
+                        const savedTiles = JSON.parse(saved);
+                        Object.entries(savedTiles).forEach(([key, tileData]) => {
+                            if (!tiles[currentTimeline][key]) {
+                                tiles[currentTimeline][key] = {
+                                    content: tileData.content,
+                                    tileY: tileData.tile_y,
+                                    tileX: tileData.tile_x,
+                                    element: null
+                                };
+                                renderTile(tiles[currentTimeline][key]);
+                            }
+                        });
+                    }
+                    return;
+                }
+                
+                // Update local tiles with server data
+                data?.forEach(row => {
+                    const tile = tiles[currentTimeline][row.tile_key];
+                    
+                    if (!tile || tile.content !== row.content) {
+                        // New or updated tile
+                        tiles[currentTimeline][row.tile_key] = {
+                            content: row.content,
+                            tileY: row.tile_y,
+                            tileX: row.tile_x,
+                            element: tile?.element || null
+                        };
+                        renderTile(tiles[currentTimeline][row.tile_key]);
+                    }
+                });
+            } catch (err) {
+                console.error('Fetch error:', err);
+            }
+        }
+
+        // Load all tiles when switching timelines or on page load
+        async function loadAllTiles() {
+            try {
+                const { data, error } = await supabase
+                    .from('tiles')
+                    .select('*')
+                    .eq('timeline', currentTimeline);
+                
+                if (error) {
+                    console.error('Error loading tiles:', error);
+                    // Fall back to localStorage
+                    const saved = localStorage.getItem(`tiles_${currentTimeline}`);
+                    if (saved) {
+                        const savedTiles = JSON.parse(saved);
+                        Object.entries(savedTiles).forEach(([key, tileData]) => {
+                            tiles[currentTimeline][key] = {
+                                content: tileData.content,
+                                tileY: tileData.tile_y,
+                                tileX: tileData.tile_x,
+                                element: null
+                            };
+                            renderTile(tiles[currentTimeline][key]);
+                        });
+                    }
+                    return;
+                }
+                
+                // Clear and reload all tiles for this timeline
+                const textGrid = document.getElementById('textGrid');
+                
+                // Remove old tiles from this timeline
+                document.querySelectorAll(`.text-tile[data-timeline="${currentTimeline}"]`).forEach(el => {
+                    el.remove();
+                });
+                
+                // Clear tile references
+                Object.keys(tiles[currentTimeline]).forEach(key => {
+                    if (tiles[currentTimeline][key].element) {
+                        tiles[currentTimeline][key].element = null;
+                    }
+                });
+                
+                // Load new tiles
+                data?.forEach(row => {
+                    tiles[currentTimeline][row.tile_key] = {
+                        content: row.content,
+                        tileY: row.tile_y,
+                        tileX: row.tile_x,
+                        element: null
+                    };
+                    renderTile(tiles[currentTimeline][row.tile_key]);
+                });
+            } catch (err) {
+                console.error('Load error:', err);
+            }
+        }
+
+        // Speech Bubble Animation
+        function initSpeechBubble() {
+            const bubble = document.getElementById('speechBubble');
+            let x = Math.random() * (window.innerWidth - 250);
+            let y = Math.random() * (window.innerHeight - 100);
+            let vx = (Math.random() - 0.5) * 1.5;
+            let vy = (Math.random() - 0.5) * 1.5;
+
+            bubble.style.left = x + 'px';
+            bubble.style.top = y + 'px';
+
+            function animateBubble() {
+                x += vx;
+                y += vy;
+
+                if (x <= 0 || x >= window.innerWidth - 250) {
+                    vx = -vx;
+                    x = Math.max(0, Math.min(x, window.innerWidth - 250));
+                }
+                if (y <= 0 || y >= window.innerHeight - 60) {
+                    vy = -vy;
+                    y = Math.max(0, Math.min(y, window.innerHeight - 60));
+                }
+
+                bubble.style.left = x + 'px';
+                bubble.style.top = y + 'px';
+
+                requestAnimationFrame(animateBubble);
+            }
+
+            animateBubble();
         }
 
         // Update date and time
@@ -646,6 +1279,7 @@
             if (modal) {
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
+                event.stopPropagation();
             }
         }
 
@@ -657,44 +1291,12 @@
             }
         }
 
-        // Speech bubble animation
-        function initSpeechBubble() {
-            const bubble = document.getElementById('speechBubble');
-            let x = Math.random() * (window.innerWidth - 250);
-            let y = Math.random() * (window.innerHeight - 100);
-            let vx = (Math.random() - 0.5) * 1.5;
-            let vy = (Math.random() - 0.5) * 1.5;
-
-            bubble.style.left = x + 'px';
-            bubble.style.top = y + 'px';
-
-            function animateBubble() {
-                x += vx;
-                y += vy;
-
-                if (x <= 0 || x >= window.innerWidth - 250) {
-                    vx = -vx;
-                    x = Math.max(0, Math.min(x, window.innerWidth - 250));
-                }
-                if (y <= 0 || y >= window.innerHeight - 60) {
-                    vy = -vy;
-                    y = Math.max(0, Math.min(y, window.innerHeight - 60));
-                }
-
-                bubble.style.left = x + 'px';
-                bubble.style.top = y + 'px';
-
-                requestAnimationFrame(animateBubble);
-            }
-
-            animateBubble();
-        }
-
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             updateDateTime();
             setInterval(updateDateTime, 1000);
             initSpeechBubble();
+            initTextGrid();
         });
 
         // Close modal on outside click
@@ -702,6 +1304,17 @@
             if (event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
                 document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.target.tagName === 'TEXTAREA' || isTyping) return;
+            
+            if (event.key === 'ArrowLeft' && currentTimeline === 'opinion') {
+                switchTimeline('features');
+            } else if (event.key === 'ArrowRight' && currentTimeline === 'features') {
+                switchTimeline('opinion');
             }
         });
     </script>
