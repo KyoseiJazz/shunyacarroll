@@ -1997,5 +1997,361 @@ function copyToClipboard(elementId) {
     });
 }
 </script>
+
+    <!-- Mobile Zoom & Color Typing Add-on - Paste this into your HTML file before the closing </body> tag -->
+
+<style>
+/* Mobile viewport zoom out for more typing space */
+@media (max-width: 768px) {
+    body {
+        zoom: 0.7; /* Zooms out the entire page on mobile */
+        -webkit-text-size-adjust: none; /* Prevents iOS from overriding zoom */
+        -moz-text-size-adjust: none;
+        -ms-text-size-adjust: none;
+    }
+    
+    /* Adjust text grid for mobile zoom */
+    .text-tile {
+        font-size: 16px !important; /* Adjusted for zoom */
+        line-height: 20px !important; /* Adjusted for zoom */
+    }
+    
+    .text-cursor {
+        width: 9.6px !important; /* Adjusted for zoom */
+        height: 20px !important; /* Adjusted for zoom */
+    }
+    
+    /* Keep floating bubbles readable after zoom */
+    .floating-speech-bubble,
+    .floating-bubble-2,
+    .floating-bubble-3 {
+        font-size: 14px !important; /* Larger to compensate for zoom */
+        min-width: 200px !important;
+    }
+}
+
+/* Color classes for alternating text colors */
+.text-color-0 { color: #333 !important; } /* Dark Gray */
+.text-color-1 { color: #667eea !important; } /* Purple-Blue */
+.text-color-2 { color: #764ba2 !important; } /* Purple */
+.text-color-3 { color: #22c55e !important; } /* Green */
+.text-color-4 { color: #ef4444 !important; } /* Red */
+.text-color-5 { color: #f59e0b !important; } /* Orange */
+.text-color-6 { color: #06b6d4 !important; } /* Cyan */
+.text-color-7 { color: #8b5cf6 !important; } /* Violet */
+.text-color-8 { color: #ec4899 !important; } /* Pink */
+.text-color-9 { color: #10b981 !important; } /* Emerald */
+</style>
+
+<script>
+// Enhanced color typing system
+let colorIndex = 0;
+const totalColors = 10;
+
+// Override the original typeChar function to add colors
+const originalTypeChar = window.typeChar;
+if (originalTypeChar) {
+    window.typeChar = function(char) {
+        if (!isTyping) return;
+        
+        const tile = getOrCreateTile(cursorTileY, cursorTileX);
+        const index = cursorCharY * TILE_COLS + cursorCharX;
+        
+        // Update tile content
+        tile.content = tile.content.substring(0, index) + char + tile.content.substring(index + 1);
+        
+        // Re-render tile with colors
+        renderTileWithColors(tile);
+        
+        // Queue edit for server (include color info)
+        pendingEdits.push({
+            timeline: currentTimeline,
+            tileY: cursorTileY,
+            tileX: cursorTileX,
+            charY: cursorCharY,
+            charX: cursorCharX,
+            char: char,
+            color: colorIndex,
+            timestamp: Date.now()
+        });
+        
+        // Advance to next color
+        colorIndex = (colorIndex + 1) % totalColors;
+    };
+}
+
+// Enhanced tile rendering with colors
+function renderTileWithColors(tile) {
+    // Create tile element if it doesn't exist
+    if (!tile.element) {
+        const tileDiv = document.createElement('div');
+        tileDiv.className = 'text-tile';
+        tileDiv.style.position = 'absolute';
+        tileDiv.style.left = (tile.tileX * TILE_COLS * CHAR_WIDTH) + 'px';
+        tileDiv.style.top = (tile.tileY * TILE_ROWS * CHAR_HEIGHT) + 'px';
+        tileDiv.style.width = (TILE_COLS * CHAR_WIDTH) + 'px';
+        tileDiv.style.height = (TILE_ROWS * CHAR_HEIGHT) + 'px';
+        tileDiv.style.fontFamily = 'Courier New, monospace';
+        tileDiv.style.fontSize = (isMobile ? 16 : 16) + 'px';
+        tileDiv.style.lineHeight = (isMobile ? 20 : 20) + 'px';
+        tileDiv.style.whiteSpace = 'pre';
+        tileDiv.dataset.timeline = currentTimeline;
+        
+        document.getElementById('textGrid').appendChild(tileDiv);
+        tile.element = tileDiv;
+    }
+    
+    // Initialize color mapping if it doesn't exist
+    if (!tile.colors) {
+        tile.colors = Array(TILE_ROWS * TILE_COLS).fill(0);
+    }
+    
+    // Build HTML with individual character spans for colors
+    let html = '';
+    for (let y = 0; y < TILE_ROWS; y++) {
+        for (let x = 0; x < TILE_COLS; x++) {
+            const index = y * TILE_COLS + x;
+            const char = tile.content[index] || ' ';
+            const colorClass = tile.colors[index] || 0;
+            const escapedChar = escapeChar(char);
+            
+            if (char === ' ') {
+                html += '&nbsp;';
+            } else {
+                html += `<span class="text-color-${colorClass}">${escapedChar}</span>`;
+            }
+        }
+        if (y < TILE_ROWS - 1) html += '\n';
+    }
+    
+    tile.element.innerHTML = html;
+    
+    // Show/hide based on current timeline
+    updateTextVisibility();
+}
+
+// Override the original getOrCreateTile to ensure color support
+const originalGetOrCreateTile = window.getOrCreateTile;
+if (originalGetOrCreateTile) {
+    window.getOrCreateTile = function(tileY, tileX) {
+        const key = `${tileY},${tileX}`;
+        const timeline = currentTimeline;
+        
+        if (!tiles[timeline][key]) {
+            // Create new tile with color support
+            const tile = {
+                content: Array(TILE_ROWS * TILE_COLS).fill(' ').join(''),
+                colors: Array(TILE_ROWS * TILE_COLS).fill(0),
+                element: null,
+                tileY: tileY,
+                tileX: tileX
+            };
+            tiles[timeline][key] = tile;
+            renderTileWithColors(tile);
+        }
+        
+        return tiles[timeline][key];
+    };
+}
+
+// Update the typeChar function assignment when the original is available
+function assignTypeChar() {
+    if (typeof typeChar !== 'undefined') {
+        const originalTypeChar = typeChar;
+        typeChar = function(char) {
+            if (!isTyping) return;
+            
+            const tile = getOrCreateTile(cursorTileY, cursorTileX);
+            const index = cursorCharY * TILE_COLS + cursorCharX;
+            
+            // Update tile content
+            tile.content = tile.content.substring(0, index) + char + tile.content.substring(index + 1);
+            
+            // Update color info
+            if (!tile.colors) {
+                tile.colors = Array(TILE_ROWS * TILE_COLS).fill(0);
+            }
+            tile.colors[index] = colorIndex;
+            
+            // Re-render tile with colors
+            renderTileWithColors(tile);
+            
+            // Queue edit for server
+            pendingEdits.push({
+                timeline: currentTimeline,
+                tileY: cursorTileY,
+                tileX: cursorTileX,
+                charY: cursorCharY,
+                charX: cursorCharX,
+                char: char,
+                color: colorIndex,
+                timestamp: Date.now()
+            });
+            
+            // Advance to next color
+            colorIndex = (colorIndex + 1) % totalColors;
+        };
+        return true;
+    }
+    return false;
+}
+
+// Try to assign immediately, or wait for the function to be available
+if (!assignTypeChar()) {
+    // Wait for the main script to load
+    const checkForTypeChar = setInterval(() => {
+        if (assignTypeChar()) {
+            clearInterval(checkForTypeChar);
+        }
+    }, 100);
+}
+
+// Enhanced sendPendingEdits to handle colors
+const originalSendPendingEdits = window.sendPendingEdits;
+if (originalSendPendingEdits) {
+    window.sendPendingEdits = async function() {
+        if (pendingEdits.length === 0) return;
+        
+        // Group edits by tile (including color information)
+        const tileUpdates = {};
+        pendingEdits.forEach(edit => {
+            const key = `${edit.tileY},${edit.tileX}`;
+            if (!tileUpdates[key]) {
+                const tile = tiles[edit.timeline][key];
+                tileUpdates[key] = {
+                    timeline: edit.timeline,
+                    tile_key: key,
+                    tile_x: edit.tileX,
+                    tile_y: edit.tileY,
+                    content: tile?.content || '',
+                    colors: JSON.stringify(tile?.colors || []) // Store colors as JSON
+                };
+            }
+        });
+        
+        // Send to Supabase with color information
+        try {
+            const updates = Object.values(tileUpdates);
+            if (updates.length > 0) {
+                const { error } = await supabase
+                    .from('tiles')
+                    .upsert(updates, {
+                        onConflict: 'timeline,tile_key'
+                    });
+                
+                if (error) {
+                    console.error('Error saving tiles:', error);
+                    // Fall back to localStorage
+                    updates.forEach(update => {
+                        const allTiles = JSON.parse(localStorage.getItem(`tiles_${update.timeline}`) || '{}');
+                        allTiles[update.tile_key] = update;
+                        localStorage.setItem(`tiles_${update.timeline}`, JSON.stringify(allTiles));
+                    });
+                }
+            }
+        } catch (err) {
+            console.error('Supabase error:', err);
+            // Fall back to localStorage for all updates
+            Object.values(tileUpdates).forEach(update => {
+                const allTiles = JSON.parse(localStorage.getItem(`tiles_${update.timeline}`) || '{}');
+                allTiles[update.tile_key] = update;
+                localStorage.setItem(`tiles_${update.timeline}`, JSON.stringify(allTiles));
+            });
+        }
+        
+        pendingEdits = [];
+    };
+}
+
+// Enhanced loadAllTiles to handle colors
+const originalLoadAllTiles = window.loadAllTiles;
+if (originalLoadAllTiles) {
+    window.loadAllTiles = async function() {
+        try {
+            const { data, error } = await supabase
+                .from('tiles')
+                .select('*')
+                .eq('timeline', currentTimeline);
+            
+            if (error) {
+                console.error('Error loading tiles:', error);
+                // Fall back to localStorage
+                const saved = localStorage.getItem(`tiles_${currentTimeline}`);
+                if (saved) {
+                    const savedTiles = JSON.parse(saved);
+                    Object.entries(savedTiles).forEach(([key, tileData]) => {
+                        tiles[currentTimeline][key] = {
+                            content: tileData.content,
+                            colors: tileData.colors ? JSON.parse(tileData.colors) : Array(TILE_ROWS * TILE_COLS).fill(0),
+                            tileY: tileData.tile_y,
+                            tileX: tileData.tile_x,
+                            element: null
+                        };
+                        renderTileWithColors(tiles[currentTimeline][key]);
+                    });
+                }
+                return;
+            }
+            
+            // Clear and reload all tiles for this timeline
+            document.querySelectorAll(`.text-tile[data-timeline="${currentTimeline}"]`).forEach(el => {
+                el.remove();
+            });
+            
+            // Clear tile references
+            Object.keys(tiles[currentTimeline]).forEach(key => {
+                if (tiles[currentTimeline][key].element) {
+                    tiles[currentTimeline][key].element = null;
+                }
+            });
+            
+            // Load new tiles with color support
+            data?.forEach(row => {
+                tiles[currentTimeline][row.tile_key] = {
+                    content: row.content,
+                    colors: row.colors ? JSON.parse(row.colors) : Array(TILE_ROWS * TILE_COLS).fill(0),
+                    tileY: row.tile_y,
+                    tileX: row.tile_x,
+                    element: null
+                };
+                renderTileWithColors(tiles[currentTimeline][row.tile_key]);
+            });
+        } catch (err) {
+            console.error('Load error:', err);
+        }
+    };
+}
+
+// Update the mobile viewport meta tag for better zoom control
+function updateMobileViewport() {
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+        viewport = document.createElement('meta');
+        viewport.name = 'viewport';
+        document.head.appendChild(viewport);
+    }
+    
+    if (window.innerWidth <= 768) {
+        // Mobile: allow zooming and set initial scale
+        viewport.content = 'width=device-width, initial-scale=0.7, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes';
+    } else {
+        // Desktop: standard viewport
+        viewport.content = 'width=device-width, initial-scale=1.0, user-scalable=yes';
+    }
+}
+
+// Apply viewport changes
+updateMobileViewport();
+window.addEventListener('resize', updateMobileViewport);
+
+// Initialize color system after page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Start with a random color to make it more interesting
+    colorIndex = Math.floor(Math.random() * totalColors);
+    
+    console.log('🎨 Color typing system initialized!');
+    console.log('📱 Mobile zoom applied for better typing space!');
+});
+</script>
 </body>
 </html>
