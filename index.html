@@ -14,7 +14,7 @@
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 </script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         * {
@@ -24,7 +24,7 @@
         }
 
         body {
-            font-family: 'Roboto Mono', 'Courier New', monospace;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f5f5f5;
             color: #333;
             line-height: 1.4;
@@ -62,7 +62,7 @@
         .timeline-btn {
             background: none;
             border: none;
-            font-family: 'Roboto Mono', monospace;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             text-transform: uppercase;
             cursor: pointer;
@@ -159,7 +159,8 @@
         .current-time {
             font-size: 1.2em;
             color: #333;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             background: #f5f5f5;
             padding: 10px 20px;
             border: 2px solid #333;
@@ -171,6 +172,7 @@
         .current-date {
             font-size: 1em;
             color: #666;
+            font-family: 'Inter', sans-serif;
             margin-bottom: 30px;
         }
 
@@ -220,6 +222,8 @@
         .post-date {
             font-size: 0.9em;
             color: #666;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             position: absolute;
             top: 20px;
             transform: translateY(-50%);
@@ -242,6 +246,11 @@
             padding: 20px;
             box-shadow: none;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            pointer-events: none; /* Remove large clickable area */
+        }
+
+        .post-content > * {
+            pointer-events: auto; /* Re-enable for actual content */
         }
 
         .post-content:hover {
@@ -273,6 +282,7 @@
             padding: 5px;
             background-color: transparent;
             transition: transform 0.2s ease;
+            pointer-events: auto;
         }
 
         .post-large:hover {
@@ -281,7 +291,8 @@
 
         .post-title {
             font-size: 1.2em;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
             color: white;
         }
@@ -301,6 +312,8 @@
         .post-text {
             line-height: 1.6;
             cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            pointer-events: auto;
         }
 
         .post-text p {
@@ -310,6 +323,7 @@
         .post-music {
             text-align: center;
             padding: 10px;
+            pointer-events: auto;
         }
 
         .post-music iframe {
@@ -325,6 +339,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            pointer-events: auto;
         }
 
         .post-discussion:hover {
@@ -334,13 +349,16 @@
 
         .discussion-title {
             font-size: 1.3em;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             color: #333;
             margin-bottom: 10px;
         }
 
         .discussion-preview {
             color: #666;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
             line-height: 1.6;
             margin-bottom: 15px;
         }
@@ -350,6 +368,8 @@
             justify-content: flex-end;
             align-items: center;
             font-size: 0.9em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             color: #999;
         }
 
@@ -411,13 +431,17 @@
             pointer-events: none;
         }
 
-        /* Color variations for text */
-        .text-tile.color-1 { color: #333; }
-        .text-tile.color-2 { color: #667eea; }
-        .text-tile.color-3 { color: #764ba2; }
-        .text-tile.color-4 { color: #22c55e; }
-        .text-tile.color-5 { color: #ef4444; }
-        .text-tile.color-6 { color: #f59e0b; }
+        /* Color classes for typing */
+        .char-color-0 { color: #333 !important; }
+        .char-color-1 { color: #667eea !important; }
+        .char-color-2 { color: #764ba2 !important; }
+        .char-color-3 { color: #22c55e !important; }
+        .char-color-4 { color: #ef4444 !important; }
+        .char-color-5 { color: #f59e0b !important; }
+        .char-color-6 { color: #06b6d4 !important; }
+        .char-color-7 { color: #8b5cf6 !important; }
+        .char-color-8 { color: #ec4899 !important; }
+        .char-color-9 { color: #10b981 !important; }
 
         /* Prevent selection on timeline content when typing */
         body.typing-mode .timeline-wrapper {
@@ -435,6 +459,7 @@
             border-radius: 20px;
             padding: 12px 18px;
             font-size: 14px;
+            font-family: 'Inter', sans-serif;
             color: #333;
             font-weight: 500;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -467,6 +492,36 @@
             border-right: 9px solid transparent;
             border-top: 9px solid white;
             z-index: 1;
+        }
+
+        /* Additional Floating Bubbles */
+        .floating-bubble-2, .floating-bubble-3 {
+            position: fixed;
+            width: auto;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 20px;
+            padding: 12px 18px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            pointer-events: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .floating-bubble-2 {
+            min-width: 180px;
+            max-width: 220px;
+            z-index: 99;
+        }
+
+        .floating-bubble-3 {
+            min-width: 150px;
+            max-width: 180px;
+            z-index: 98;
         }
 
         /* Modal Styles */
@@ -511,72 +566,79 @@
             color: #333;
         }
 
-        /* Mobile Responsive */
+        /* Force desktop layout on all devices */
         @media (max-width: 768px) {
-            .timeline-nav {
-                top: 10px;
+            body {
+                zoom: 0.8; /* Slight zoom out for mobile */
             }
 
-            .nav-container {
-                gap: 20px;
-            }
-
-            /* Adjust shift amount for mobile */
-            .nav-container.opinion-active {
-                transform: translateX(-40px);
-            }
-
-            .timeline-btn.features,
-            .timeline-btn.opinion.active {
-                font-size: 1.5em;
-            }
-
-            .timeline-btn.opinion,
-            .timeline-btn.features.inactive {
-                font-size: 1em;
-            }
-
+            /* Keep all desktop layout intact */
             .timeline::before {
-                left: 20px;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
             }
 
             .clock-section::after {
-                left: 20px;
-                transform: translateX(-50%);
+                left: 50% !important;
+                transform: translateX(-50%) !important;
             }
 
             .timeline-post {
-                padding-left: 50px !important;
-                padding-right: 20px !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            .timeline-post:nth-child(odd) {
+                padding-right: 50% !important;
+            }
+
+            .timeline-post:nth-child(even) {
+                padding-left: 50% !important;
             }
 
             .timeline-post::before {
-                left: 20px;
-                transform: translateX(-50%);
+                left: 50% !important;
+                transform: translateX(-50%) !important;
             }
 
-            .post-content {
+            .timeline-post:nth-child(odd) .post-content {
+                margin-right: 30px !important;
                 margin-left: 0 !important;
+            }
+
+            .timeline-post:nth-child(even) .post-content {
+                margin-left: 30px !important;
                 margin-right: 0 !important;
             }
 
-            .post-date {
-                position: relative !important;
-                top: auto !important;
-                transform: none !important;
+            .timeline-post:nth-child(odd) .post-date {
+                left: 50% !important;
+                margin-left: 30px !important;
                 text-align: left !important;
-                margin-left: 0 !important;
+                right: auto !important;
                 margin-right: 0 !important;
-                margin-bottom: 10px !important;
+                position: absolute !important;
+                top: 20px !important;
+                transform: translateY(-50%) !important;
             }
 
-            .current-time {
-                font-size: 1em;
-                padding: 8px 15px;
+            .timeline-post:nth-child(even) .post-date {
+                right: 50% !important;
+                margin-right: 30px !important;
+                text-align: right !important;
+                left: auto !important;
+                margin-left: 0 !important;
+                position: absolute !important;
+                top: 20px !important;
+                transform: translateY(-50%) !important;
             }
 
-            .timeline-container {
-                padding: 30px 15px;
+            /* Adjust floating bubbles for mobile zoom */
+            .floating-speech-bubble,
+            .floating-bubble-2,
+            .floating-bubble-3 {
+                font-size: 14px !important;
+                min-width: 150px !important;
             }
         }
     </style>
@@ -707,6 +769,15 @@
         💭 click anywhere & type
     </div>
 
+    <!-- Additional Floating Bubbles -->
+    <div class="floating-bubble-2" id="cookieBubble">
+        🍪 No Cookies<br>📡 No Surveillance
+    </div>
+
+    <div class="floating-bubble-3" id="shunyaBubble">
+        ✨ Shunya was here
+    </div>
+
     <!-- Modals (add your existing modal content here) -->
     <div id="soft-power" class="modal">
         <!-- Your existing soft-power modal content -->
@@ -751,11 +822,15 @@
             setTimeout(loadAllTiles, 100);
         }
 
-        // Our World of Text style typing system
+        // Our World of Text style typing system with colors
         const TILE_ROWS = 8;
         const TILE_COLS = 16;
         const CHAR_WIDTH = 9.6;
         const CHAR_HEIGHT = 20;
+        
+        // Color system
+        let currentColorIndex = 0;
+        const colorCount = 10;
         
         // Tile storage for each timeline
         const tiles = {
@@ -831,12 +906,19 @@
                 }
             });
             
-            // Handle clicks on timeline
+            // Handle clicks on timeline - avoid post interference
             document.addEventListener('click', function(e) {
-                if (e.target.closest('.modal') || 
+                // Don't start typing if clicking on posts or UI elements
+                if (e.target.closest('.post-large') || 
+                    e.target.closest('.post-discussion') || 
+                    e.target.closest('.post-music') ||
+                    e.target.closest('.post-text') ||
+                    e.target.closest('.modal') || 
                     e.target.closest('.timeline-nav') ||
                     e.target.tagName === 'BUTTON' ||
-                    e.target.closest('.floating-speech-bubble')) {
+                    e.target.closest('.floating-speech-bubble') ||
+                    e.target.closest('.floating-bubble-2') ||
+                    e.target.closest('.floating-bubble-3')) {
                     if (isTyping) {
                         stopTyping();
                     }
@@ -845,7 +927,6 @@
                 
                 // Allow typing on timeline panels
                 if (e.target.closest('.timeline-panel')) {
-                    const rect = document.body.getBoundingClientRect();
                     const x = e.clientX;
                     const y = e.clientY;
                     startTypingAt(x, y);
@@ -901,9 +982,10 @@
             const timeline = currentTimeline;
             
             if (!tiles[timeline][key]) {
-                // Create new tile
+                // Create new tile with color support
                 const tile = {
                     content: Array(TILE_ROWS * TILE_COLS).fill(' ').join(''),
+                    colors: Array(TILE_ROWS * TILE_COLS).fill(0),
                     element: null,
                     tileY: tileY,
                     tileX: tileX
@@ -935,16 +1017,29 @@
                 tile.element = tileDiv;
             }
             
-            // Update content
+            // Initialize colors if needed
+            if (!tile.colors) {
+                tile.colors = Array(TILE_ROWS * TILE_COLS).fill(0);
+            }
+            
+            // Build HTML with colored characters
             let html = '';
             for (let y = 0; y < TILE_ROWS; y++) {
                 for (let x = 0; x < TILE_COLS; x++) {
                     const index = y * TILE_COLS + x;
                     const char = tile.content[index] || ' ';
-                    html += escapeChar(char);
+                    const colorIndex = tile.colors[index] || 0;
+                    
+                    if (char === ' ') {
+                        html += '&nbsp;';
+                    } else {
+                        const escapedChar = escapeChar(char);
+                        html += `<span class="char-color-${colorIndex}">${escapedChar}</span>`;
+                    }
                 }
                 if (y < TILE_ROWS - 1) html += '\n';
             }
+            
             tile.element.innerHTML = html;
             
             // Show/hide based on current timeline
@@ -971,7 +1066,13 @@
             // Update tile content
             tile.content = tile.content.substring(0, index) + char + tile.content.substring(index + 1);
             
-            // Re-render tile
+            // Update color info
+            if (!tile.colors) {
+                tile.colors = Array(TILE_ROWS * TILE_COLS).fill(0);
+            }
+            tile.colors[index] = currentColorIndex;
+            
+            // Re-render tile with colors
             renderTile(tile);
             
             // Queue edit for server
@@ -982,8 +1083,12 @@
                 charY: cursorCharY,
                 charX: cursorCharX,
                 char: char,
+                color: currentColorIndex,
                 timestamp: Date.now()
             });
+            
+            // Advance to next color
+            currentColorIndex = (currentColorIndex + 1) % colorCount;
         }
 
         function moveCursor(direction) {
@@ -1056,22 +1161,24 @@
         async function sendPendingEdits() {
             if (pendingEdits.length === 0) return;
             
-            // Group edits by tile
+            // Group edits by tile (including color information)
             const tileUpdates = {};
             pendingEdits.forEach(edit => {
                 const key = `${edit.tileY},${edit.tileX}`;
                 if (!tileUpdates[key]) {
+                    const tile = tiles[edit.timeline][key];
                     tileUpdates[key] = {
                         timeline: edit.timeline,
                         tile_key: key,
                         tile_x: edit.tileX,
                         tile_y: edit.tileY,
-                        content: tiles[edit.timeline][key]?.content || ''
+                        content: tile?.content || '',
+                        colors: JSON.stringify(tile?.colors || []) // Store colors as JSON
                     };
                 }
             });
             
-            // Send to Supabase
+            // Send to Supabase with color information
             try {
                 const updates = Object.values(tileUpdates);
                 if (updates.length > 0) {
@@ -1125,6 +1232,7 @@
                             if (!tiles[currentTimeline][key]) {
                                 tiles[currentTimeline][key] = {
                                     content: tileData.content,
+                                    colors: tileData.colors ? JSON.parse(tileData.colors) : Array(TILE_ROWS * TILE_COLS).fill(0),
                                     tileY: tileData.tile_y,
                                     tileX: tileData.tile_x,
                                     element: null
@@ -1144,6 +1252,7 @@
                         // New or updated tile
                         tiles[currentTimeline][row.tile_key] = {
                             content: row.content,
+                            colors: row.colors ? JSON.parse(row.colors) : Array(TILE_ROWS * TILE_COLS).fill(0),
                             tileY: row.tile_y,
                             tileX: row.tile_x,
                             element: tile?.element || null
@@ -1173,6 +1282,7 @@
                         Object.entries(savedTiles).forEach(([key, tileData]) => {
                             tiles[currentTimeline][key] = {
                                 content: tileData.content,
+                                colors: tileData.colors ? JSON.parse(tileData.colors) : Array(TILE_ROWS * TILE_COLS).fill(0),
                                 tileY: tileData.tile_y,
                                 tileX: tileData.tile_x,
                                 element: null
@@ -1184,9 +1294,6 @@
                 }
                 
                 // Clear and reload all tiles for this timeline
-                const textGrid = document.getElementById('textGrid');
-                
-                // Remove old tiles from this timeline
                 document.querySelectorAll(`.text-tile[data-timeline="${currentTimeline}"]`).forEach(el => {
                     el.remove();
                 });
@@ -1198,10 +1305,11 @@
                     }
                 });
                 
-                // Load new tiles
+                // Load new tiles with color support
                 data?.forEach(row => {
                     tiles[currentTimeline][row.tile_key] = {
                         content: row.content,
+                        colors: row.colors ? JSON.parse(row.colors) : Array(TILE_ROWS * TILE_COLS).fill(0),
                         tileY: row.tile_y,
                         tileX: row.tile_x,
                         element: null
@@ -1244,6 +1352,67 @@
             }
 
             animateBubble();
+        }
+
+        // Initialize additional floating bubbles
+        function initAdditionalBubbles() {
+            // Cookie bubble
+            const cookieBubble = document.getElementById('cookieBubble');
+            let cookieX = Math.random() * (window.innerWidth - 220);
+            let cookieY = Math.random() * (window.innerHeight - 100);
+            let cookieVx = (Math.random() - 0.5) * 1;
+            let cookieVy = (Math.random() - 0.5) * 1;
+
+            cookieBubble.style.left = cookieX + 'px';
+            cookieBubble.style.top = cookieY + 'px';
+
+            // Shunya bubble
+            const shunyaBubble = document.getElementById('shunyaBubble');
+            let shunyaX = Math.random() * (window.innerWidth - 180);
+            let shunyaY = Math.random() * (window.innerHeight - 100);
+            let shunyaVx = (Math.random() - 0.5) * 0.8;
+            let shunyaVy = (Math.random() - 0.5) * 0.8;
+
+            shunyaBubble.style.left = shunyaX + 'px';
+            shunyaBubble.style.top = shunyaY + 'px';
+
+            function animateAdditionalBubbles() {
+                // Cookie bubble movement
+                cookieX += cookieVx;
+                cookieY += cookieVy;
+
+                if (cookieX <= 0 || cookieX >= window.innerWidth - 220) {
+                    cookieVx = -cookieVx;
+                    cookieX = Math.max(0, Math.min(cookieX, window.innerWidth - 220));
+                }
+                if (cookieY <= 0 || cookieY >= window.innerHeight - 60) {
+                    cookieVy = -cookieVy;
+                    cookieY = Math.max(0, Math.min(cookieY, window.innerHeight - 60));
+                }
+
+                cookieBubble.style.left = cookieX + 'px';
+                cookieBubble.style.top = cookieY + 'px';
+
+                // Shunya bubble movement
+                shunyaX += shunyaVx;
+                shunyaY += shunyaVy;
+
+                if (shunyaX <= 0 || shunyaX >= window.innerWidth - 180) {
+                    shunyaVx = -shunyaVx;
+                    shunyaX = Math.max(0, Math.min(shunyaX, window.innerWidth - 180));
+                }
+                if (shunyaY <= 0 || shunyaY >= window.innerHeight - 60) {
+                    shunyaVy = -shunyaVy;
+                    shunyaY = Math.max(0, Math.min(shunyaY, window.innerHeight - 60));
+                }
+
+                shunyaBubble.style.left = shunyaX + 'px';
+                shunyaBubble.style.top = shunyaY + 'px';
+
+                requestAnimationFrame(animateAdditionalBubbles);
+            }
+
+            animateAdditionalBubbles();
         }
 
         // Update date and time
@@ -1296,7 +1465,15 @@
             updateDateTime();
             setInterval(updateDateTime, 1000);
             initSpeechBubble();
+            initAdditionalBubbles();
             initTextGrid();
+            
+            // Start with random color
+            currentColorIndex = Math.floor(Math.random() * colorCount);
+            
+            console.log('🎨 Color typing system initialized!');
+            console.log('📱 Desktop layout enforced on mobile!');
+            console.log('🖱️ Click boundaries fixed!');
         });
 
         // Close modal on outside click
@@ -1318,1040 +1495,5 @@
             }
         });
     </script>
-
-<!-- Desktop-only New Post Button -->
-<button id="newPostBtn" onclick="openCMSModal()" style="
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    z-index: 100;
-    transition: transform 0.2s ease;
-    display: none;
-">
-    ✨ New Post
-</button>
-
-<!-- Additional Floating Bubbles -->
-<div class="floating-bubble-2" id="cookieBubble" style="
-    position: fixed;
-    width: auto;
-    min-width: 180px;
-    max-width: 220px;
-    background: white;
-    border: 2px solid #333;
-    border-radius: 20px;
-    padding: 12px 18px;
-    font-size: 13px;
-    font-family: 'Inter', sans-serif;
-    color: #333;
-    font-weight: 500;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    z-index: 99;
-    pointer-events: none;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-">
-    🍪 No Cookies
-    <p>📡No Surveillance</p>
-</div>
-
-<div class="floating-bubble-3" id="shunyaBubble" style="
-    position: fixed;
-    width: auto;
-    min-width: 150px;
-    max-width: 180px;
-    background: white;
-    border: 2px solid #333;
-    border-radius: 20px;
-    padding: 12px 18px;
-    font-size: 13px;
-    font-family: 'Inter', sans-serif;
-    color: #333;
-    font-weight: 500;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    z-index: 98;
-    pointer-events: none;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-">
-    ✨ Shunya was here
-</div>
-
-<!-- CMS Modal -->
-<div id="cmsModal" style="
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    z-index: 2000;
-    overflow-y: auto;
-">
-    <div style="
-        max-width: 1400px;
-        margin: 20px auto;
-        background: #f5f7fa;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        position: relative;
-        min-height: calc(100vh - 40px);
-    ">
-        <span onclick="closeCMSModal()" style="
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 30px;
-            color: #666;
-            cursor: pointer;
-            z-index: 10;
-            background: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        ">&times;</span>
-        
-        <!-- Password Screen -->
-        <div id="passwordScreen" style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-            padding: 20px;
-        ">
-            <div style="
-                background: rgba(255,255,255,0.1);
-                padding: 40px;
-                border-radius: 15px;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255,255,255,0.2);
-                max-width: 400px;
-                width: 100%;
-            ">
-                <h2>🔐 Admin Access</h2>
-                <p>Enter password to access CMS</p>
-                <input type="password" id="cmsPassword" placeholder="Enter password" style="
-                    width: 100%;
-                    padding: 15px;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    margin: 15px 0;
-                    background: rgba(255,255,255,0.9);
-                " onkeypress="checkPasswordKey(event)">
-                <button onclick="checkPassword()" style="
-                    width: 100%;
-                    padding: 15px;
-                    background: rgba(255,255,255,0.2);
-                    border: 2px solid white;
-                    color: white;
-                    border-radius: 8px;
-                    font-size: 16px;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                ">Access CMS</button>
-                <div id="passwordError" style="
-                    color: #ff6b6b;
-                    margin-top: 10px;
-                    font-weight: bold;
-                "></div>
-            </div>
-        </div>
-
-        <!-- CMS Content -->
-        <div id="cmsContent" style="display: none;">
-            <div style="padding: 20px; color: #333; font-family: 'Inter', sans-serif;">
-                <div style="
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    color: white;
-                    padding: 30px;
-                    border-radius: 10px;
-                    margin-bottom: 30px;
-                    text-align: center;
-                ">
-                    <h1 style="font-size: 2.5em; margin-bottom: 10px;">🎵 Timeline Blog CMS</h1>
-                    <p style="opacity: 0.9; font-size: 1.1em;">Create new posts for your timeline without editing code</p>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                    <!-- Form Section -->
-                    <div style="
-                        background: white;
-                        padding: 30px;
-                        border-radius: 10px;
-                        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                    ">
-                        <h2>📝 Create New Post</h2>
-                        
-                        <!-- Post Type Selection -->
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Post Type</label>
-                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
-                                <div class="post-type-btn active" onclick="selectPostType('text')" style="
-                                    padding: 15px;
-                                    border: 2px solid #667eea;
-                                    background: #667eea;
-                                    color: white;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                    text-align: center;
-                                    transition: all 0.3s ease;
-                                    font-size: 12px;
-                                ">
-                                    <span style="font-size: 24px; display: block; margin-bottom: 5px;">📄</span>
-                                    Text
-                                </div>
-                                <div class="post-type-btn" onclick="selectPostType('music')" style="
-                                    padding: 15px;
-                                    border: 2px solid #e1e5e9;
-                                    background: white;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                    text-align: center;
-                                    transition: all 0.3s ease;
-                                    font-size: 12px;
-                                ">
-                                    <span style="font-size: 24px; display: block; margin-bottom: 5px;">🎵</span>
-                                    Music
-                                </div>
-                                <div class="post-type-btn" onclick="selectPostType('image')" style="
-                                    padding: 15px;
-                                    border: 2px solid #e1e5e9;
-                                    background: white;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                    text-align: center;
-                                    transition: all 0.3s ease;
-                                    font-size: 12px;
-                                ">
-                                    <span style="font-size: 24px; display: block; margin-bottom: 5px;">🖼️</span>
-                                    Image
-                                </div>
-                                <div class="post-type-btn" onclick="selectPostType('discussion')" style="
-                                    padding: 15px;
-                                    border: 2px solid #e1e5e9;
-                                    background: white;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                    text-align: center;
-                                    transition: all 0.3s ease;
-                                    font-size: 12px;
-                                ">
-                                    <span style="font-size: 24px; display: block; margin-bottom: 5px;">💬</span>
-                                    Discussion
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Basic Fields -->
-                        <div style="margin-bottom: 20px;">
-                            <label for="cmsPostDate" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Post Date</label>
-                            <input type="date" id="cmsPostDate" required style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                        </div>
-
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Timeline</label>
-                            <select id="cmsTimeline" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e1e5e9;
-                                border-radius: 6px;
-                                font-size: 14px;
-                            ">
-                                <option value="features">Features</option>
-                                <option value="opinion">Opinion & Discussion</option>
-                            </select>
-                        </div>
-
-                        <!-- Dynamic Fields -->
-                        <div id="cmsDynamicFields">
-                            <div>
-                                <label for="cmsTextContent" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Text Content</label>
-                                <textarea id="cmsTextContent" placeholder="Enter your text content here..." style="
-                                    width: 100%;
-                                    padding: 12px;
-                                    border: 2px solid #e1e5e9;
-                                    border-radius: 6px;
-                                    font-size: 14px;
-                                    resize: vertical;
-                                    min-height: 100px;
-                                "></textarea>
-                            </div>
-                        </div>
-
-                        <button onclick="generateCMSPost()" style="
-                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                            color: white;
-                            border: none;
-                            padding: 15px 30px;
-                            border-radius: 8px;
-                            font-size: 16px;
-                            font-weight: 600;
-                            cursor: pointer;
-                            width: 100%;
-                            transition: transform 0.2s ease;
-                            margin-top: 20px;
-                        ">
-                            ✨ Generate Post Code
-                        </button>
-                    </div>
-
-                    <!-- Output Section -->
-                    <div style="
-                        background: #1e1e1e;
-                        color: #f8f8f2;
-                        padding: 30px;
-                        border-radius: 10px;
-                        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                    ">
-                        <h2>🔧 Generated Code</h2>
-                        
-                        <div>
-                            <h3 style="color: #61dafb; margin-bottom: 15px; font-size: 1.2em;">Timeline Post HTML</h3>
-                            <div id="cmsPostOutput" style="
-                                background: #2d2d2d;
-                                border: 1px solid #444;
-                                border-radius: 6px;
-                                padding: 15px;
-                                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-                                font-size: 13px;
-                                line-height: 1.4;
-                                overflow-x: auto;
-                                white-space: pre-wrap;
-                                margin-bottom: 10px;
-                                max-height: 300px;
-                                overflow-y: auto;
-                            ">Select a post type and fill in the fields to generate code...</div>
-                            <button onclick="copyToClipboard('cmsPostOutput')" style="
-                                background: #28a745;
-                                color: white;
-                                border: none;
-                                padding: 8px 15px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 12px;
-                            ">📋 Copy Post Code</button>
-                        </div>
-
-                        <div style="margin-top: 20px; padding: 15px; background: #2d2d2d; border-radius: 6px;">
-                            <h4 style="color: #61dafb; margin-bottom: 10px;">How to Add Your Post:</h4>
-                            <ol style="color: #f8f8f2; font-size: 12px; line-height: 1.6;">
-                                <li>Click "Generate Post Code" above</li>
-                                <li>Click "Copy Post Code" to copy the HTML</li>
-                                <li>Open your HTML file in a text editor</li>
-                                <li>Find the timeline section you selected (Features or Opinion)</li>
-                                <li>Paste the code inside the timeline div, before the closing &lt;/div&gt;</li>
-                                <li>Save your file - your new post will appear!</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Show CMS button only on desktop
-if (window.innerWidth > 768) {
-    document.getElementById('newPostBtn').style.display = 'block';
-}
-
-// Initialize additional floating bubbles
-function initAdditionalBubbles() {
-    // Cookie bubble
-    const cookieBubble = document.getElementById('cookieBubble');
-    let cookieX = Math.random() * (window.innerWidth - 220);
-    let cookieY = Math.random() * (window.innerHeight - 100);
-    let cookieVx = (Math.random() - 0.5) * 1;
-    let cookieVy = (Math.random() - 0.5) * 1;
-
-    cookieBubble.style.left = cookieX + 'px';
-    cookieBubble.style.top = cookieY + 'px';
-
-    // Shunya bubble
-    const shunyaBubble = document.getElementById('shunyaBubble');
-    let shunyaX = Math.random() * (window.innerWidth - 180);
-    let shunyaY = Math.random() * (window.innerHeight - 100);
-    let shunyaVx = (Math.random() - 0.5) * 0.8;
-    let shunyaVy = (Math.random() - 0.5) * 0.8;
-
-    shunyaBubble.style.left = shunyaX + 'px';
-    shunyaBubble.style.top = shunyaY + 'px';
-
-    function animateAdditionalBubbles() {
-        // Cookie bubble movement
-        cookieX += cookieVx;
-        cookieY += cookieVy;
-
-        if (cookieX <= 0 || cookieX >= window.innerWidth - 220) {
-            cookieVx = -cookieVx;
-            cookieX = Math.max(0, Math.min(cookieX, window.innerWidth - 220));
-        }
-        if (cookieY <= 0 || cookieY >= window.innerHeight - 60) {
-            cookieVy = -cookieVy;
-            cookieY = Math.max(0, Math.min(cookieY, window.innerHeight - 60));
-        }
-
-        cookieBubble.style.left = cookieX + 'px';
-        cookieBubble.style.top = cookieY + 'px';
-
-        // Shunya bubble movement
-        shunyaX += shunyaVx;
-        shunyaY += shunyaVy;
-
-        if (shunyaX <= 0 || shunyaX >= window.innerWidth - 180) {
-            shunyaVx = -shunyaVx;
-            shunyaX = Math.max(0, Math.min(shunyaX, window.innerWidth - 180));
-        }
-        if (shunyaY <= 0 || shunyaY >= window.innerHeight - 60) {
-            shunyaVy = -shunyaVy;
-            shunyaY = Math.max(0, Math.min(shunyaY, window.innerHeight - 60));
-        }
-
-        shunyaBubble.style.left = shunyaX + 'px';
-        shunyaBubble.style.top = shunyaY + 'px';
-
-        requestAnimationFrame(animateAdditionalBubbles);
-    }
-
-    animateAdditionalBubbles();
-}
-
-// Initialize bubbles after page load
-setTimeout(initAdditionalBubbles, 1000);
-
-// CMS Functions
-function openCMSModal() {
-    document.getElementById('cmsModal').style.display = 'block';
-    document.getElementById('passwordScreen').style.display = 'flex';
-    document.getElementById('cmsContent').style.display = 'none';
-}
-
-function closeCMSModal() {
-    document.getElementById('cmsModal').style.display = 'none';
-    document.getElementById('cmsPassword').value = '';
-    document.getElementById('passwordError').textContent = '';
-}
-
-function checkPasswordKey(event) {
-    if (event.key === 'Enter') {
-        checkPassword();
-    }
-}
-
-function checkPassword() {
-    const password = document.getElementById('cmsPassword').value;
-    // Change this password to whatever you want
-    if (password === 'admin123') {
-        document.getElementById('passwordScreen').style.display = 'none';
-        document.getElementById('cmsContent').style.display = 'block';
-    } else {
-        document.getElementById('passwordError').textContent = 'Incorrect password';
-    }
-}
-
-function selectPostType(type) {
-    // Update button styles
-    document.querySelectorAll('.post-type-btn').forEach(btn => {
-        btn.style.background = 'white';
-        btn.style.borderColor = '#e1e5e9';
-        btn.style.color = '#333';
-    });
-    
-    event.target.closest('.post-type-btn').style.background = '#667eea';
-    event.target.closest('.post-type-btn').style.borderColor = '#667eea';
-    event.target.closest('.post-type-btn').style.color = 'white';
-    
-    // Update dynamic fields
-    const dynamicFields = document.getElementById('cmsDynamicFields');
-    
-    switch(type) {
-        case 'text':
-            dynamicFields.innerHTML = `
-                <div>
-                    <label for="cmsTextContent" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Text Content</label>
-                    <textarea id="cmsTextContent" placeholder="Enter your text content here..." style="
-                        width: 100%;
-                        padding: 12px;
-                        border: 2px solid #e1e5e9;
-                        border-radius: 6px;
-                        font-size: 14px;
-                        resize: vertical;
-                        min-height: 100px;
-                    "></textarea>
-                </div>
-            `;
-            break;
-            
-        case 'music':
-            dynamicFields.innerHTML = `
-                <div>
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Bandcamp Embed Code</label>
-                    <textarea id="cmsMusicEmbed" placeholder="Paste Bandcamp iframe code here..." style="
-                        width: 100%;
-                        padding: 12px;
-                        border: 2px solid #e1e5e9;
-                        border-radius: 6px;
-                        font-size: 14px;
-                        resize: vertical;
-                        min-height: 100px;
-                    "></textarea>
-                    <small style="color: #666; font-size: 12px;">Go to Bandcamp, click Share, copy the iframe code and paste it here</small>
-                </div>
-            `;
-            break;
-            
-        case 'image':
-            dynamicFields.innerHTML = `
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Image URL</label>
-                    <input type="text" id="cmsImageUrl" placeholder="https://example.com/image.jpg" style="
-                        width: 100%;
-                        padding: 12px;
-                        border: 2px solid #e1e5e9;
-                        border-radius: 6px;
-                        font-size: 14px;
-                    ">
-                </div>
-                <div>
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Title</label>
-                    <input type="text" id="cmsImageTitle" placeholder="Post title" style="
-                        width: 100%;
-                        padding: 12px;
-                        border: 2px solid #e1e5e9;
-                        border-radius: 6px;
-                        font-size: 14px;
-                    ">
-                </div>
-            `;
-            break;
-            
-        case 'discussion':
-            dynamicFields.innerHTML = `
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Discussion Title</label>
-                    <input type="text" id="cmsDiscTitle" placeholder="Discussion title" style="
-                        width: 100%;
-                        padding: 12px;
-                        border: 2px solid #e1e5e9;
-                        border-radius: 6px;
-                        font-size: 14px;
-                    ">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Preview Text</label>
-                    <textarea id="cmsDiscPreview" placeholder="Preview text..." style="
-                        width: 100%;
-                        padding: 12px;
-                        border: 2px solid #e1e5e9;
-                        border-radius: 6px;
-                        font-size: 14px;
-                        resize: vertical;
-                        min-height: 80px;
-                    "></textarea>
-                </div>
-                <div>
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Read Time</label>
-                    <input type="text" id="cmsReadTime" placeholder="5 min read" style="
-                        width: 100%;
-                        padding: 12px;
-                        border: 2px solid #e1e5e9;
-                        border-radius: 6px;
-                        font-size: 14px;
-                    ">
-                </div>
-            `;
-            break;
-    }
-}
-
-function generateCMSPost() {
-    const date = document.getElementById('cmsPostDate').value;
-    const timeline = document.getElementById('cmsTimeline').value;
-    const postType = document.querySelector('.post-type-btn[style*="667eea"]').textContent.trim().toLowerCase();
-    
-    if (!date) {
-        alert('Please select a date');
-        return;
-    }
-    
-    let postHTML = '';
-    
-    // Format date
-    const dateObj = new Date(date);
-    const formattedDate = `${String(dateObj.getMonth() + 1).padStart(2, '0')}.${String(dateObj.getDate()).padStart(2, '0')}.${dateObj.getFullYear()}`;
-    
-    switch(postType) {
-        case 'text':
-            const textContent = document.getElementById('cmsTextContent').value;
-            postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-text">
-            <p>${textContent}</p>
-        </div>
-    </div>
-</div>`;
-            break;
-            
-        case 'music':
-            const musicEmbed = document.getElementById('cmsMusicEmbed').value;
-            postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-music">
-            ${musicEmbed}
-        </div>
-    </div>
-</div>`;
-            break;
-            
-        case 'image':
-            const imageUrl = document.getElementById('cmsImageUrl').value;
-            const imageTitle = document.getElementById('cmsImageTitle').value;
-            
-            postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-large" style="background-image: url('${imageUrl}');">
-            <div class="post-title">${imageTitle}</div>
-            <div class="post-avatar">🎵</div>
-        </div>
-    </div>
-</div>`;
-            break;
-            
-        case 'discussion':
-            const discTitle = document.getElementById('cmsDiscTitle').value;
-            const discPreview = document.getElementById('cmsDiscPreview').value;
-            const readTime = document.getElementById('cmsReadTime').value;
-            
-            postHTML = `
-<div class="timeline-post" data-date="${date}">
-    <div class="post-date">${formattedDate}</div>
-    <div class="post-content">
-        <div class="post-discussion">
-            <div class="discussion-title">${discTitle}</div>
-            <div class="discussion-preview">
-                ${discPreview}
-            </div>
-            <div class="discussion-meta">
-                <span>${readTime}</span>
-            </div>
-        </div>
-    </div>
-</div>`;
-            break;
-    }
-    
-    // Display generated code
-    document.getElementById('cmsPostOutput').textContent = postHTML;
-    
-    // Show instructions
-    alert(`Generated! Copy the code and paste it into your ${timeline} timeline in the HTML file.`);
-}
-
-function copyToClipboard(elementId) {
-    const element = document.getElementById(elementId);
-    const text = element.textContent;
-    
-    navigator.clipboard.writeText(text).then(() => {
-        alert('Code copied to clipboard!');
-    }).catch(err => {
-        console.error('Failed to copy:', err);
-        // Fallback method
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        alert('Code copied to clipboard!');
-    });
-}
-</script>
-
-    <!-- Mobile Zoom & Color Typing Add-on - Paste this into your HTML file before the closing </body> tag -->
-
-<style>
-/* Mobile viewport zoom out for more typing space */
-@media (max-width: 768px) {
-    body {
-        zoom: 0.7; /* Zooms out the entire page on mobile */
-        -webkit-text-size-adjust: none; /* Prevents iOS from overriding zoom */
-        -moz-text-size-adjust: none;
-        -ms-text-size-adjust: none;
-    }
-    
-    /* Adjust text grid for mobile zoom */
-    .text-tile {
-        font-size: 16px !important; /* Adjusted for zoom */
-        line-height: 20px !important; /* Adjusted for zoom */
-    }
-    
-    .text-cursor {
-        width: 9.6px !important; /* Adjusted for zoom */
-        height: 20px !important; /* Adjusted for zoom */
-    }
-    
-    /* Keep floating bubbles readable after zoom */
-    .floating-speech-bubble,
-    .floating-bubble-2,
-    .floating-bubble-3 {
-        font-size: 14px !important; /* Larger to compensate for zoom */
-        min-width: 200px !important;
-    }
-}
-
-/* Color classes for alternating text colors */
-.text-color-0 { color: #333 !important; } /* Dark Gray */
-.text-color-1 { color: #667eea !important; } /* Purple-Blue */
-.text-color-2 { color: #764ba2 !important; } /* Purple */
-.text-color-3 { color: #22c55e !important; } /* Green */
-.text-color-4 { color: #ef4444 !important; } /* Red */
-.text-color-5 { color: #f59e0b !important; } /* Orange */
-.text-color-6 { color: #06b6d4 !important; } /* Cyan */
-.text-color-7 { color: #8b5cf6 !important; } /* Violet */
-.text-color-8 { color: #ec4899 !important; } /* Pink */
-.text-color-9 { color: #10b981 !important; } /* Emerald */
-</style>
-
-<script>
-// Enhanced color typing system
-let colorIndex = 0;
-const totalColors = 10;
-
-// Override the original typeChar function to add colors
-const originalTypeChar = window.typeChar;
-if (originalTypeChar) {
-    window.typeChar = function(char) {
-        if (!isTyping) return;
-        
-        const tile = getOrCreateTile(cursorTileY, cursorTileX);
-        const index = cursorCharY * TILE_COLS + cursorCharX;
-        
-        // Update tile content
-        tile.content = tile.content.substring(0, index) + char + tile.content.substring(index + 1);
-        
-        // Re-render tile with colors
-        renderTileWithColors(tile);
-        
-        // Queue edit for server (include color info)
-        pendingEdits.push({
-            timeline: currentTimeline,
-            tileY: cursorTileY,
-            tileX: cursorTileX,
-            charY: cursorCharY,
-            charX: cursorCharX,
-            char: char,
-            color: colorIndex,
-            timestamp: Date.now()
-        });
-        
-        // Advance to next color
-        colorIndex = (colorIndex + 1) % totalColors;
-    };
-}
-
-// Enhanced tile rendering with colors
-function renderTileWithColors(tile) {
-    // Create tile element if it doesn't exist
-    if (!tile.element) {
-        const tileDiv = document.createElement('div');
-        tileDiv.className = 'text-tile';
-        tileDiv.style.position = 'absolute';
-        tileDiv.style.left = (tile.tileX * TILE_COLS * CHAR_WIDTH) + 'px';
-        tileDiv.style.top = (tile.tileY * TILE_ROWS * CHAR_HEIGHT) + 'px';
-        tileDiv.style.width = (TILE_COLS * CHAR_WIDTH) + 'px';
-        tileDiv.style.height = (TILE_ROWS * CHAR_HEIGHT) + 'px';
-        tileDiv.style.fontFamily = 'Courier New, monospace';
-        tileDiv.style.fontSize = (isMobile ? 16 : 16) + 'px';
-        tileDiv.style.lineHeight = (isMobile ? 20 : 20) + 'px';
-        tileDiv.style.whiteSpace = 'pre';
-        tileDiv.dataset.timeline = currentTimeline;
-        
-        document.getElementById('textGrid').appendChild(tileDiv);
-        tile.element = tileDiv;
-    }
-    
-    // Initialize color mapping if it doesn't exist
-    if (!tile.colors) {
-        tile.colors = Array(TILE_ROWS * TILE_COLS).fill(0);
-    }
-    
-    // Build HTML with individual character spans for colors
-    let html = '';
-    for (let y = 0; y < TILE_ROWS; y++) {
-        for (let x = 0; x < TILE_COLS; x++) {
-            const index = y * TILE_COLS + x;
-            const char = tile.content[index] || ' ';
-            const colorClass = tile.colors[index] || 0;
-            const escapedChar = escapeChar(char);
-            
-            if (char === ' ') {
-                html += '&nbsp;';
-            } else {
-                html += `<span class="text-color-${colorClass}">${escapedChar}</span>`;
-            }
-        }
-        if (y < TILE_ROWS - 1) html += '\n';
-    }
-    
-    tile.element.innerHTML = html;
-    
-    // Show/hide based on current timeline
-    updateTextVisibility();
-}
-
-// Override the original getOrCreateTile to ensure color support
-const originalGetOrCreateTile = window.getOrCreateTile;
-if (originalGetOrCreateTile) {
-    window.getOrCreateTile = function(tileY, tileX) {
-        const key = `${tileY},${tileX}`;
-        const timeline = currentTimeline;
-        
-        if (!tiles[timeline][key]) {
-            // Create new tile with color support
-            const tile = {
-                content: Array(TILE_ROWS * TILE_COLS).fill(' ').join(''),
-                colors: Array(TILE_ROWS * TILE_COLS).fill(0),
-                element: null,
-                tileY: tileY,
-                tileX: tileX
-            };
-            tiles[timeline][key] = tile;
-            renderTileWithColors(tile);
-        }
-        
-        return tiles[timeline][key];
-    };
-}
-
-// Update the typeChar function assignment when the original is available
-function assignTypeChar() {
-    if (typeof typeChar !== 'undefined') {
-        const originalTypeChar = typeChar;
-        typeChar = function(char) {
-            if (!isTyping) return;
-            
-            const tile = getOrCreateTile(cursorTileY, cursorTileX);
-            const index = cursorCharY * TILE_COLS + cursorCharX;
-            
-            // Update tile content
-            tile.content = tile.content.substring(0, index) + char + tile.content.substring(index + 1);
-            
-            // Update color info
-            if (!tile.colors) {
-                tile.colors = Array(TILE_ROWS * TILE_COLS).fill(0);
-            }
-            tile.colors[index] = colorIndex;
-            
-            // Re-render tile with colors
-            renderTileWithColors(tile);
-            
-            // Queue edit for server
-            pendingEdits.push({
-                timeline: currentTimeline,
-                tileY: cursorTileY,
-                tileX: cursorTileX,
-                charY: cursorCharY,
-                charX: cursorCharX,
-                char: char,
-                color: colorIndex,
-                timestamp: Date.now()
-            });
-            
-            // Advance to next color
-            colorIndex = (colorIndex + 1) % totalColors;
-        };
-        return true;
-    }
-    return false;
-}
-
-// Try to assign immediately, or wait for the function to be available
-if (!assignTypeChar()) {
-    // Wait for the main script to load
-    const checkForTypeChar = setInterval(() => {
-        if (assignTypeChar()) {
-            clearInterval(checkForTypeChar);
-        }
-    }, 100);
-}
-
-// Enhanced sendPendingEdits to handle colors
-const originalSendPendingEdits = window.sendPendingEdits;
-if (originalSendPendingEdits) {
-    window.sendPendingEdits = async function() {
-        if (pendingEdits.length === 0) return;
-        
-        // Group edits by tile (including color information)
-        const tileUpdates = {};
-        pendingEdits.forEach(edit => {
-            const key = `${edit.tileY},${edit.tileX}`;
-            if (!tileUpdates[key]) {
-                const tile = tiles[edit.timeline][key];
-                tileUpdates[key] = {
-                    timeline: edit.timeline,
-                    tile_key: key,
-                    tile_x: edit.tileX,
-                    tile_y: edit.tileY,
-                    content: tile?.content || '',
-                    colors: JSON.stringify(tile?.colors || []) // Store colors as JSON
-                };
-            }
-        });
-        
-        // Send to Supabase with color information
-        try {
-            const updates = Object.values(tileUpdates);
-            if (updates.length > 0) {
-                const { error } = await supabase
-                    .from('tiles')
-                    .upsert(updates, {
-                        onConflict: 'timeline,tile_key'
-                    });
-                
-                if (error) {
-                    console.error('Error saving tiles:', error);
-                    // Fall back to localStorage
-                    updates.forEach(update => {
-                        const allTiles = JSON.parse(localStorage.getItem(`tiles_${update.timeline}`) || '{}');
-                        allTiles[update.tile_key] = update;
-                        localStorage.setItem(`tiles_${update.timeline}`, JSON.stringify(allTiles));
-                    });
-                }
-            }
-        } catch (err) {
-            console.error('Supabase error:', err);
-            // Fall back to localStorage for all updates
-            Object.values(tileUpdates).forEach(update => {
-                const allTiles = JSON.parse(localStorage.getItem(`tiles_${update.timeline}`) || '{}');
-                allTiles[update.tile_key] = update;
-                localStorage.setItem(`tiles_${update.timeline}`, JSON.stringify(allTiles));
-            });
-        }
-        
-        pendingEdits = [];
-    };
-}
-
-// Enhanced loadAllTiles to handle colors
-const originalLoadAllTiles = window.loadAllTiles;
-if (originalLoadAllTiles) {
-    window.loadAllTiles = async function() {
-        try {
-            const { data, error } = await supabase
-                .from('tiles')
-                .select('*')
-                .eq('timeline', currentTimeline);
-            
-            if (error) {
-                console.error('Error loading tiles:', error);
-                // Fall back to localStorage
-                const saved = localStorage.getItem(`tiles_${currentTimeline}`);
-                if (saved) {
-                    const savedTiles = JSON.parse(saved);
-                    Object.entries(savedTiles).forEach(([key, tileData]) => {
-                        tiles[currentTimeline][key] = {
-                            content: tileData.content,
-                            colors: tileData.colors ? JSON.parse(tileData.colors) : Array(TILE_ROWS * TILE_COLS).fill(0),
-                            tileY: tileData.tile_y,
-                            tileX: tileData.tile_x,
-                            element: null
-                        };
-                        renderTileWithColors(tiles[currentTimeline][key]);
-                    });
-                }
-                return;
-            }
-            
-            // Clear and reload all tiles for this timeline
-            document.querySelectorAll(`.text-tile[data-timeline="${currentTimeline}"]`).forEach(el => {
-                el.remove();
-            });
-            
-            // Clear tile references
-            Object.keys(tiles[currentTimeline]).forEach(key => {
-                if (tiles[currentTimeline][key].element) {
-                    tiles[currentTimeline][key].element = null;
-                }
-            });
-            
-            // Load new tiles with color support
-            data?.forEach(row => {
-                tiles[currentTimeline][row.tile_key] = {
-                    content: row.content,
-                    colors: row.colors ? JSON.parse(row.colors) : Array(TILE_ROWS * TILE_COLS).fill(0),
-                    tileY: row.tile_y,
-                    tileX: row.tile_x,
-                    element: null
-                };
-                renderTileWithColors(tiles[currentTimeline][row.tile_key]);
-            });
-        } catch (err) {
-            console.error('Load error:', err);
-        }
-    };
-}
-
-// Update the mobile viewport meta tag for better zoom control
-function updateMobileViewport() {
-    let viewport = document.querySelector('meta[name="viewport"]');
-    if (!viewport) {
-        viewport = document.createElement('meta');
-        viewport.name = 'viewport';
-        document.head.appendChild(viewport);
-    }
-    
-    if (window.innerWidth <= 768) {
-        // Mobile: allow zooming and set initial scale
-        viewport.content = 'width=device-width, initial-scale=0.7, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes';
-    } else {
-        // Desktop: standard viewport
-        viewport.content = 'width=device-width, initial-scale=1.0, user-scalable=yes';
-    }
-}
-
-// Apply viewport changes
-updateMobileViewport();
-window.addEventListener('resize', updateMobileViewport);
-
-// Initialize color system after page load
-document.addEventListener('DOMContentLoaded', function() {
-    // Start with a random color to make it more interesting
-    colorIndex = Math.floor(Math.random() * totalColors);
-    
-    console.log('🎨 Color typing system initialized!');
-    console.log('📱 Mobile zoom applied for better typing space!');
-});
-</script>
 </body>
 </html>
